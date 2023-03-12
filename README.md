@@ -1,3 +1,4 @@
+[![CI](https://github.com/ahirner/nix-trickle/actions/workflows/ci.yml/badge.svg)](https://github.com/ahirner/nix-trickle/actions/workflows/ci.yml)
 # nix-trickle
 
 `nix-trickle` provides for the post-modern developer ™️.
@@ -65,6 +66,7 @@ All package overlays are directly available as package for supported systems.
 ### `devShells` ❄️
 
 - repl = default: `nix repl` with loaded flake, see [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus)
+- packages: all `packages`
 
 
 ### `lib.mkFlake`
@@ -84,3 +86,8 @@ and regular `nix` commands.
 ### `templates`
 
 🚧
+
+
+### `nixosModules` ❄️
+
+- bin-cache: add substituter and public key to `nix.settings` of cached package builds
