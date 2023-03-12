@@ -65,6 +65,7 @@ All package overlays are directly available as package for supported systems.
 ### `devShells` ❄️
 
 - repl = default: `nix repl` with loaded flake, see [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus)
+- packages: all `packages`
 
 
 ### `lib.mkFlake`

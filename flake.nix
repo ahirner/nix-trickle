@@ -129,20 +129,36 @@
         # utils assisted outputs
         outputsBuilder = channels:
           let
+            # all nixpgs
             pkgs = channels.nixpkgs;
+            # all packages for which overlays were defined
+            packages = utils.lib.exportPackages self.overlays channels;
           in
           {
+            formatter = pkgs.alejandra;
             devShells.default = with pkgs; mkShell {
               name = "repl";
+              description = "`nix repl` loaded with system or flake argument";
               nativeBuildInputs = [
                 fup-repl
                 alejandra
               ];
             };
-            formatter = pkgs.alejandra;
-
+            devShells.packages = with pkgs; mkShell {
+              name = "pkgs";
+              description = "all packages";
+              nativeBuildInputs = builtins.attrValues packages;
+              shellHook =
+                let
+                  versions = builtins.toString (builtins.map (p: "${builtins.baseNameOf (lib.getExe p)}==${p.version}")
+                    (builtins.attrValues packages));
+                in
+                ''
+                  echo exes: ${versions}
+                '';
+            };
             # export all packages for which overlays were defined
-            packages = utils.lib.exportPackages self.overlays channels;
+            inherit packages;
           };
 
         # export customized mkFlake

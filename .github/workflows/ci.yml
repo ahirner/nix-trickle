@@ -23,3 +23,4 @@ jobs:
     - run: nix flake check -L --keep-going
     - run: nix flake show
     - run: nix develop -c which repl
+    - run: nix develop .#packages -c echo built
