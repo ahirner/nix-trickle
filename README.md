@@ -1,3 +1,4 @@
+[![CI](https://github.com/ahirner/nix-trickle/actions/workflows/ci.yml/badge.svg)](https://github.com/ahirner/nix-trickle/actions/workflows/ci.yml)
 # nix-trickle
 
 `nix-trickle` provides for the post-modern developer ™️.
