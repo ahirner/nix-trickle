@@ -170,5 +170,12 @@
           lib.composeManyExtensions overlays final prev;
         default = nixpkgs;
       };
+      # common modules related to `nix-trickle`
+      nixosModules = {
+        bin-cache = {
+          nix.settings.substituters = [ "https://cybertreiber.cachix.org" ];
+          nix.settings.trusted-public-keys = [ "cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0=" ];
+        };
+      };
     };
 }

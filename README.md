@@ -85,3 +85,8 @@ and regular `nix` commands.
 ### `templates`
 
 🚧
+
+
+### `nixosModules` ❄️
+
+- bin-cache: add substituter and public key to `nix.settings` of cached package builds
