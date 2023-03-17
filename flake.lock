@@ -44,8 +44,7 @@
     "cargo2nix": {
       "inputs": {
         "flake-compat": [
-          "alejandra",
-          "flakeCompat"
+          "flake-compat"
         ],
         "flake-utils": [
           "flake-utils"
@@ -109,7 +108,9 @@
         "all-cabal-json": "all-cabal-json",
         "crane": "crane",
         "devshell": "devshell",
-        "drv-parts": "drv-parts",
+        "drv-parts": [
+          "drv-parts"
+        ],
         "flake-parts": [
           "parts"
         ],
@@ -144,13 +145,13 @@
     },
     "drv-parts": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "flake-compat": [
+          "flake-compat"
+        ],
         "flake-parts": [
-          "dream2nix",
-          "flake-parts"
+          "parts"
         ],
         "nixpkgs": [
-          "dream2nix",
           "nixpkgs"
         ]
       },
@@ -471,7 +472,9 @@
         "alejandra": "alejandra",
         "cargo2nix": "cargo2nix",
         "dream2nix": "dream2nix",
+        "drv-parts": "drv-parts",
         "fenix": "fenix",
+        "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "garage": "garage",
         "nci": "nci",

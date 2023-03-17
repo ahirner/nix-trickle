@@ -11,9 +11,17 @@
       inputs.flake-utils.follows = "flake-utils";
     };
     flake-utils.url = "github:numtide/flake-utils";
+    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.flake = false;
     parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    drv-parts = {
+      url = "github:davhau/drv-parts";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-parts.follows = "parts";
     };
 
     # tools
@@ -38,7 +46,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils-pre-commit.follows = "flake-utils";
       inputs.flake-parts.follows = "parts";
-      inputs.alejandra.follows = "alejandra";
+      inputs.drv-parts.follows = "drv-parts";
     };
     nci = {
       # newer commits break with missing .lib
@@ -56,7 +64,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
       inputs.rust-overlay.follows = "rust-overlay";
-      inputs.flake-compat.follows = "alejandra/flakeCompat";
+      inputs.flake-compat.follows = "flake-compat";
     };
 
     # packages
