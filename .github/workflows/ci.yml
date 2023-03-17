@@ -32,6 +32,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./tests
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v20
@@ -41,4 +44,5 @@ jobs:
       with:
         name: 'cybertreiber'
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: cd tests && ./check_pure-system_template.sh
+    - run: ./templates.sh clone pure-system
+    - run: ./templates.sh check pure-system
