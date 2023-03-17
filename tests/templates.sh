@@ -59,6 +59,9 @@ check-pkg-overlayed() {
 }
 
 set -e
-
-$@
-
+cmd=$1
+if [ "$cmd" = "check" ] || [ "$cmd" = "clone" ]; then
+  for arg in "${@:2}"; do $cmd $arg; done
+else
+  for arg in "${@:3}"; do $cmd $2 $arg; done
+fi
