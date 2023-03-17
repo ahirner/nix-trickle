@@ -53,7 +53,7 @@ Example devShell following `nix-trickle`: ❄️
 ### `overlays` ❄️
 
 - nixpkgs/[micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html): newer version
-- nixpkgs/[garage](https://garagehq.deuxfleurs.fr): newever version
+- nixpkgs/[garage](https://garagehq.deuxfleurs.fr): newer version
 - nixpkgs/[ruff-lsp](https://github.com/charliermarsh/ruff-lsp): added
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
 - nixpkgs: all overlays above
@@ -88,7 +88,7 @@ To start using these packages as the sole source for a system:
 nix flake init -t github:ahirner/nix-trickle#pure-system
 ```
 
-### `templates`
+### `templates` ❄️
 
 - pure-system: Example configuration for pure flake systems based on `nix-trickle`
 - devShell: Example devShell based on `nix-trickle`
