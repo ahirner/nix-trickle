@@ -21,27 +21,29 @@ Example devShell following `nix-trickle`: ❄️
 ```nix
 {
   inputs = {
-    nix-trickle.url = "../..";
+    nix-trickle.url = "github:ahirner/nix-trickle";
     helix = {
-      url = "github:helix-editor/helix/c5c1b5af34fb3f217fce4bec5f7bb16369e59888";
+      url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
       inputs.rust-overlay.follows = "nix-trickle/rust-overlay";
       inputs.nci.follows = "nix-trickle/nci";
     };
   };
-  outputs = inputs@{ self, nix-trickle, ... }:
-    let
-      system = "x86_64-darwin";
-      pkgs = nix-trickle.pkgs."${system}".nixpkgs;
-    in
-    {
-      devShells."${system}".default = pkgs.mkShell {
-        packages = with pkgs;[
-          micromamba
-          inputs.helix.packages.${pkgs.system}.default
-        ];
-      };
-    };
+  outputs = { nix-trickle, helix, ... }: {
+    devShells = builtins.mapAttrs
+      (system: channel:
+        let
+          pkgs = channel.nixpkgs;
+          packages = [
+            pkgs.micromamba
+            helix.packages.${system}.default
+          ];
+        in
+        {
+          default = pkgs.mkShell { inherit packages; };
+        })
+      nix-trickle.pkgs;
+  };
 }
 ```
 
@@ -89,6 +91,7 @@ nix flake init -t github:ahirner/nix-trickle#pure-system
 ### `templates`
 
 - pure-system: Example configuration for pure flake systems based on `nix-trickle`
+- devShell: Example devShell based on `nix-trickle`
 
 
 ### `nixosModules` ❄️

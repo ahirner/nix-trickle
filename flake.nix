@@ -50,11 +50,11 @@
     };
     nci = {
       # newer commits break with missing .lib
-      url = "github:yusdacra/nix-cargo-integration/b1b0d38b8c3b0d0e6a38638d5bbe10b0bc67522c";
+      url = "github:yusdacra/nix-cargo-integration";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
       inputs.dream2nix.follows = "dream2nix";
-      inputs.devshell.follows = "dream2nix/devshell";
+      inputs.parts.follows = "parts";
     };
     cargo2nix = {
       # some fixes "only" for garage...
@@ -191,6 +191,10 @@
       templates.pure-system = {
         path = ./templates/pure-system;
         description = "Example configuration for pure flake systems based on `nix-trickle`";
+      };
+      templates.devShell = {
+        path = ./templates/devShell;
+        description = "Example devShell based on `nix-trickle`";
       };
     };
 }
