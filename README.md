@@ -80,12 +80,15 @@ All package overlays are directly available as package for supported systems.
 `nix-trickle.pkgs` as `nixpkgs` and obtain equal store paths for `flake`
 and regular `nix` commands.
 
-🚧
+To start using these packages as the sole source for a system:
 
+```
+nix flake init -t github:ahirner/nix-trickle#pure-system
+```
 
 ### `templates`
 
-🚧
+- pure-system: Example configuration for pure flake systems based on `nix-trickle`
 
 
 ### `nixosModules` ❄️
