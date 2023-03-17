@@ -163,6 +163,7 @@
 
         # export customized mkFlake
         lib.mkFlake = mkFlake;
+
       } // {
       # custom overlays from inputs
       overlays = utils.lib.exportOverlays { inherit (self) pkgs; } // rec {
@@ -176,6 +177,12 @@
           nix.settings.substituters = [ "https://cybertreiber.cachix.org" ];
           nix.settings.trusted-public-keys = [ "cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0=" ];
         };
+      };
+
+      # templates
+      templates.pure-system = {
+        path = ./templates/pure-system;
+        description = "Example configuration for pure flake systems based on `nix-trickle`";
       };
     };
 }
