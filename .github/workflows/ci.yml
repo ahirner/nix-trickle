@@ -50,3 +50,13 @@ jobs:
     - run: ./templates.sh check pure-system devShell
     - run: ./templates.sh check-pkg-overlayed pure-system micromamba
     - run: ./templates.sh check-pkg-default pure-system micromamba
+
+  lints:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v20
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix fmt
+    - run: git diff --exit-code
