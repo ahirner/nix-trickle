@@ -75,115 +75,122 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.cargo2nix.follows = "cargo2nix";
     };
-
   };
 
-  outputs = inputs @{ utils, self, ... }:
-    let
-      overlays = [
-        inputs.rust-overlay.overlays.default
-        (import ./overlays)
-        # go directly with flake input
-        (_: prev: { garage = inputs.garage.packages.${prev.pkgs.system}.default; })
+  outputs = inputs @ {
+    utils,
+    self,
+    ...
+  }: let
+    overlays = [
+      inputs.rust-overlay.overlays.default
+      (import ./overlays)
+      # go directly with flake input
+      (_: prev: {garage = inputs.garage.packages.${prev.pkgs.system}.default;})
+    ];
+
+    /*
+     Builds a flake with aggregated inputs and some options.
+
+    Based on: mkFlake in https://github.com/gytis-ivaskevicius/flake-utils-plus
+    */
+    lib = inputs.nixpkgs.lib;
+    mkFlake = {
+      self,
+      inputs,
+      hosts ? {},
+      extraOverlays ? [],
+      extraDefaultModules ? [],
+      sharedConfigOverride ? {},
+      outputsBuilder ? _: {},
+      ...
+    } @ args: let
+      # remove although they are anyway
+      moreArgs = builtins.removeAttrs args [
+        "extraOverlays"
+        "extraDefaultModules"
+        "sharedConfigOverride"
       ];
+      flakeMake =
+        moreArgs
+        // {
+          inherit self inputs;
+          sharedOverlays = overlays ++ extraOverlays;
+          channelsConfig = {allowUnfree = true;} // sharedConfigOverride;
 
-      /* Builds a flake with aggregated inputs and some options.
-      
-        Based on: mkFlake in https://github.com/gytis-ivaskevicius/flake-utils-plus
-      */
-      lib = inputs.nixpkgs.lib;
-      mkFlake =
-        { self
-        , inputs
-        , hosts ? { }
-        , extraOverlays ? [ ]
-        , extraDefaultModules ? [ ]
-        , sharedConfigOverride ? { }
-        , outputsBuilder ? _: { }
-        , ...
-        }@args:
-        let
-          # remove although they are anyway
-          moreArgs = (builtins.removeAttrs args [
-            "extraOverlays"
-            "extraDefaultModules"
-            "sharedConfigOverride"
-          ]);
-          flakeMake = moreArgs // {
-            inherit self inputs;
-            sharedOverlays = overlays ++ extraOverlays;
-            channelsConfig = { allowUnfree = true; } // sharedConfigOverride;
-
-            hostDefaults.modules = [
+          hostDefaults.modules =
+            [
               {
                 nix.generateRegistryFromInputs = lib.mkDefault true;
                 nix.generateNixPathFromInputs = lib.mkDefault true;
                 nix.linkInputs = lib.mkDefault true;
-                nix.settings.experimental-features = [ "nix-command" "flakes" ];
+                nix.settings.experimental-features = ["nix-command" "flakes"];
               }
-            ] ++ extraDefaultModules;
+            ]
+            ++ extraDefaultModules;
 
-            # 1to1 outputs, hosts 
-            inherit outputsBuilder hosts;
-          };
-        in
-        utils.lib.mkFlake flakeMake;
+          # 1to1 outputs, hosts
+          inherit outputsBuilder hosts;
+        };
     in
+      utils.lib.mkFlake flakeMake;
+  in
     mkFlake
-      {
-        inherit self inputs;
-        supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
+    {
+      inherit self inputs;
+      supportedSystems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
 
-        # utils assisted outputs
-        outputsBuilder = channels:
-          let
-            # all nixpgs
-            pkgs = channels.nixpkgs;
-            # all packages for which overlays were defined
-            packages = utils.lib.exportPackages self.overlays channels;
-          in
-          {
-            formatter = pkgs.alejandra;
-            devShells.default = with pkgs; mkShell {
-              name = "repl";
-              description = "`nix repl` loaded with system or flake argument";
-              nativeBuildInputs = [
-                fup-repl
-                alejandra
-              ];
-            };
-            devShells.packages = with pkgs; mkShell {
-              name = "pkgs";
-              description = "all packages";
-              nativeBuildInputs = builtins.attrValues packages;
-              shellHook =
-                let
-                  versions = builtins.toString (builtins.map (p: "${builtins.baseNameOf (lib.getExe p)}==${p.version}")
-                    (builtins.attrValues packages));
-                in
-                ''
-                  echo exes: ${versions}
-                '';
-            };
-            # export all packages for which overlays were defined
-            inherit packages;
+      # utils assisted outputs
+      outputsBuilder = channels: let
+        # all nixpgs
+        pkgs = channels.nixpkgs;
+        # all packages for which overlays were defined
+        packages = utils.lib.exportPackages self.overlays channels;
+      in {
+        formatter = pkgs.alejandra;
+        devShells.default = with pkgs;
+          mkShell {
+            name = "repl";
+            description = "`nix repl` loaded with system or flake argument";
+            nativeBuildInputs = [
+              fup-repl
+              alejandra
+            ];
           };
-
-        # export customized mkFlake
-        lib.mkFlake = mkFlake;
-
-      } // {
-      # custom overlays from inputs
-      overlays = utils.lib.exportOverlays { inherit (self) pkgs; } // rec {
-        nixpkgs = final: prev:
-          lib.composeManyExtensions overlays final prev;
-        default = nixpkgs;
+        devShells.packages = with pkgs;
+          mkShell {
+            name = "pkgs";
+            description = "all packages";
+            nativeBuildInputs = builtins.attrValues packages;
+            shellHook = let
+              versions =
+                builtins.toString (builtins.map (p: "${builtins.baseNameOf (lib.getExe p)}==${p.version}")
+                  (builtins.attrValues packages));
+            in ''
+              echo exes: ${versions}
+            '';
+          };
+        # export all packages for which overlays were defined
+        inherit packages;
       };
+
+      # export customized mkFlake
+      lib.mkFlake = mkFlake;
+    }
+    // {
+      # custom overlays from inputs
+      overlays =
+        utils.lib.exportOverlays {inherit (self) pkgs;}
+        // rec {
+          nixpkgs = final: prev:
+            lib.composeManyExtensions overlays final prev;
+          default = nixpkgs;
+        };
       # common modules related to `nix-trickle`
       nixosModules = {
         bin-cache = {
-          nix.settings.substituters = [ "https://cybertreiber.cachix.org" ];
-          nix.settings.trusted-public-keys = [ "cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0=" ];
+          nix.settings.substituters = ["https://cybertreiber.cachix.org"];
+          nix.settings.trusted-public-keys = ["cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0="];
         };
       };
 

@@ -8,19 +8,22 @@
       inputs.nci.follows = "nix-trickle/nci";
     };
   };
-  outputs = { nix-trickle, helix, ... }: {
-    devShells = builtins.mapAttrs
-      (system: channel:
-        let
-          pkgs = channel.nixpkgs;
-          packages = [
-            pkgs.micromamba
-            helix.packages.${system}.default
-          ];
-        in
-        {
-          default = pkgs.mkShell { inherit packages; };
-        })
+  outputs = {
+    nix-trickle,
+    helix,
+    ...
+  }: {
+    devShells =
+      builtins.mapAttrs
+      (system: channel: let
+        pkgs = channel.nixpkgs;
+        packages = [
+          pkgs.micromamba
+          helix.packages.${system}.default
+        ];
+      in {
+        default = pkgs.mkShell {inherit packages;};
+      })
       nix-trickle.pkgs;
   };
 }

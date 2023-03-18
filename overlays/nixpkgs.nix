@@ -1,20 +1,21 @@
-final: prev:
-let
-  /* Replace regex matches with another string.
+final: prev: let
+  /*
+   Replace regex matches with another string.
 
-    Type: regPlace :: (string -> string -> string -> string)
+  Type: regPlace :: (string -> string -> string -> string)
 
   */
   regPlace = reg: sub: str:
-    builtins.foldl' (x: y: x + y) "" (builtins.map (x: if builtins.isString x then x else sub) (builtins.split reg str));
-
-in
-{
+    builtins.foldl' (x: y: x + y) "" (builtins.map (x:
+      if builtins.isString x
+      then x
+      else sub) (builtins.split reg str));
+in {
   # gsutil doesn't work with openssl but pyopenssl
-  google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old:
-    let
-      # one cannot understand why python in old default.nix was magically python3...
-      pythonEnv = prev.python3.withPackages (p: with p; [
+  google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old: let
+    # one cannot understand why python in old default.nix was magically python3...
+    pythonEnv = prev.python3.withPackages (p:
+      with p; [
         cffi
         cryptography
         # openssl is gone, instead:
@@ -22,26 +23,28 @@ in
         crcmod
         numpy
       ]);
-      # give gcloud stuff the fixed python withPackages,
-      # also remove alpha/beta modules (not needed and error with missing /nix/store)
-      installPhase' = regPlace "cp /nix/store.*\__init__.py\n" ""
-        (regPlace "PYTHONPATH : [^\\]+" "PYTHONPATH : ${pythonEnv}/${pythonEnv.python.sitePackages} "
-          (regPlace "CLOUDSDK_PYTHON [^\\]+" "CLOUDSDK_PYTHON ${prev.lib.getExe pythonEnv.python} " old.installPhase));
-    in
-    {
-      # this is my weird hack, otherwise ${pythonEnv} would not come into existance in the nix-store
-      buildInputs = [ pythonEnv ];
-      installPhase = installPhase';
-    });
+    # give gcloud stuff the fixed python withPackages,
+    # also remove alpha/beta modules (not needed and error with missing /nix/store)
+    installPhase' =
+      regPlace "cp /nix/store.*\__init__.py\n" ""
+      (regPlace "PYTHONPATH : [^\\]+" "PYTHONPATH : ${pythonEnv}/${pythonEnv.python.sitePackages} "
+        (regPlace "CLOUDSDK_PYTHON [^\\]+" "CLOUDSDK_PYTHON ${prev.lib.getExe pythonEnv.python} " old.installPhase));
+  in {
+    # this is my weird hack, otherwise ${pythonEnv} would not come into existance in the nix-store
+    buildInputs = [pythonEnv];
+    installPhase = installPhase';
+  });
 
   # recent micromamba
   micromamba = prev.micromamba.overrideAttrs (old:
     # inspired by: https://github.com/NixOS/nixpkgs/commit/aff821e3a5a605f930e089630f4cbaf8067e6b54
     let
       libsolv' = prev.libsolv.overrideAttrs (oldAttrs: {
-        cmakeFlags = oldAttrs.cmakeFlags ++ [
-          "-DENABLE_CONDA=true"
-        ];
+        cmakeFlags =
+          oldAttrs.cmakeFlags
+          ++ [
+            "-DENABLE_CONDA=true"
+          ];
 
         patches = [
           # Apply the same patch as in the "official" boa-forge build:
@@ -63,11 +66,10 @@ in
         # fmt_8 from spdlog's propagated dependencies and using fmt_9 for
         # micromamba itself.
         dontBuild = true;
-        cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DSPDLOG_FMT_EXTERNAL=OFF" ];
-        propagatedBuildInputs = [ ];
+        cmakeFlags = oldAttrs.cmakeFlags ++ ["-DSPDLOG_FMT_EXTERNAL=OFF"];
+        propagatedBuildInputs = [];
       });
-    in
-    rec {
+    in rec {
       version = "1.3.1";
       src = prev.fetchFromGitHub {
         owner = "mamba-org";
@@ -76,61 +78,59 @@ in
         sha256 = "sha256-b9QT+miS+evi0FDBAHsIhKjRMuiC4pKRke/JuuKXDE4=";
       };
       # removed termcolor since it was removed upstream
-      buildInputs = with prev;
-        [
-          bzip2
-          cli11
-          nlohmann_json
-          curl
-          libarchive
-          libyamlcpp
-          libsolv'
-          reproc
-          spdlog'
-          ghc_filesystem
-          python3
-          tl-expected
-          fmt_9
-        ];
+      buildInputs = with prev; [
+        bzip2
+        cli11
+        nlohmann_json
+        curl
+        libarchive
+        libyamlcpp
+        libsolv'
+        reproc
+        spdlog'
+        ghc_filesystem
+        python3
+        tl-expected
+        fmt_9
+      ];
     });
 
   # ruff-lsp from: https://github.com/kalekseev/dotfiles/blob/f79db5e662915143c617934e9097b1c8956aa7c7/nixpkgs/overlays/my-packages.nix#L38
-  ruff-lsp =
-    let
-      pkgs = prev.python3.pkgs;
-    in
+  ruff-lsp = let
+    pkgs = prev.python3.pkgs;
+  in
     pkgs.buildPythonPackage
-      rec {
-        pname = "ruff-lsp";
-        version = "0.0.18";
-        format = "pyproject";
-        disabled = pkgs.pythonOlder "3.7";
+    rec {
+      pname = "ruff-lsp";
+      version = "0.0.18";
+      format = "pyproject";
+      disabled = pkgs.pythonOlder "3.7";
 
-        src = pkgs.fetchPypi {
-          inherit version;
-          pname = "ruff_lsp";
-          sha256 = "sha256-GNOrEQcErJnFb7vESOB0eXmQYp1PCRPJF75YKRawLIc=";
-        };
-
-        nativeBuildInputs = [
-          pkgs.hatchling
-        ];
-
-        propagatedBuildInputs = [
-          pkgs.pygls
-          pkgs.typing-extensions
-        ];
-
-        postPatch = ''
-          sed -i '/"ruff>=/d' pyproject.toml
-          sed -i 's|USER_DEFAULTS: dict\[str, str\] = {}|USER_DEFAULTS: dict[str, str] = {"path": ["${prev.ruff}/bin/ruff"]}|' ruff_lsp/server.py
-        '';
-
-        meta = with prev.lib; {
-          homepage = "https://github.com/charliermarsh/ruff-lsp";
-          description = "A Language Server Protocol implementation for Ruff";
-          license = licenses.mit;
-          maintainers = with maintainers; [ kalekseev ];
-        };
+      src = pkgs.fetchPypi {
+        inherit version;
+        pname = "ruff_lsp";
+        sha256 = "sha256-GNOrEQcErJnFb7vESOB0eXmQYp1PCRPJF75YKRawLIc=";
       };
+
+      nativeBuildInputs = [
+        pkgs.hatchling
+      ];
+
+      propagatedBuildInputs = [
+        pkgs.pygls
+        pkgs.typing-extensions
+      ];
+
+      postPatch = ''
+        sed -i '/"ruff>=/d' pyproject.toml
+        sed -i 's|USER_DEFAULTS: dict\[str, str\] = {}|USER_DEFAULTS: dict[str, str] = {"path": ["${prev.ruff}/bin/ruff"]}|' ruff_lsp/server.py
+      '';
+
+      meta = with prev.lib; {
+        homepage = "https://github.com/charliermarsh/ruff-lsp";
+        description = "A Language Server Protocol implementation for Ruff";
+        license = licenses.mit;
+        maintainers = with maintainers; [kalekseev];
+      };
+    };
 }
