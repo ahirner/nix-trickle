@@ -47,6 +47,7 @@
       inputs.flake-utils-pre-commit.follows = "flake-utils";
       inputs.flake-parts.follows = "parts";
       inputs.drv-parts.follows = "drv-parts";
+      inputs.flake-compat.follows = "flake-compat";
     };
     nci = {
       # newer commits break with missing .lib
