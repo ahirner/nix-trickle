@@ -2,8 +2,8 @@
   description = "Flake aggregation for the post-modern developer (tm)";
 
   inputs = {
-    # "recent" unstable and working well
-    nixpkgs.url = "github:NixOS/nixpkgs/a1291d0d020a200c7ce3c48e96090bfa4890a475";
+    # "recent" nixos-unstable
+    nixpkgs.url = "github:NixOS/nixpkgs/a64e169e396460d6b5763a1de1dd197df8421688";
 
     # utils
     utils = {
