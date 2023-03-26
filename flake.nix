@@ -85,6 +85,14 @@
   }: let
     overlays = [
       inputs.rust-overlay.overlays.default
+      (final: prev: {
+        ruff = prev.ruff.overrideAttrs (old: {
+          # cache.nixos.org produces invalid darwin binaries?
+          # /nix/store/vrxifpk5bhdgrq28qn9yna63c4w62v08-ruff-0.0.259/bin/ruff
+          # Illiegal instruction: 4
+          doCheck = true;
+        });
+      })
       (import ./overlays)
       # go directly with flake input
       (_: prev: {garage = inputs.garage.packages.${prev.pkgs.system}.default;})
