@@ -42,7 +42,7 @@
       inherit self inputs legacyPackages;
 
       # add more default modules
-      extraDefaultModules = [nix-trickle.nixosModules.bin-cache];
+      extraDefaultModules = [pureSystem nix-trickle.nixosModules.bin-cache];
 
       # add some own package
       outputsBuilder = channels: {
