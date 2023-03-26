@@ -3,7 +3,7 @@
 
   inputs = {
     # "recent" nixos-unstable
-    nixpkgs.url = "github:NixOS/nixpkgs/a64e169e396460d6b5763a1de1dd197df8421688";
+    nixpkgs.url = "github:NixOS/nixpkgs/8f40f2f90b9c9032d1b824442cfbbe0dbabd0dbd";
 
     # utils
     utils = {
