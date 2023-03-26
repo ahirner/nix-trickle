@@ -115,28 +115,29 @@ in {
     pkgs.buildPythonPackage
     rec {
       pname = "ruff-lsp";
-      version = "0.0.18";
+      version = "0.0.23";
       format = "pyproject";
       disabled = pkgs.pythonOlder "3.7";
 
       src = pkgs.fetchPypi {
         inherit version;
         pname = "ruff_lsp";
-        sha256 = "sha256-GNOrEQcErJnFb7vESOB0eXmQYp1PCRPJF75YKRawLIc=";
+        sha256 = "sha256-T+hsEXwW+4KEcaAKttpLIZvFt9k7eLMFPiY2FOQV4L8=";
       };
 
       nativeBuildInputs = [
         pkgs.hatchling
+        pkgs.pythonRelaxDepsHook
       ];
 
+      pythonRemoveDeps = ["ruff" "lsprotocol"];
       propagatedBuildInputs = [
         pkgs.pygls
         pkgs.typing-extensions
       ];
 
       postPatch = ''
-        sed -i '/"ruff>=/d' pyproject.toml
-        sed -i 's|USER_DEFAULTS: dict\[str, str\] = {}|USER_DEFAULTS: dict[str, str] = {"path": ["${prev.ruff}/bin/ruff"]}|' ruff_lsp/server.py
+        sed -i 's|GLOBAL_SETTINGS: dict\[str, str\] = {}|GLOBAL_SETTINGS: dict[str, str] = {"path": ["${prev.ruff}/bin/ruff"]}|' ruff_lsp/server.py
       '';
 
       meta = with prev.lib; {
