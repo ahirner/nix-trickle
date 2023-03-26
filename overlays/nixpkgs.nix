@@ -69,14 +69,27 @@ in {
         cmakeFlags = oldAttrs.cmakeFlags ++ ["-DSPDLOG_FMT_EXTERNAL=OFF"];
         propagatedBuildInputs = [];
       });
-    in rec {
-      version = "1.3.1";
+      patches =
+        [
+          # https://github.com/mamba-org/mamba/pull/2397
+          (prev.fetchpatch {
+            url = "https://github.com/mamba-org/mamba/commit/6cf90892bf73c7c479def3b2da4fe1d2077c1a72.patch";
+            sha256 = "sha256-fuUGf4NJ9pL+X7z8CxWYJxzwHTH/cgxINmaOYZ9bc+M=";
+          })
+        ]
+        ++ old.patches or [];
+
+      version = "1.4.0";
+    in {
+      inherit version;
       src = prev.fetchFromGitHub {
         owner = "mamba-org";
         repo = "mamba";
         rev = "micromamba-" + version;
-        sha256 = "sha256-b9QT+miS+evi0FDBAHsIhKjRMuiC4pKRke/JuuKXDE4=";
+        sha256 = "sha256-CnsECmquB3gt5N6lTjJ7A34DM6H4Neqb7URVgQzgnYk=";
       };
+      inherit patches;
+
       # removed termcolor since it was removed upstream
       buildInputs = with prev; [
         bzip2
@@ -84,7 +97,7 @@ in {
         nlohmann_json
         curl
         libarchive
-        libyamlcpp
+        yaml-cpp
         libsolv'
         reproc
         spdlog'
