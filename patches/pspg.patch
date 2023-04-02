@@ -1,0 +1,23 @@
+diff --git a/src/table.c b/src/table.c
+index 8af9896..7c64ffa 100644
+--- a/src/table.c
++++ b/src/table.c
+@@ -774,7 +774,16 @@ readfile(Options *opts, DataDesc *desc, StateData *state)
+ 		desc->completed = true;
+ 	}
+ 
+-	if (nrows == 0)
++	// always re-read all lines from a "streamed" query file
++	if (f_data && (f_data_opts & STREAM_IS_FILE) && opts->querystream) {
++			fseek(f_data, 0L, SEEK_SET);
++			initial_run = true;
++			#ifdef DEBUG_PIPE
++			fprintf(debug_pipe, "reset file position to query on all data\n");
++			#endif
++			// todo: no need to watch for truncate?
++	}
++	else if (nrows == 0)
+ 	{
+ 		/* detection truncating */
+ 		detect_file_truncation();
+

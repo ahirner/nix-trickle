@@ -147,4 +147,16 @@ in {
         maintainers = with maintainers; [kalekseev];
       };
     };
+
+  # recent and updating querystream from file
+  pspq = prev.pspg.overrideAttrs (old: {
+    version = "5.7.5-rc";
+    src = prev.fetchFromGitHub {
+      owner = "okbob";
+      repo = old.pname;
+      rev = "master";
+      sha256 = "sha256-SGfEYeXZnl3PMG1UJbSY/ma7/BuRxTVI/8x65j1Zu2Y=";
+    };
+    patches = prev.patches or [] ++ [../patches/pspg.patch];
+  });
 }
