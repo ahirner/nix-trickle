@@ -149,7 +149,7 @@ in {
     };
 
   # recent and updating querystream from file
-  pspq = prev.pspg.overrideAttrs (old: {
+  pspg = prev.pspg.overrideAttrs (old: {
     version = "5.7.5-rc";
     src = prev.fetchFromGitHub {
       owner = "okbob";
