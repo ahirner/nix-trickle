@@ -59,6 +59,7 @@ Example devShell following `nix-trickle`: ❄️
 - nixpkgs/[garage](https://garagehq.deuxfleurs.fr): newer version
 - nixpkgs/[ruff-lsp](https://github.com/charliermarsh/ruff-lsp): added
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
+- nixpkgs/pspg: updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs: all overlays above
 - default = nixpkgs
 
