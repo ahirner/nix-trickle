@@ -154,8 +154,8 @@ in {
     src = prev.fetchFromGitHub {
       owner = "okbob";
       repo = old.pname;
-      rev = "master";
-      sha256 = "sha256-SGfEYeXZnl3PMG1UJbSY/ma7/BuRxTVI/8x65j1Zu2Y=";
+      rev = "c4f743444fe09db61979feb860330c4f90d6d7ec";
+      sha256 = "sha256-0CH2qEPPSep8v7tPAeupIuDHdjbT2+suh3B38gdUV+8=";
     };
     patches = prev.patches or [] ++ [../patches/pspg.patch];
   });
