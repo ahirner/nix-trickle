@@ -155,7 +155,7 @@ in {
       owner = "okbob";
       repo = old.pname;
       rev = "f7550a34fde06e65a9d1ed6b6c4cd20f0a2853cb";
-      sha256 = "sha256-3IvwVnVEk4YlrS/6Aw+xdoqJME7aiK6qBlZe2TLshdk=";
+      sha256 = "sha256-5XHT3Z40PUPO0c6bghDX547E6uEhBLZ6uRhJObVQazo";
     };
     patches = prev.patches or [] ++ [../patches/pspg.patch];
   });
