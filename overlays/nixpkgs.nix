@@ -103,14 +103,14 @@ in {
         ]
         ++ old.patches or [];
 
-      version = "1.4.0";
+      version = "1.4.2";
     in {
       inherit version;
       src = prev.fetchFromGitHub {
         owner = "mamba-org";
         repo = "mamba";
         rev = "micromamba-" + version;
-        sha256 = "sha256-CnsECmquB3gt5N6lTjJ7A34DM6H4Neqb7URVgQzgnYk=";
+        sha256 = "sha256-MvzKdFUHzWfJpAPSn1/9SA2rUxtL+Rym+a3FI4f78iM=";
       };
       inherit patches;
 
