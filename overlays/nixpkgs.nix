@@ -92,15 +92,6 @@ in {
         cmakeFlags = oldAttrs.cmakeFlags ++ ["-DSPDLOG_FMT_EXTERNAL=OFF"];
         propagatedBuildInputs = [];
       });
-      patches =
-        [
-          # https://github.com/mamba-org/mamba/pull/2397
-          (prev.fetchpatch {
-            url = "https://github.com/mamba-org/mamba/commit/6cf90892bf73c7c479def3b2da4fe1d2077c1a72.patch";
-            sha256 = "sha256-fuUGf4NJ9pL+X7z8CxWYJxzwHTH/cgxINmaOYZ9bc+M=";
-          })
-        ]
-        ++ old.patches or [];
 
       version = "1.4.2";
     in {
@@ -111,7 +102,6 @@ in {
         rev = "micromamba-" + version;
         sha256 = "sha256-MvzKdFUHzWfJpAPSn1/9SA2rUxtL+Rym+a3FI4f78iM=";
       };
-      inherit patches;
 
       # removed termcolor since it was removed upstream
       buildInputs = with prev; [
