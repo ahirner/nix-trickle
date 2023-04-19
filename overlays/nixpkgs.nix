@@ -37,20 +37,19 @@ in {
 
   # v2
   cloud-sql-proxy_2 = let
-    version = "2.1.2";
+    version = "2.2.0";
     src = prev.fetchFromGitHub {
       owner = "GoogleCloudPlatform";
       repo = "cloudsql-proxy";
       rev = "v${version}";
-      sha256 = "sha256-2rWqJKtMcCq0d3G/V+/5zv2LRsDd8lfjjROfCQxqiq0=";
+      sha256 = "sha256-5QafXl75tBcLFxjUiwmv3q+7u1yD+F8Hx88EghmJ2Zw=";
     };
-    # https://github.com/NixOS/nixpkgs/issues/86349
   in
+    # https://github.com/NixOS/nixpkgs/issues/86349
     prev.buildGoModule {
       pname = "cloud-sql-proxy_2";
       inherit src version;
-      #subPackages = ["cmd/cloud_sql_proxy"];
-      vendorSha256 = "sha256-0s+Tb1w8/xTJiM1BOJ8F9eUOn/PC5jbQJEC26Sh5HOc=";
+      vendorSha256 = "sha256-gvvrkDEfLwdfrHLUb3MIacVJjgR4IaZwewoEmHQl92U=";
       preCheck = ''
         buildFlagsArray+="-short"
       '';
