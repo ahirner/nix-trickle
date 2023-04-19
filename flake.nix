@@ -29,6 +29,7 @@
       url = "github:kamadorueda/alejandra";
       inputs.fenix.follows = "fenix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flakeCompat.follows = "flake-compat";
     };
 
     # buildtools
