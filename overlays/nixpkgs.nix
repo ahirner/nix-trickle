@@ -37,20 +37,19 @@ in {
 
   # v2
   cloud-sql-proxy_2 = let
-    version = "2.1.2";
+    version = "2.2.0";
     src = prev.fetchFromGitHub {
       owner = "GoogleCloudPlatform";
       repo = "cloudsql-proxy";
       rev = "v${version}";
-      sha256 = "sha256-2rWqJKtMcCq0d3G/V+/5zv2LRsDd8lfjjROfCQxqiq0=";
+      sha256 = "sha256-5QafXl75tBcLFxjUiwmv3q+7u1yD+F8Hx88EghmJ2Zw=";
     };
-    # https://github.com/NixOS/nixpkgs/issues/86349
   in
+    # https://github.com/NixOS/nixpkgs/issues/86349
     prev.buildGoModule {
       pname = "cloud-sql-proxy_2";
       inherit src version;
-      #subPackages = ["cmd/cloud_sql_proxy"];
-      vendorSha256 = "sha256-0s+Tb1w8/xTJiM1BOJ8F9eUOn/PC5jbQJEC26Sh5HOc=";
+      vendorSha256 = "sha256-gvvrkDEfLwdfrHLUb3MIacVJjgR4IaZwewoEmHQl92U=";
       preCheck = ''
         buildFlagsArray+="-short"
       '';
@@ -93,26 +92,16 @@ in {
         cmakeFlags = oldAttrs.cmakeFlags ++ ["-DSPDLOG_FMT_EXTERNAL=OFF"];
         propagatedBuildInputs = [];
       });
-      patches =
-        [
-          # https://github.com/mamba-org/mamba/pull/2397
-          (prev.fetchpatch {
-            url = "https://github.com/mamba-org/mamba/commit/6cf90892bf73c7c479def3b2da4fe1d2077c1a72.patch";
-            sha256 = "sha256-fuUGf4NJ9pL+X7z8CxWYJxzwHTH/cgxINmaOYZ9bc+M=";
-          })
-        ]
-        ++ old.patches or [];
 
-      version = "1.4.0";
+      version = "1.4.2";
     in {
       inherit version;
       src = prev.fetchFromGitHub {
         owner = "mamba-org";
         repo = "mamba";
         rev = "micromamba-" + version;
-        sha256 = "sha256-CnsECmquB3gt5N6lTjJ7A34DM6H4Neqb7URVgQzgnYk=";
+        sha256 = "sha256-MvzKdFUHzWfJpAPSn1/9SA2rUxtL+Rym+a3FI4f78iM=";
       };
-      inherit patches;
 
       # removed termcolor since it was removed upstream
       buildInputs = with prev; [
@@ -139,14 +128,14 @@ in {
     pkgs.buildPythonPackage
     rec {
       pname = "ruff-lsp";
-      version = "0.0.23";
+      version = "0.0.24";
       format = "pyproject";
       disabled = pkgs.pythonOlder "3.7";
 
       src = pkgs.fetchPypi {
         inherit version;
         pname = "ruff_lsp";
-        sha256 = "sha256-T+hsEXwW+4KEcaAKttpLIZvFt9k7eLMFPiY2FOQV4L8=";
+        sha256 = "sha256-1he/GYk8O9LqPXH3mu7eGWuRygiDG1OnJ+JNT2Pynzo=";
       };
 
       nativeBuildInputs = [
