@@ -72,10 +72,11 @@
     # packages
     garage = {
       # tarball errors with missing self.lastModifiedDate
-      url = "git+https://git.deuxfleurs.fr/Deuxfleurs/garage.git?tag=v0.8.1";
+      url = "git+https://git.deuxfleurs.fr/Deuxfleurs/garage.git?rev=1ecd88c01f0857139921214a264128e5639e31db";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
       inputs.cargo2nix.follows = "cargo2nix";
+      inputs.flake-compat.follows = "flake-compat";
     };
   };
 
