@@ -3,7 +3,7 @@
 
   inputs = {
     # "recent" nixos-unstable
-    nixpkgs.url = "github:NixOS/nixpkgs/0e19daa510e47a40e06257e205965f3b96ce0ac9";
+    nixpkgs.url = "github:NixOS/nixpkgs/0d8145a5d81ebf6698077b21042380a3a66a11c7";
 
     # utils
     utils = {
@@ -87,14 +87,6 @@
   }: let
     overlays = [
       inputs.rust-overlay.overlays.default
-      (final: prev: {
-        ruff = prev.ruff.overrideAttrs (old: {
-          # cache.nixos.org produces invalid darwin binaries?
-          # /nix/store/vrxifpk5bhdgrq28qn9yna63c4w62v08-ruff-0.0.259/bin/ruff
-          # Illiegal instruction: 4
-          doCheck = true;
-        });
-      })
       (import ./overlays)
       # go directly with flake input
       (_: prev: {garage = inputs.garage.packages.${prev.pkgs.system}.default;})

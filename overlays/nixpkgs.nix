@@ -128,14 +128,14 @@ in {
     pkgs.buildPythonPackage
     rec {
       pname = "ruff-lsp";
-      version = "0.0.24";
+      version = "0.0.25";
       format = "pyproject";
       disabled = pkgs.pythonOlder "3.7";
 
       src = pkgs.fetchPypi {
         inherit version;
         pname = "ruff_lsp";
-        sha256 = "sha256-1he/GYk8O9LqPXH3mu7eGWuRygiDG1OnJ+JNT2Pynzo=";
+        sha256 = "sha256-q5ogJbhjDeqdzh2e5LmJ7Wgtw7VXEWRodS629IRYm6Q=";
       };
 
       nativeBuildInputs = [
