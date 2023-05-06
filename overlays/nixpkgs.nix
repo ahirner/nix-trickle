@@ -120,7 +120,21 @@ in {
         fmt_9
       ];
     });
-
+  # until: https://github.com/tamasfe/taplo/pull/354
+  taplo = prev.taplo.overrideAttrs (old: let
+    patch = prev.fetchpatch {
+      url = "https://github.com/tamasfe/taplo/commit/f8389bfbb5e3200c52c9d5cf63d7c6fd70ba66b1.patch";
+      sha256 = "sha256-Y/VszK4ZJVYyjW6Kl+9tfl5nf9XjXudd+D8s8sVZXks=";
+    };
+    vendorPath = "../${prev.taplo.pname}-${old.version}-vendor.tar.gz/";
+    listenCSBefore = "4c1e97de6f992c27f7eb1525228a33ffb1a41789fd5b33234cbba554453f3e64";
+    listenCSAfter = "47411be3fb1a5eb6f03ffc8807a2a16f1f1e3df54facd05f1d038beb6bf11a20";
+  in {
+    patches = prev.patches or [] ++ [patch];
+    patchFlags = ["-p2" "-d" vendorPath];
+    # brutally update checksum of patched listen.rs
+    postPatch = "sed -i 's/${listenCSBefore}/${listenCSAfter}/g' ${vendorPath}/lsp-async-stub/.cargo-checksum.json";
+  });
   # ruff-lsp from: https://github.com/kalekseev/dotfiles/blob/f79db5e662915143c617934e9097b1c8956aa7c7/nixpkgs/overlays/my-packages.nix#L38
   ruff-lsp = let
     pkgs = prev.python3.pkgs;
