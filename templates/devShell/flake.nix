@@ -5,7 +5,6 @@
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
       inputs.rust-overlay.follows = "nix-trickle/rust-overlay";
-      inputs.nci.follows = "nix-trickle/nci";
     };
   };
   outputs = {
