@@ -3,7 +3,7 @@
 
   inputs = {
     # "recent" nixos-unstable
-    nixpkgs.url = "github:NixOS/nixpkgs/0d8145a5d81ebf6698077b21042380a3a66a11c7";
+    nixpkgs.url = "github:NixOS/nixpkgs/9e516dfc90f4d887cff8b80b5976016752d1a6a7";
 
     # utils
     utils = {
@@ -27,7 +27,6 @@
     # tools
     alejandra = {
       url = "github:kamadorueda/alejandra";
-      inputs.fenix.follows = "fenix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flakeCompat.follows = "flake-compat";
     };
@@ -38,44 +37,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     dream2nix = {
       url = "github:nix-community/dream2nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils-pre-commit.follows = "flake-utils";
       inputs.flake-parts.follows = "parts";
       inputs.drv-parts.follows = "drv-parts";
-      inputs.flake-compat.follows = "flake-compat";
-    };
-    nci = {
-      # newer commits break with missing .lib
-      url = "github:yusdacra/nix-cargo-integration";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
-      inputs.dream2nix.follows = "dream2nix";
-      inputs.parts.follows = "parts";
-    };
-    cargo2nix = {
-      # some fixes "only" for garage...
-      # https://git.deuxfleurs.fr/Deuxfleurs/garage/src/branch/main/flake.nix
-      url = "github:Alexis211/cargo2nix/a7a61179b66054904ef6a195d8da736eaaa06c36";
-      #url = "github:cargo2nix/cargo2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.rust-overlay.follows = "rust-overlay";
-      inputs.flake-compat.follows = "flake-compat";
-    };
-
-    # packages
-    garage = {
-      # tarball errors with missing self.lastModifiedDate
-      url = "git+https://git.deuxfleurs.fr/Deuxfleurs/garage.git?rev=1ecd88c01f0857139921214a264128e5639e31db";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.cargo2nix.follows = "cargo2nix";
       inputs.flake-compat.follows = "flake-compat";
     };
   };
@@ -88,8 +55,6 @@
     overlays = [
       inputs.rust-overlay.overlays.default
       (import ./overlays)
-      # go directly with flake input
-      (_: prev: {garage = inputs.garage.packages.${prev.pkgs.system}.default;})
     ];
 
     /*

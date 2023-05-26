@@ -2,9 +2,7 @@
   "nodes": {
     "alejandra": {
       "inputs": {
-        "fenix": [
-          "fenix"
-        ],
+        "fenix": "fenix",
         "flakeCompat": [
           "flake-compat"
         ],
@@ -40,36 +38,6 @@
         "owner": "nix-community",
         "ref": "hackage",
         "repo": "all-cabal-json",
-        "type": "github"
-      }
-    },
-    "cargo2nix": {
-      "inputs": {
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": [
-          "rust-overlay"
-        ]
-      },
-      "locked": {
-        "lastModified": 1666087781,
-        "narHash": "sha256-trKVdjMZ8mNkGfLcY5LsJJGtdV3xJDZnMVrkFjErlcs=",
-        "owner": "Alexis211",
-        "repo": "cargo2nix",
-        "rev": "a7a61179b66054904ef6a195d8da736eaaa06c36",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Alexis211",
-        "repo": "cargo2nix",
-        "rev": "a7a61179b66054904ef6a195d8da736eaaa06c36",
         "type": "github"
       }
     },
@@ -178,6 +146,7 @@
     "fenix": {
       "inputs": {
         "nixpkgs": [
+          "alejandra",
           "nixpkgs"
         ],
         "rust-analyzer-src": "rust-analyzer-src"
@@ -230,36 +199,6 @@
         "type": "github"
       }
     },
-    "garage": {
-      "inputs": {
-        "cargo2nix": [
-          "cargo2nix"
-        ],
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1682434609,
-        "narHash": "sha256-ALYnYC9RiOuSxNYT8g88F6dEV83mhBk3ZB+BBmRkg/M=",
-        "ref": "refs/heads/main",
-        "rev": "1ecd88c01f0857139921214a264128e5639e31db",
-        "revCount": 1216,
-        "type": "git",
-        "url": "https://git.deuxfleurs.fr/Deuxfleurs/garage.git"
-      },
-      "original": {
-        "rev": "1ecd88c01f0857139921214a264128e5639e31db",
-        "type": "git",
-        "url": "https://git.deuxfleurs.fr/Deuxfleurs/garage.git"
-      }
-    },
     "ghc-utils": {
       "flake": false,
       "locked": {
@@ -307,52 +246,6 @@
         "type": "indirect"
       }
     },
-    "mk-naked-shell": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1681286841,
-        "narHash": "sha256-3XlJrwlR0nBiREnuogoa5i1b4+w/XPe0z8bbrJASw0g=",
-        "owner": "yusdacra",
-        "repo": "mk-naked-shell",
-        "rev": "7612f828dd6f22b7fb332cc69440e839d7ffe6bd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yusdacra",
-        "repo": "mk-naked-shell",
-        "type": "github"
-      }
-    },
-    "nci": {
-      "inputs": {
-        "dream2nix": [
-          "dream2nix"
-        ],
-        "mk-naked-shell": "mk-naked-shell",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "parts": [
-          "parts"
-        ],
-        "rust-overlay": [
-          "rust-overlay"
-        ]
-      },
-      "locked": {
-        "lastModified": 1684995060,
-        "narHash": "sha256-EP9mObXGqp+USacwgghx8zVjOmDiAjBxuqq4AlQ1pdc=",
-        "owner": "yusdacra",
-        "repo": "nix-cargo-integration",
-        "rev": "84f5a82c2eddc360c627a28fde52baeb9c75ac3b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yusdacra",
-        "repo": "nix-cargo-integration",
-        "type": "github"
-      }
-    },
     "nix-pypi-fetcher": {
       "flake": false,
       "locked": {
@@ -371,17 +264,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1683194677,
-        "narHash": "sha256-Am7aCGNy/h6RMnvg7Pn4PHQXZZq9FyIUA9klYxBwyDI=",
+        "lastModified": 1684878897,
+        "narHash": "sha256-C+xNaj62dOOxcZ8Z1+VVXuAIqmS023WcLW6d3hpo9/o=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0d8145a5d81ebf6698077b21042380a3a66a11c7",
+        "rev": "9e516dfc90f4d887cff8b80b5976016752d1a6a7",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0d8145a5d81ebf6698077b21042380a3a66a11c7",
+        "rev": "9e516dfc90f4d887cff8b80b5976016752d1a6a7",
         "type": "github"
       }
     },
@@ -482,14 +375,10 @@
     "root": {
       "inputs": {
         "alejandra": "alejandra",
-        "cargo2nix": "cargo2nix",
         "dream2nix": "dream2nix",
         "drv-parts": "drv-parts",
-        "fenix": "fenix",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
-        "garage": "garage",
-        "nci": "nci",
         "nixpkgs": "nixpkgs",
         "parts": "parts",
         "rust-overlay": "rust-overlay",

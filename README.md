@@ -56,7 +56,6 @@ Example devShell following `nix-trickle`: ❄️
 ### `overlays` ❄️
 
 - nixpkgs/[micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html): newer version
-- nixpkgs/[garage](https://garagehq.deuxfleurs.fr): newer version
 - nixpkgs/[ruff-lsp](https://github.com/charliermarsh/ruff-lsp): added
 - nixpkgs/[taplo](https://taplo.tamasfe.dev): fixed [LSP shutdown request](https://github.com/tamasfe/taplo/pull/354)
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
