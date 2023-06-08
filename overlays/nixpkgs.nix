@@ -177,12 +177,12 @@ in {
 
   # recent and updating querystream from file
   pspg = prev.pspg.overrideAttrs (old: {
-    version = "5.7.5-rc";
+    version = "5.7.6-rc";
     src = prev.fetchFromGitHub {
       owner = "okbob";
       repo = old.pname;
-      rev = "f7550a34fde06e65a9d1ed6b6c4cd20f0a2853cb";
-      sha256 = "sha256-5XHT3Z40PUPO0c6bghDX547E6uEhBLZ6uRhJObVQazo";
+      rev = "9042608a0bababb1cd45a115ea23150041a837ff";
+      sha256 = "sha256-A+O1ZbgkaJGWrBj8cSp/0UcilnGzfu0eW+4zgTCwaME=";
     };
     patches = prev.patches or [] ++ [../patches/pspg.patch];
   });
