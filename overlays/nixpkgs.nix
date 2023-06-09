@@ -92,14 +92,14 @@ in {
         propagatedBuildInputs = [];
       });
 
-      version = "1.4.2";
+      version = "1.4.4";
     in {
       inherit version;
       src = prev.fetchFromGitHub {
         owner = "mamba-org";
         repo = "mamba";
         rev = "micromamba-" + version;
-        sha256 = "sha256-MvzKdFUHzWfJpAPSn1/9SA2rUxtL+Rym+a3FI4f78iM=";
+        sha256 = "sha256-Z6hED0fiXzEKpVm8tUBR9ynqWCvHGXkXHzAXbbWlq9Y=";
       };
 
       # removed termcolor since it was removed upstream
