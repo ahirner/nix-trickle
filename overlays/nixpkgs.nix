@@ -34,29 +34,28 @@ in {
     buildInputs = [pythonEnv];
     installPhase = installPhase';
   });
-
   # v2
   cloud-sql-proxy_2 = let
-    version = "2.2.0";
+    version = "2.3.0";
     src = prev.fetchFromGitHub {
       owner = "GoogleCloudPlatform";
       repo = "cloudsql-proxy";
       rev = "v${version}";
-      sha256 = "sha256-5QafXl75tBcLFxjUiwmv3q+7u1yD+F8Hx88EghmJ2Zw=";
+      sha256 = "sha256-NT3PXUvOkcKS4FgKVb7kdI7Ic7w9D3rZiEM7dkQCojw=";
     };
   in
     # https://github.com/NixOS/nixpkgs/issues/86349
     prev.buildGoModule {
       pname = "cloud-sql-proxy_2";
       inherit src version;
-      vendorSha256 = "sha256-gvvrkDEfLwdfrHLUb3MIacVJjgR4IaZwewoEmHQl92U=";
+      vendorSha256 = "sha256-o4EWCMd36iw69KifTK07LXj8HGK9wgidB6ZdaKxyLpw=";
       preCheck = ''
         buildFlagsArray+="-short"
       '';
       # requests fixed free ports like 5000
       # maybe related: https://github.com/GoogleCloudPlatform/cloud-sql-proxy/issues/1729
       doCheck = false;
-      meta = prev.cloud-sql-proxy.meta;
+      meta = prev.cloud-sql-proxy.meta // {mainProgram = "cloud-sql-proxy";};
     };
   # recent micromamba
   micromamba = prev.micromamba.overrideAttrs (old:
