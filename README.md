@@ -57,7 +57,7 @@ Example devShell following `nix-trickle`: ❄️
 
 - nixpkgs/[micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html): newer version
 - nixpkgs/[ruff-lsp](https://github.com/charliermarsh/ruff-lsp): added
-- nixpkgs/[taplo](https://taplo.tamasfe.dev): fixed [LSP shutdown request](https://github.com/tamasfe/taplo/pull/354)
+- nixpkgs/[taplo](https://taplo.tamasfe.dev): newer
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
 - nixpkgs/[cloud-sql-proxy_2](https://github.com/GoogleCloudPlatform/cloudsql-proxy): v2 of cloud-sql-proxy
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
