@@ -56,7 +56,6 @@ Example devShell following `nix-trickle`: ❄️
 ### `overlays` ❄️
 
 - nixpkgs/[micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html): newer version
-- nixpkgs/[ruff-lsp](https://github.com/charliermarsh/ruff-lsp): added
 - nixpkgs/[taplo](https://taplo.tamasfe.dev): newer
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
 - nixpkgs/[cloud-sql-proxy_2](https://github.com/GoogleCloudPlatform/cloudsql-proxy): v2 of cloud-sql-proxy
