@@ -134,46 +134,6 @@ in {
       outputHash = "sha256-3SgBp6Inj+ZT+yO4fhJZ8tqNog+e7/MRHWQ3WP0Ok/w=";
     });
   });
-  # ruff-lsp from: https://github.com/kalekseev/dotfiles/blob/f79db5e662915143c617934e9097b1c8956aa7c7/nixpkgs/overlays/my-packages.nix#L38
-  ruff-lsp = let
-    pkgs = prev.python3.pkgs;
-  in
-    pkgs.buildPythonPackage
-    rec {
-      pname = "ruff-lsp";
-      version = "0.0.25";
-      format = "pyproject";
-      disabled = pkgs.pythonOlder "3.7";
-
-      src = pkgs.fetchPypi {
-        inherit version;
-        pname = "ruff_lsp";
-        sha256 = "sha256-q5ogJbhjDeqdzh2e5LmJ7Wgtw7VXEWRodS629IRYm6Q=";
-      };
-
-      nativeBuildInputs = [
-        pkgs.hatchling
-        pkgs.pythonRelaxDepsHook
-      ];
-
-      pythonRemoveDeps = ["ruff" "lsprotocol"];
-      propagatedBuildInputs = [
-        pkgs.pygls
-        pkgs.typing-extensions
-      ];
-
-      postPatch = ''
-        sed -i 's|GLOBAL_SETTINGS: dict\[str, str\] = {}|GLOBAL_SETTINGS: dict[str, str] = {"path": ["${prev.ruff}/bin/ruff"]}|' ruff_lsp/server.py
-      '';
-
-      meta = with prev.lib; {
-        homepage = "https://github.com/charliermarsh/ruff-lsp";
-        description = "A Language Server Protocol implementation for Ruff";
-        license = licenses.mit;
-        maintainers = with maintainers; [kalekseev];
-      };
-    };
-
   # recent and updating querystream from file
   pspg = prev.pspg.overrideAttrs (old: {
     version = "5.7.6-rc";
