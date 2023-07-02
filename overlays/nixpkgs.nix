@@ -57,68 +57,6 @@ in {
       doCheck = false;
       meta = prev.cloud-sql-proxy.meta // {mainProgram = "cloud-sql-proxy";};
     };
-  # recent micromamba
-  micromamba = prev.micromamba.overrideAttrs (old:
-    # inspired by: https://github.com/NixOS/nixpkgs/commit/aff821e3a5a605f930e089630f4cbaf8067e6b54
-    let
-      libsolv' = prev.libsolv.overrideAttrs (oldAttrs: {
-        cmakeFlags =
-          oldAttrs.cmakeFlags
-          ++ [
-            "-DENABLE_CONDA=true"
-          ];
-
-        patches = [
-          # Apply the same patch as in the "official" boa-forge build:
-          # https://github.com/mamba-org/boa-forge/tree/master/libsolv
-          (prev.fetchpatch {
-            url = "https://raw.githubusercontent.com/mamba-org/boa-forge/20530f80e2e15012078d058803b6e2c75ed54224/libsolv/conda_variant_priorization.patch";
-            sha256 = "1iic0yx7h8s662hi2jqx68w5kpyrab4fr017vxd4wyxb6wyk35dd";
-          })
-        ];
-      });
-
-      spdlog' = prev.spdlog.overrideAttrs (oldAttrs: {
-        # Use as header-only library.
-        #
-        # Spdlog 1.11 requires fmt version 8 while micromamba requires
-        # version 9. spdlog may use its bundled version of fmt,
-        # though. Micromamba is not calling spdlog functions with
-        # fmt-types in their signature. I.e. we get away with removing
-        # fmt_8 from spdlog's propagated dependencies and using fmt_9 for
-        # micromamba itself.
-        dontBuild = true;
-        cmakeFlags = oldAttrs.cmakeFlags ++ ["-DSPDLOG_FMT_EXTERNAL=OFF"];
-        propagatedBuildInputs = [];
-      });
-
-      version = "1.4.4";
-    in {
-      inherit version;
-      src = prev.fetchFromGitHub {
-        owner = "mamba-org";
-        repo = "mamba";
-        rev = "micromamba-" + version;
-        sha256 = "sha256-Z6hED0fiXzEKpVm8tUBR9ynqWCvHGXkXHzAXbbWlq9Y=";
-      };
-
-      # removed termcolor since it was removed upstream
-      buildInputs = with prev; [
-        bzip2
-        cli11
-        nlohmann_json
-        curl
-        libarchive
-        yaml-cpp
-        libsolv'
-        reproc
-        spdlog'
-        ghc_filesystem
-        python3
-        tl-expected
-        fmt_9
-      ];
-    });
   # until: https://github.com/tamasfe/taplo/pull/354
   taplo = prev.taplo.overrideAttrs (old: rec {
     version = "0.8.1-rc";
