@@ -16,7 +16,8 @@ in {
   in
     prev.rustPlatform.buildRustPackage rec
     {
-      inherit (old) meta pname nativeBuildInputs buildInputs;
+      inherit (old) meta pname buildInputs;
+      nativeBuildInputs = old.nativeBuildInputs or [] ++ [prev.cacert];
       version = "0.3.2";
       src = prev.fetchCrate {
         inherit version;
