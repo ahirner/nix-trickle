@@ -11,6 +11,20 @@ final: prev: let
       then x
       else sub) (builtins.split reg str));
 in {
+  dioxus-cli = let
+    old = prev.dioxus-cli;
+  in
+    prev.rustPlatform.buildRustPackage rec
+    {
+      inherit (old) meta pname nativeBuildInputs buildInputs;
+      version = "0.3.2";
+      src = prev.fetchCrate {
+        inherit version;
+        inherit (old) pname;
+        sha256 = "sha256-8S8zUOb2oiXbJQRgY/g9H2+EW+wWOQugr8+ou34CYPg=";
+      };
+      cargoSha256 = "sha256-sCP8njwYA29XmYu2vfuog0NCL1tZlsZiupkDVImrYCE=";
+    };
   # gsutil doesn't work with openssl but pyopenssl
   google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old: let
     # one cannot understand why python in old default.nix was magically python3...
