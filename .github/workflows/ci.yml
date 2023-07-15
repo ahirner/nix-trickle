@@ -48,8 +48,8 @@ jobs:
     - run: nix-shell --quiet -p nix-info --run "nix-info -m"
     - run: ./templates.sh clone pure-system devShell
     - run: ./templates.sh check pure-system devShell
-    - run: ./templates.sh check-pkg-overlayed pure-system google-cloud-sdk
-    - run: ./templates.sh check-pkg-default pure-system google-cloud-sdk
+    - run: ./templates.sh check-pkg-overlayed pure-system google-cloud-sdk dioxus-cli
+    - run: ./templates.sh check-pkg-default pure-system google-cloud-sdk dioxus-cli
 
   lints:
     runs-on: ubuntu-latest

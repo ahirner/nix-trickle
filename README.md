@@ -55,6 +55,7 @@ Example devShell following `nix-trickle`: ❄️
 
 ### `overlays` ❄️
 
+- nixpkgs/[dioxus-cli](https://dioxuslabs.com): newer `dioxus-cli`
 - nixpkgs/[taplo](https://taplo.tamasfe.dev): [fixes lsp exit](https://github.com/tamasfe/taplo/pull/354) 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
 - nixpkgs/[cloud-sql-proxy_2](https://github.com/GoogleCloudPlatform/cloudsql-proxy): v2 of cloud-sql-proxy
