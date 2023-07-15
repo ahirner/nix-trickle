@@ -25,6 +25,11 @@ in {
         sha256 = "sha256-8S8zUOb2oiXbJQRgY/g9H2+EW+wWOQugr8+ou34CYPg=";
       };
       cargoSha256 = "sha256-sCP8njwYA29XmYu2vfuog0NCL1tZlsZiupkDVImrYCE=";
+      checkFlags = [
+        # would require dioxous binary in PATH, see: https://github.com/DioxusLabs/dioxus/pull/1138
+        "--skip=cli::autoformat::spawn_properly"
+        "--skip=cli::translate::generates_svgs"
+      ];
     };
   # gsutil doesn't work with openssl but pyopenssl
   google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old: let
