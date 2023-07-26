@@ -12,8 +12,8 @@ nix develop -c repl .
 nix-repl> outputs.pkgs.<TAB>
 outputs.pkgs.aarch64-linux  outputs.pkgs.x86_64-linux
 outputs.pkgs.x86_64-darwin
-nix-repl> pkgs.taplo.version
-"0.8.1-rc"
+nix-repl> pkgs.cloud-sql-proxy_2.version
+"2.3.0"
 ```
 
 Example devShell following `nix-trickle`: ❄️
@@ -56,7 +56,6 @@ Example devShell following `nix-trickle`: ❄️
 ### `overlays` ❄️
 
 - nixpkgs/[dioxus-cli](https://dioxuslabs.com): newer `dioxus-cli`
-- nixpkgs/[taplo](https://taplo.tamasfe.dev): [fixes lsp exit](https://github.com/tamasfe/taplo/pull/354) 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
 - nixpkgs/[cloud-sql-proxy_2](https://github.com/GoogleCloudPlatform/cloudsql-proxy): v2 of cloud-sql-proxy
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)

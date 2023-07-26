@@ -3,9 +3,9 @@
 
   inputs = {
     # hydra: https://status.nixos.org
-    # nixos-unstable 2023-07-01
+    # nixos-unstable 2023-07-17
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/645ff62e09d294a30de823cb568e9c6d68e92606";
+    nixpkgs.url = "github:NixOS/nixpkgs/b12803b6d90e2e583429bb79b859ca53c348b39a";
 
     # utils
     utils = {

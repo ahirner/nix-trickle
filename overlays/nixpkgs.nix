@@ -77,20 +77,6 @@ in {
       doCheck = false;
       meta = prev.cloud-sql-proxy.meta // {mainProgram = "cloud-sql-proxy";};
     };
-  # until: https://github.com/tamasfe/taplo/pull/354
-  taplo = prev.taplo.overrideAttrs (old: rec {
-    version = "0.8.1-rc";
-    src = prev.fetchFromGitHub {
-      owner = "tamasfe";
-      repo = old.pname;
-      rev = "f1eae005910219b4b459d87c57726314cedeb9c6";
-      hash = "sha256-xwST/1X4yxJ+qCgkaGpY6zr8XKY93cgiggrFcujBPvg=";
-    };
-    cargoDeps = old.cargoDeps.overrideAttrs (prev.lib.const {
-      inherit src;
-      outputHash = "sha256-3SgBp6Inj+ZT+yO4fhJZ8tqNog+e7/MRHWQ3WP0Ok/w=";
-    });
-  });
   # recent and updating querystream from file
   pspg = prev.pspg.overrideAttrs (old: {
     version = "5.7.6-rc";
