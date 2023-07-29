@@ -39,10 +39,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.flake-compat.follows = "flake-compat";
+    };
     dream2nix = {
       url = "github:nix-community/dream2nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils-pre-commit.follows = "flake-utils";
+      inputs.pre-commit-hooks.follows = "pre-commit-hooks";
       inputs.flake-parts.follows = "parts";
       inputs.drv-parts.follows = "drv-parts";
       inputs.flake-compat.follows = "flake-compat";

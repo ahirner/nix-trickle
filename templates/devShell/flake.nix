@@ -3,6 +3,7 @@
     nix-trickle.url = "github:ahirner/nix-trickle";
     helix = {
       url = "github:helix-editor/helix";
+      inputs.flake-utils.follows = "nix-trickle/flake-utils";
       inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
       inputs.rust-overlay.follows = "nix-trickle/rust-overlay";
     };

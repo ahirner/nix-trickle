@@ -15,7 +15,7 @@ clone() {
 check() {
   (cd $1
   nix flake update --override-input nix-trickle ../..
-  nix flake check -L --keep-going
+  nix flake check -L --keep-going --show-trace
   nix flake show)
 }
 
