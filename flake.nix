@@ -3,9 +3,9 @@
 
   inputs = {
     # hydra: https://status.nixos.org
-    # nixos-unstable 2023-07-17
+    # nixos-unstable 2023-08-01
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/b12803b6d90e2e583429bb79b859ca53c348b39a";
+    nixpkgs.url = "github:NixOS/nixpkgs/aa8aa7e2ea35ce655297e8322dc82bf77a31d04b";
 
     # utils
     utils = {
@@ -18,12 +18,6 @@
     parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
-    drv-parts = {
-      url = "github:davhau/drv-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-parts.follows = "parts";
     };
 
     # tools
@@ -50,7 +44,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.pre-commit-hooks.follows = "pre-commit-hooks";
       inputs.flake-parts.follows = "parts";
-      inputs.drv-parts.follows = "drv-parts";
       inputs.flake-compat.follows = "flake-compat";
     };
   };
