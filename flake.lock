@@ -71,32 +71,6 @@
         "type": "github"
       }
     },
-    "drv-parts": {
-      "inputs": {
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-parts": [
-          "parts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1690881582,
-        "narHash": "sha256-DKJucaTOmnsJV3ZC68yzpyMb+OHWCDT9Z2fB2GPErck=",
-        "owner": "davhau",
-        "repo": "drv-parts",
-        "rev": "77bbde0616b445e06c8ad4621643983250e0e4f1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "davhau",
-        "repo": "drv-parts",
-        "type": "github"
-      }
-    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -307,7 +281,6 @@
       "inputs": {
         "alejandra": "alejandra",
         "dream2nix": "dream2nix",
-        "drv-parts": "drv-parts",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",

@@ -19,12 +19,6 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    drv-parts = {
-      url = "github:davhau/drv-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-parts.follows = "parts";
-    };
 
     # tools
     alejandra = {
@@ -50,7 +44,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.pre-commit-hooks.follows = "pre-commit-hooks";
       inputs.flake-parts.follows = "parts";
-      inputs.drv-parts.follows = "drv-parts";
       inputs.flake-compat.follows = "flake-compat";
     };
   };
