@@ -16,20 +16,17 @@ in {
   in
     prev.rustPlatform.buildRustPackage rec
     {
-      inherit (old) meta pname buildInputs;
-      nativeBuildInputs = old.nativeBuildInputs or [] ++ [prev.cacert];
-      version = "0.3.2";
+      inherit (old) pname buildInputs nativeBuildInputs checkFlags OPENSSL_NO_VENDOR doInstallCheck meta;
+      version = "0.4.1";
       src = prev.fetchCrate {
         inherit version;
         inherit (old) pname;
-        sha256 = "sha256-8S8zUOb2oiXbJQRgY/g9H2+EW+wWOQugr8+ou34CYPg=";
+        sha256 = "sha256-h2l6SHty06nLNbdlnSzH7I4XY53yyxNbx663cHYmPG0=";
       };
-      cargoSha256 = "sha256-sCP8njwYA29XmYu2vfuog0NCL1tZlsZiupkDVImrYCE=";
-      checkFlags = [
-        # would require dioxous binary in PATH, see: https://github.com/DioxusLabs/dioxus/pull/1138
-        "--skip=cli::autoformat::spawn_properly"
-        "--skip=cli::translate::generates_svgs"
-      ];
+      cargoHash = "sha256-3pFkEC1GAJmTqXAymX4WRIq7EEtY17u1TCg+OhqL3bA=";
+      installCheckPhase = ''
+        $out/bin/dx --version | grep "dioxus ${version}"
+      '';
     };
   # gsutil doesn't work with openssl but pyopenssl
   google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old: let
