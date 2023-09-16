@@ -2,10 +2,10 @@
   description = "Flake aggregation for the post-modern developer (tm)";
 
   inputs = {
+    # Merge #253854: staging-next 2023-09-07
     # hydra: https://status.nixos.org
-    # nixos-unstable 2023-08-01
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/aa8aa7e2ea35ce655297e8322dc82bf77a31d04b";
+    nixpkgs.url = "github:NixOS/nixpkgs/f2ea252d23ebc9a5336bf6a61e0644921f64e67c";
 
     # utils
     utils = {
