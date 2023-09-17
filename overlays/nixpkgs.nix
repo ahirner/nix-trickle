@@ -16,7 +16,7 @@ in {
   in
     prev.rustPlatform.buildRustPackage rec
     {
-      inherit (old) pname buildInputs nativeBuildInputs checkFlags OPENSSL_NO_VENDOR doInstallCheck meta;
+      inherit (old) pname buildInputs nativeBuildInputs checkFlags OPENSSL_NO_VENDOR meta;
       version = "0.4.1";
       src = prev.fetchCrate {
         inherit version;
@@ -24,9 +24,11 @@ in {
         sha256 = "sha256-h2l6SHty06nLNbdlnSzH7I4XY53yyxNbx663cHYmPG0=";
       };
       cargoHash = "sha256-3pFkEC1GAJmTqXAymX4WRIq7EEtY17u1TCg+OhqL3bA=";
-      installCheckPhase = ''
-        $out/bin/dx --version | grep "dioxus ${version}"
-      '';
+      passthru.tests.version = prev.testers.testVersion {
+        package = final.dioxus-cli;
+        command = "${meta.mainProgram} --version";
+        inherit version;
+      };
     };
   # gsutil doesn't work with openssl but pyopenssl
   google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old: let
