@@ -46,6 +46,7 @@ in {
           rev = "micromamba-" + version;
           hash = "sha256-cKCK7lBlqRSfNSDPeGCP2yzoFvbtVmdFMATIkkDEwg4=";
         };
+        meta = old.meta // {mainProgram = old.pname;};
       }
   );
   # recent and updating querystream from file
@@ -58,5 +59,6 @@ in {
       hash = "sha256-apcvYonFl8+vJ7CPBs8f1UA+bD63TchA5++Td+RNQHY=";
     };
     patches = prev.patches or [] ++ [../patches/pspg.patch];
+    meta = old.meta // {mainProgram = old.pname;};
   });
 }
