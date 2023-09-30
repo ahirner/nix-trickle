@@ -11,25 +11,6 @@ final: prev: let
       then x
       else sub) (builtins.split reg str));
 in {
-  dioxus-cli = let
-    old = prev.dioxus-cli;
-  in
-    prev.rustPlatform.buildRustPackage rec
-    {
-      inherit (old) pname buildInputs nativeBuildInputs checkFlags OPENSSL_NO_VENDOR meta;
-      version = "0.4.1";
-      src = prev.fetchCrate {
-        inherit version;
-        inherit (old) pname;
-        sha256 = "sha256-h2l6SHty06nLNbdlnSzH7I4XY53yyxNbx663cHYmPG0=";
-      };
-      cargoHash = "sha256-3pFkEC1GAJmTqXAymX4WRIq7EEtY17u1TCg+OhqL3bA=";
-      passthru.tests.version = prev.testers.testVersion {
-        package = final.dioxus-cli;
-        command = "${meta.mainProgram} --version";
-        inherit version;
-      };
-    };
   # gsutil doesn't work with openssl but pyopenssl
   google-cloud-sdk = prev.google-cloud-sdk.overrideAttrs (old: let
     # one cannot understand why python in old default.nix was magically python3...
@@ -53,38 +34,31 @@ in {
     buildInputs = [pythonEnv];
     installPhase = installPhase';
   });
-  # v2
-  cloud-sql-proxy_2 = let
-    version = "2.3.0";
-    src = prev.fetchFromGitHub {
-      owner = "GoogleCloudPlatform";
-      repo = "cloudsql-proxy";
-      rev = "v${version}";
-      sha256 = "sha256-NT3PXUvOkcKS4FgKVb7kdI7Ic7w9D3rZiEM7dkQCojw=";
-    };
-  in
-    # https://github.com/NixOS/nixpkgs/issues/86349
-    prev.buildGoModule {
-      pname = "cloud-sql-proxy_2";
-      inherit src version;
-      vendorSha256 = "sha256-o4EWCMd36iw69KifTK07LXj8HGK9wgidB6ZdaKxyLpw=";
-      preCheck = ''
-        buildFlagsArray+="-short"
-      '';
-      # requests fixed free ports like 5000
-      # maybe related: https://github.com/GoogleCloudPlatform/cloud-sql-proxy/issues/1729
-      doCheck = false;
-      meta = prev.cloud-sql-proxy.meta // {mainProgram = "cloud-sql-proxy";};
-    };
+  micromamba = prev.micromamba.overrideAttrs (
+    let
+      version = "1.5.1";
+    in
+      old: {
+        inherit version;
+        src = prev.fetchFromGitHub {
+          owner = "mamba-org";
+          repo = "mamba";
+          rev = "micromamba-" + version;
+          hash = "sha256-cKCK7lBlqRSfNSDPeGCP2yzoFvbtVmdFMATIkkDEwg4=";
+        };
+        meta = old.meta // {mainProgram = old.pname;};
+      }
+  );
   # recent and updating querystream from file
   pspg = prev.pspg.overrideAttrs (old: {
-    version = "5.7.6-rc";
+    version = "5.8.0-patched";
     src = prev.fetchFromGitHub {
       owner = "okbob";
       repo = old.pname;
-      rev = "9042608a0bababb1cd45a115ea23150041a837ff";
-      sha256 = "sha256-A+O1ZbgkaJGWrBj8cSp/0UcilnGzfu0eW+4zgTCwaME=";
+      rev = "1e0028d9d0c17b0956f844205211cf6d9a92b456";
+      hash = "sha256-apcvYonFl8+vJ7CPBs8f1UA+bD63TchA5++Td+RNQHY=";
     };
     patches = prev.patches or [] ++ [../patches/pspg.patch];
+    meta = old.meta // {mainProgram = old.pname;};
   });
 }
