@@ -13,7 +13,7 @@ nix-repl> outputs.pkgs.<TAB>
 outputs.pkgs.aarch64-linux  outputs.pkgs.x86_64-linux
 outputs.pkgs.x86_64-darwin
 nix-repl> pkgs.micromamba.version
-"2.3.0"
+"1.5.1"
 ```
 
 Example devShell following `nix-trickle`: ❄️
