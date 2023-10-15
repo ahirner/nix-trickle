@@ -1,8 +1,8 @@
 diff --git a/src/table.c b/src/table.c
-index 8af9896..7c64ffa 100644
+index 3b1d1a4..eaf68c6 100644
 --- a/src/table.c
 +++ b/src/table.c
-@@ -774,7 +774,16 @@ readfile(Options *opts, DataDesc *desc, StateData *state)
+@@ -772,7 +772,16 @@ readfile(Options *opts, DataDesc *desc, StateData *state)
  		desc->completed = true;
  	}
  
@@ -20,4 +20,12 @@ index 8af9896..7c64ffa 100644
  	{
  		/* detection truncating */
  		detect_file_truncation();
-
+@@ -813,7 +822,7 @@ readfile(Options *opts, DataDesc *desc, StateData *state)
+ 		 * Note: psql helps with it - it redirects only tabular data.
+ 		 *
+ 		 */
+-		if (state->stream_mode && read == 0)
++		if (!(f_data_opts & STREAM_IS_FILE) && state->stream_mode && read == 0)
+ 		{
+ 			free(line);
+ 
