@@ -106,14 +106,16 @@
       "locked": {
         "lastModified": 1701539137,
         "narHash": "sha256-nVO/5QYpf1GwjvtpXhyxx5M3U/WN0MwBro4Lsk+9mL0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
         "rev": "933d7dc155096e7575d207be6fb7792bc9f34f6d",
-        "revCount": 552571,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.2311.552571%2Brev-933d7dc155096e7575d207be6fb7792bc9f34f6d/018c3242-a93c-7779-8d13-ddba0a38d24a/source.tar.gz"
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/nixpkgs/%2A.tar.gz"
+        "owner": "NixOS",
+        "ref": "nixos-23.11",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "parts": {
