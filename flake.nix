@@ -2,10 +2,10 @@
   description = "Flake aggregation for the post-modern developer (tm)";
 
   inputs = {
-    # Merge #255658: staging-next 2023-09-17
     # hydra: https://status.nixos.org
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/8a86b98f0ba1c405358f1b71ff8b5e1d317f5db2";
+    # instead latest release:
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";
 
     # utils
     utils = {
