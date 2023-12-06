@@ -2,10 +2,10 @@
   description = "Flake aggregation for the post-modern developer (tm)";
 
   inputs = {
-    # Merge #255658: staging-next 2023-09-17
     # hydra: https://status.nixos.org
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/8a86b98f0ba1c405358f1b71ff8b5e1d317f5db2";
+    # instead latest release:
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
 
     # utils
     utils = {
@@ -33,18 +33,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.flake-compat.follows = "flake-compat";
-    };
     dream2nix = {
       url = "github:nix-community/dream2nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.pre-commit-hooks.follows = "pre-commit-hooks";
-      inputs.flake-parts.follows = "parts";
-      inputs.flake-compat.follows = "flake-compat";
     };
   };
 
