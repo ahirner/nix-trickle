@@ -25,7 +25,7 @@ jobs:
     - run: nix flake check -L --keep-going
     - run: nix flake show
     - run: nix develop -c which repl
-    - run: nix develop .#packages -c echo built
+    - run: nix develop .#packages -L -c echo built
 
   integration-tests:
     strategy:
