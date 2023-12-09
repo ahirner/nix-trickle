@@ -105,7 +105,7 @@
         # all nixpgs
         pkgs = channels.nixpkgs;
         # all packages for which overlays were defined
-        packages = utils.lib.exportPackages self.overlays channels;
+        packages = (utils.lib.exportPackages self.overlays channels) // {vector = pkgs.vector;};
       in {
         formatter = pkgs.alejandra;
         devShells.default = with pkgs;
