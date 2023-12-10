@@ -56,6 +56,7 @@ Example devShell following `nix-trickle`: ❄️
 ### `overlays` ❄️
 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
+- nixpkgs/[vector](https://vector.dev): fixed darwin build
 - nixpkgs/[micromamba](https://github.com/mamba-org/mamba): newer version
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs: all overlays above
