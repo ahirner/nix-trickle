@@ -34,21 +34,6 @@ in {
     buildInputs = [pythonEnv];
     installPhase = installPhase';
   });
-  micromamba = prev.micromamba.overrideAttrs (
-    let
-      version = "1.5.1";
-    in
-      old: {
-        inherit version;
-        src = prev.fetchFromGitHub {
-          owner = "mamba-org";
-          repo = "mamba";
-          rev = "micromamba-" + version;
-          hash = "sha256-cKCK7lBlqRSfNSDPeGCP2yzoFvbtVmdFMATIkkDEwg4=";
-        };
-        meta = old.meta // {mainProgram = old.pname;};
-      }
-  );
   edgedb = let
     old = prev.edgedb;
     version = "4.0.2";

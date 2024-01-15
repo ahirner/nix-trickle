@@ -10,10 +10,9 @@ Explore outputs:
 ```sh
 nix develop -c repl .
 nix-repl> outputs.pkgs.<TAB>
-outputs.pkgs.aarch64-linux  outputs.pkgs.x86_64-linux
-outputs.pkgs.x86_64-darwin
-nix-repl> pkgs.micromamba.version
-"1.5.1"
+outputs.pkgs.aarch64-linux  outputs.pkgs.x86_64-darwin  outputs.pkgs.x86_64-linux
+nix-repl> pkgs.google-cloud-sdk.version
+"452.0.1"
 ```
 
 Example devShell following `nix-trickle`: ❄️
@@ -56,8 +55,7 @@ Example devShell following `nix-trickle`: ❄️
 ### `overlays` ❄️
 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
-- nixpkgs/[edgedb](https://www.edgedb.com): newer version
-- nixpkgs/[micromamba](https://github.com/mamba-org/mamba): newer version
+- nixpkgs/[edgedb](https://www.edgedb.com): backported version
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs: all overlays above
 - default = nixpkgs
