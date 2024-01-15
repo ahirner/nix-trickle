@@ -61,6 +61,12 @@ in {
         };
       };
     };
+  micromamba = let
+    reproc = prev.reproc.overrideAttrs (old: {
+      cmakeFlags = old.cmakeFlags or [] ++ ["-Wno-error=changes-meaning"];
+    });
+  in
+    prev.micromamba.override {inherit reproc;};
   # recent and updating querystream from file
   pspg = prev.pspg.overrideAttrs (old: {
     version = "5.8.0-patched";
