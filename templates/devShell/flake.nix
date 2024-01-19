@@ -17,8 +17,10 @@
       builtins.mapAttrs
       (system: channel: let
         pkgs = channel.nixpkgs;
-        packages = [
-          pkgs.micromamba
+        packages = with pkgs; [
+          micromamba
+          grafana
+          vector
           helix.packages.${system}.default
         ];
       in {
