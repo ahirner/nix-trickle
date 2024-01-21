@@ -8,73 +8,43 @@
 Explore outputs:
 
 ```sh
-nix develop -c repl .
-nix-repl> outputs.pkgs.<TAB>
-outputs.pkgs.aarch64-linux  outputs.pkgs.x86_64-darwin  outputs.pkgs.x86_64-linux
-nix-repl> pkgs.google-cloud-sdk.version
-"452.0.1"
+$ nix develop
+exes: edgedb==4.0.2 gcloud==452.0.1 pspg==5.8.0-patched rustc==1.73.0
+$ nix repl
+nix-repl> :lf .
 ```
 
 Example devShell following `nix-trickle`: ❄️
 
-```nix
-{
-  inputs = {
-    nix-trickle.url = "github:ahirner/nix-trickle";
-    helix = {
-      url = "github:helix-editor/helix";
-      inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
-      inputs.rust-overlay.follows = "nix-trickle/rust-overlay";
-      inputs.nci.follows = "nix-trickle/nci";
-    };
-  };
-  outputs = {
-    nix-trickle,
-    helix,
-    ...
-  }: {
-    devShells =
-      builtins.mapAttrs
-      (system: channel: let
-        pkgs = channel.nixpkgs;
-        packages = [
-          pkgs.micromamba
-          helix.packages.${system}.default
-        ];
-      in {
-        default = pkgs.mkShell {inherit packages;};
-      })
-      nix-trickle.pkgs;
-  };
-}
 ```
-
+nix flake init -t github:ahirner/nix-trickle#devShell
+```
 
 ## Outputs
 
 ### `overlays` ❄️
 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
-- nixpkgs/[edgedb](https://www.edgedb.com): backported version
+- nixpkgs/[vector](https://vector.dev): backported darwin fix
+- nixpkgs/[edgedb](https://www.edgedb.com): backported] upgrade
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs: all overlays above
 - default = nixpkgs
 
 
+### `systems`
+
+List of systems CI checks are run on.
+
+
 ### `packages` ❄️
 
-All package overlays are directly available as package for supported systems.
+Packages with overlays for `systems`.
 
 
 ### `devShells` ❄️
 
-- repl = default: `nix repl` with loaded flake, see [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus)
-- packages: all `packages`
-
-
-### `lib.mkFlake`
-
-🚧
+- default: all `packages` in PATH
 
 
 ### `pkgs.nixpkgs`

@@ -1,6 +1,7 @@
 {
   inputs = {
     nix-trickle.url = "github:ahirner/nix-trickle";
+    flake-parts.follows = "nix-trickle/flake-parts";
     helix = {
       url = "github:helix-editor/helix";
       inputs.flake-utils.follows = "nix-trickle/flake-utils";
@@ -8,24 +9,28 @@
       inputs.rust-overlay.follows = "nix-trickle/rust-overlay";
     };
   };
-  outputs = {
+  outputs = inputs @ {
+    flake-parts,
     nix-trickle,
     helix,
     ...
-  }: {
-    devShells =
-      builtins.mapAttrs
-      (system: channel: let
-        pkgs = channel.nixpkgs;
-        packages = with pkgs; [
-          micromamba
-          grafana
-          vector
-          helix.packages.${system}.default
-        ];
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [nix-trickle.flakeModules.flakeDefaults];
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: let
+        checks = with pkgs; {
+          inherit micromamba grafana vector;
+          helix = helix.packages.${system}.default;
+        };
       in {
-        default = pkgs.mkShell {inherit packages;};
-      })
-      nix-trickle.pkgs;
-  };
+        inherit checks;
+        devShells.default = pkgs.mkShell {
+          inputsFrom = builtins.attrValues checks;
+        };
+      };
+    };
 }
