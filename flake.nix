@@ -123,8 +123,6 @@
               settings = {
                 max-jobs = "auto";
                 experimental-features = "nix-command flakes repl-flake";
-                # Nullify the registry for purity.
-                flake-registry = builtins.toFile "empty-flake-registry.json" ''{"flakes":[],"version":2}'';
               };
             };
           };
