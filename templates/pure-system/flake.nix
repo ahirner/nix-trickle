@@ -3,12 +3,17 @@
   inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
   inputs.flake-parts.follows = "nix-trickle/flake-parts";
   inputs.darwin.url = "github:lnl7/nix-darwin";
+  inputs.home-manager = {
+    url = "github:nix-community/home-manager";
+    inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
+  };
 
   outputs = inputs @ {
     self,
     flake-parts,
     nix-trickle,
     darwin,
+    home-manager,
     ...
   }: let
     lib = nix-trickle.inputs.nixpkgs.lib;
@@ -24,6 +29,11 @@
       # override nixpkgs registry also, if you want this equivalence:
       # - nix shell nixpkgs#<package>
       #nix.registry.nixpkgs.flake = lib.mkForce self;
+    };
+    hmDefaults = {
+      home-manager.useUserPackages = true;
+      home-manager.useGlobalPkgs = true;
+      home-manager.extraSpecialArgs = {inherit inputs;};
     };
     # minimal config to build a system
     bootableSystem = {
@@ -42,20 +52,24 @@
         nixosConfigurations = {
           purely = inputs.nixpkgs.lib.nixosSystem {
             modules = [
+              default
+              bin-cache
+              home-manager.nixosModules.home-manager
+              hmDefaults
               bootableSystem
               pureSystem
-              bin-cache
-              default
             ];
           };
         };
         darwinConfigurations = {
           purely-darwin = darwin.lib.darwinSystem {
             modules = [
-              {nixpkgs.hostPlatform = "x86_64-darwin";}
-              pureSystem
               default
               bin-cache
+              home-manager.darwinModules.home-manager
+              hmDefaults
+              {nixpkgs.hostPlatform = "x86_64-darwin";}
+              pureSystem
             ];
           };
         };
