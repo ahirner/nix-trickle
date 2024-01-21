@@ -34,7 +34,11 @@
     };
   };
 
-  outputs = inputs @ {flake-parts, ...}: let
+  outputs = inputs @ {
+    self,
+    flake-parts,
+    ...
+  }: let
     lib = inputs.nixpkgs.lib;
     overlayAttrs = (import ./overlays.nix {inherit lib;}) // {rustc = inputs.rust-overlay.overlays.default;};
     overlays = builtins.attrValues overlayAttrs;
@@ -53,35 +57,10 @@
         };
       };
     };
-    systemDefaults = {
-      flake,
-      pkgs,
-      lib,
-      ...
-    }: {
-      flake.nixOsModules.common = {
-        # https://github.com/srid/nixos-config/blob/master/nixos/nix.nix
-        nixpkgs = {
-          inherit overlays;
-          config.allowUnfree = true;
-        };
-        nix = {
-          package = pkgs.nixUnstable;
-          nixPath = ["nixpkgs=${flake.inputs.nixpkgs}"]; # Enables use of `nix-shell -p ...` etc
-          registry.nixpkgs.flake = flake.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
-          settings = {
-            max-jobs = "auto";
-            experimental-features = "nix-command flakes repl-flake";
-            # Nullify the registry for purity.
-            flake-registry = builtins.toFile "empty-flake-registry.json" ''{"flakes":[],"version":2}'';
-          };
-        };
-      };
-    };
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
       inherit systems;
-      imports = [flakeDefaults systemDefaults];
+      imports = [flakeDefaults];
 
       perSystem = {
         pkgs,
@@ -113,25 +92,44 @@
         ...
       }: {
         inherit systems;
-        flakeModules = {
-          inherit flakeDefaults systemDefaults;
-        };
-
+        pkgs.nixpkgs = pkgs;
+        flakeModules = {inherit flakeDefaults;};
+        # flake schema outputs
         # all overlays for independent consumption
         overlays = let
           nixpkgs = final: prev:
             lib.composeManyExtensions overlays final prev;
           default = nixpkgs;
         in (overlayAttrs // {inherit nixpkgs default;});
-
         # common modules related to `nix-trickle`
         nixosModules = {
           bin-cache = {
             nix.settings.substituters = ["https://cybertreiber.cachix.org"];
             nix.settings.trusted-public-keys = ["cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0="];
           };
+          default = {
+            pkgs,
+            lib,
+            ...
+          }: {
+            # https://github.com/srid/nixos-config/blob/master/nixos/nix.nix
+            nixpkgs = {
+              config.allowUnfree = true;
+              inherit overlays;
+            };
+            nix = {
+              package = pkgs.nixUnstable;
+              nixPath = ["nixpkgs=${self.inputs.nixpkgs}"]; # Enables use of `nix-shell -p ...` etc
+              registry.nixpkgs.flake = self.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
+              settings = {
+                max-jobs = "auto";
+                experimental-features = "nix-command flakes repl-flake";
+                # Nullify the registry for purity.
+                flake-registry = builtins.toFile "empty-flake-registry.json" ''{"flakes":[],"version":2}'';
+              };
+            };
+          };
         };
-
         # templates
         templates.pure-system = {
           path = ./templates/pure-system;
