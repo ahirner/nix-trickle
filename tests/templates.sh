@@ -15,8 +15,9 @@ clone() {
 check() {
   (cd $1
   nix flake update --override-input nix-trickle ../..
-  nix flake check -L --keep-going --show-trace
-  nix flake show)
+  nix flake metadata
+  nix flake show
+  nix flake check -L --keep-going --show-trace)
 }
 
 check-pkg-default-overlay() {
@@ -53,9 +54,6 @@ check-pkg-overlayed() {
    echo "host  $host"
    if [ "$flake" == "$host" ]; then exit 1; fi
   )
-  tem=$1; pkg=$2
-  defex=$(nix-build ./$tem -A $pkg && readlink ./$tem/result)
-  host=$(nix-build '<nixpkgs>' -A $pkg && readlink result)
 }
 
 set -e

@@ -7,15 +7,10 @@
     # instead latest release:
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
 
-    # utils
-    utils = {
-      url = "github:gytis-ivaskevicius/flake-utils-plus";
-      inputs.flake-utils.follows = "flake-utils";
-    };
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
-    parts = {
+    flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
@@ -39,85 +34,63 @@
     };
   };
 
-  outputs = inputs @ {
-    utils,
-    self,
-    ...
-  }: let
-    overlays = [
-      inputs.rust-overlay.overlays.default
-      (import ./overlays)
-    ];
-
-    /*
-     Builds a flake with aggregated inputs and some options.
-
-    Based on: mkFlake in https://github.com/gytis-ivaskevicius/flake-utils-plus
-    */
+  outputs = inputs @ {flake-parts, ...}: let
     lib = inputs.nixpkgs.lib;
-    mkFlake = {
-      self,
-      inputs,
-      hosts ? {},
-      extraOverlays ? [],
-      extraDefaultModules ? [],
-      sharedConfigOverride ? {},
-      outputsBuilder ? _: {},
-      ...
-    } @ args: let
-      # remove although they are anyway
-      moreArgs = builtins.removeAttrs args [
-        "extraOverlays"
-        "extraDefaultModules"
-        "sharedConfigOverride"
-      ];
-      flakeMake =
-        moreArgs
-        // {
-          inherit self inputs;
-          sharedOverlays = overlays ++ extraOverlays;
-          channelsConfig = {allowUnfree = true;} // sharedConfigOverride;
+    overlayAttrs = (import ./overlays.nix {inherit lib;}) // {rustc = inputs.rust-overlay.overlays.default;};
+    overlays = builtins.attrValues overlayAttrs;
+    systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
 
-          hostDefaults.modules =
-            [
-              {
-                nix.generateRegistryFromInputs = lib.mkDefault true;
-                nix.generateNixPathFromInputs = lib.mkDefault true;
-                nix.linkInputs = lib.mkDefault true;
-                nix.settings.experimental-features = ["nix-command" "flakes"];
-              }
-            ]
-            ++ extraDefaultModules;
-
-          # 1to1 outputs, hosts
-          inherit outputsBuilder hosts;
-        };
-    in
-      utils.lib.mkFlake flakeMake;
-  in
-    mkFlake
-    {
-      inherit self inputs;
-      supportedSystems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
-
-      # utils assisted outputs
-      outputsBuilder = channels: let
-        # all nixpgs
-        pkgs = channels.nixpkgs;
-        # all packages for which overlays were defined
-        packages = utils.lib.exportPackages self.overlays channels;
-      in {
+    flakeDefaults = {
+      inherit systems;
+      perSystem = {
+        system,
+        pkgs,
+        ...
+      }: {
         formatter = pkgs.alejandra;
-        devShells.default = with pkgs;
-          mkShell {
-            name = "repl";
-            description = "`nix repl` loaded with system or flake argument";
-            nativeBuildInputs = [
-              fup-repl
-              alejandra
-            ];
+        _module.args.pkgs = import inputs.nixpkgs {
+          inherit system overlays;
+        };
+      };
+    };
+    systemDefaults = {
+      flake,
+      pkgs,
+      lib,
+      ...
+    }: {
+      flake.nixOsModules.common = {
+        # https://github.com/srid/nixos-config/blob/master/nixos/nix.nix
+        nixpkgs = {
+          inherit overlays;
+          config.allowUnfree = true;
+        };
+        nix = {
+          package = pkgs.nixUnstable;
+          nixPath = ["nixpkgs=${flake.inputs.nixpkgs}"]; # Enables use of `nix-shell -p ...` etc
+          registry.nixpkgs.flake = flake.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
+          settings = {
+            max-jobs = "auto";
+            experimental-features = "nix-command flakes repl-flake";
+            # Nullify the registry for purity.
+            flake-registry = builtins.toFile "empty-flake-registry.json" ''{"flakes":[],"version":2}'';
           };
-        devShells.packages = with pkgs;
+        };
+      };
+    };
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      inherit systems;
+      imports = [flakeDefaults systemDefaults];
+
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: let
+        packages = builtins.mapAttrs (name: _: builtins.getAttr name pkgs) overlayAttrs;
+      in {
+        devShells.default = with pkgs;
           mkShell {
             name = "pkgs";
             description = "all packages";
@@ -134,34 +107,40 @@
         inherit packages;
       };
 
-      # export customized mkFlake
-      lib.mkFlake = mkFlake;
-    }
-    // {
-      # custom overlays from inputs
-      overlays =
-        utils.lib.exportOverlays {inherit (self) pkgs;}
-        // rec {
+      flake = {
+        lib,
+        pkgs,
+        ...
+      }: {
+        inherit systems;
+        flakeModules = {
+          inherit flakeDefaults systemDefaults;
+        };
+
+        # all overlays for independent consumption
+        overlays = let
           nixpkgs = final: prev:
             lib.composeManyExtensions overlays final prev;
           default = nixpkgs;
-        };
-      # common modules related to `nix-trickle`
-      nixosModules = {
-        bin-cache = {
-          nix.settings.substituters = ["https://cybertreiber.cachix.org"];
-          nix.settings.trusted-public-keys = ["cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0="];
-        };
-      };
+        in (overlayAttrs // {inherit nixpkgs default;});
 
-      # templates
-      templates.pure-system = {
-        path = ./templates/pure-system;
-        description = "Example configuration for pure flake systems based on `nix-trickle`";
-      };
-      templates.devShell = {
-        path = ./templates/devShell;
-        description = "Example devShell based on `nix-trickle`";
+        # common modules related to `nix-trickle`
+        nixosModules = {
+          bin-cache = {
+            nix.settings.substituters = ["https://cybertreiber.cachix.org"];
+            nix.settings.trusted-public-keys = ["cybertreiber.cachix.org-1:Hk0+JJqAIfHY6J9/p5RFXvdHO35w/MgtT5BPVSzoCe0="];
+          };
+        };
+
+        # templates
+        templates.pure-system = {
+          path = ./templates/pure-system;
+          description = "Example configuration for pure flake systems based on `nix-trickle`";
+        };
+        templates.devShell = {
+          path = ./templates/devShell;
+          description = "Example devShell based on `nix-trickle`";
+        };
       };
     };
 }
