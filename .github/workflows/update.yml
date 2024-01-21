@@ -8,9 +8,9 @@ jobs:
   lockfile:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/update-flake-lock@v19
+      - uses: DeterminateSystems/update-flake-lock@v20
         with:
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
           pr-assignees: ahirner
