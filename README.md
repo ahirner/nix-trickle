@@ -9,7 +9,7 @@ Explore outputs:
 
 ```sh
 $ nix develop
-exes: edgedb==4.0.2 gcloud==452.0.1 pspg==5.8.0-patched rustc==1.73.0
+exes: gcloud==452.0.1 pspg==5.8.0-patched rustc==1.73.0
 $ nix repl
 nix-repl> :lf .
 ```
@@ -25,8 +25,6 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 ### `overlays` ❄️
 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
-- nixpkgs/[vector](https://vector.dev): backported darwin fix
-- nixpkgs/[edgedb](https://www.edgedb.com): backported] upgrade
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs: all overlays above
 - default = nixpkgs
