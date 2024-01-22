@@ -48,6 +48,9 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       # flakeDefaults needed due to similar error as in https://github.com/numtide/treefmt-nix/issues/78
       imports = [nix-trickle.flakeModules.flakeDefaults];
+      # enable writing inputs/nixpkgs with self.outPath for default.nix
+      perSystem = {pkgs, ...}: {legacyPackages = pkgs;};
+      # systems
       flake = with nix-trickle.nixosModules; {
         nixosConfigurations = {
           purely = inputs.nixpkgs.lib.nixosSystem {
