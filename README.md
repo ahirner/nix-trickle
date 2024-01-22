@@ -45,13 +45,10 @@ Packages with overlays for `systems`.
 - default: all `packages` in PATH
 
 
-### `pkgs.nixpkgs`
+### `legacyPackages`
 
-`nixpkgs` unstable with applied overlays. In that way, a derived system can register
-`nix-trickle.pkgs` as `nixpkgs` and obtain equal store paths for `flake`
-and regular `nix` commands.
-
-To start using these packages as the sole source for a system:
+A system can register `self` + a `default.nix` as `nixpkgs` to obtain equal store
+paths for `flake` and regular `nix` commands.
 
 ```
 nix flake init -t github:ahirner/nix-trickle#pure-system
@@ -65,4 +62,5 @@ nix flake init -t github:ahirner/nix-trickle#pure-system
 
 ### `nixosModules` ❄️
 
-- bin-cache: add substituter and public key to `nix.settings` of cached package builds
+- default: pure and modern `nix` system
+- bin-cache: substituter and public key in `nix.settings` for `nix-trickle` builds
