@@ -24,6 +24,26 @@
         "type": "github"
       }
     },
+    "crane": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710003968,
+        "narHash": "sha256-g8+K+mLiNG5uch35Oy9oDQBAmGSkCcqrd0Jjme7xiG0=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "10484f86201bb94bd61ecc5335b1496794fedb78",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
     "dream2nix": {
       "inputs": {
         "nixpkgs": [
@@ -177,14 +197,32 @@
         "type": "github"
       }
     },
+    "risingwave": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710138933,
+        "narHash": "sha256-ms9GyFioCglzN8ZEhwxC2bHhk5RynIB01UFWj1s+gUQ=",
+        "owner": "risingwavelabs",
+        "repo": "risingwave",
+        "rev": "0b23c9d84032bd1f3fafb2e912b1d001a2f70d75",
+        "type": "github"
+      },
+      "original": {
+        "owner": "risingwavelabs",
+        "repo": "risingwave",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "alejandra": "alejandra",
+        "crane": "crane",
         "dream2nix": "dream2nix",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
+        "risingwave": "risingwave",
         "rust-overlay": "rust-overlay"
       }
     },
