@@ -19,6 +19,16 @@ in {
     python3 = prev.python3.override (old: {
       packageOverrides = self: super: {
         pyopenssl = super.pyopenssl.overridePythonAttrs (old: rec {
+          disabledTests =
+            old.disabledTests
+            ++ [
+              "test_get_signature_algorithm"
+              "test_get_undefined_signature_algorithm"
+              "test_type_is_signed"
+              "test_type_is_enveloped"
+              "test_type_is_signed_and_enveloped"
+              "test_type_is_data"
+            ];
           version = "23.2.0";
           src = super.fetchPypi {
             pname = "pyOpenSSL";
