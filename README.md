@@ -25,6 +25,7 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 ### `overlays` ❄️
 
 - nixpkgs/google-cloud-sdk: fixed `gsutil`, [cf](https://github.com/NixOS/nixpkgs/issues/67094#issuecomment-1148856771)
+- nixpkgs/[datafusion-cli](https://datafusion.apache.org/user-guide/cli): more recent
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs: all overlays above
 - default = nixpkgs
