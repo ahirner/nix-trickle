@@ -9,8 +9,11 @@ final: prev: {
         rev = version;
         hash = "sha256-Gl/fcT+5JsS+5DokVaxPdja8mdCjClHq5QnL5b8MfJk=";
       };
-      #sourceRoot = "${src.name}/datafusion-cli";
-      #cargoHash = "";
+      buildInputs =
+        old.buildInputs
+        ++ prev.lib.optionals prev.stdenv.isDarwin [
+          prev.darwin.apple_sdk.frameworks.SystemConfiguration
+        ];
       cargoDeps = prev.rustPlatform.importCargoLock {
         lockFile = "${src}/datafusion-cli/Cargo.lock";
       };
