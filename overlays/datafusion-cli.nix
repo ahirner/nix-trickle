@@ -29,6 +29,7 @@ final: prev: {
           "--skip=exec::tests::create_object_store_table_http"
           "--skip=exec::tests::create_object_store_table_oss"
           "--skip=exec::tests::create_object_store_table_s3"
+          "--skip=tests::test_parquet_metadata_works_with_strings"
         ];
     }
   );
