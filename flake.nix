@@ -121,7 +121,7 @@
               inherit overlays;
             };
             nix = {
-              package = pkgs.nixUnstable;
+              package = pkgs.nixVersions.latest;
               nixPath = ["nixpkgs=${self.inputs.nixpkgs}"]; # Enables use of `nix-shell -p ...` etc
               registry.nixpkgs.flake = self.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
               settings = {
