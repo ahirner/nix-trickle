@@ -19,6 +19,7 @@ in {
     python3 = prev.python3.override (old: {
       packageOverrides = self: super: {
         pyopenssl = super.pyopenssl.overridePythonAttrs (old: rec {
+          nativeCheckInputs = old.nativeCheckInputs or [] ++ [prev.python3.pkgs.flaky];
           disabledTests =
             old.disabledTests
             ++ [
@@ -43,7 +44,6 @@ in {
       with p; [
         cffi
         cryptography
-        # openssl is gone, instead:
         pyopenssl
         crcmod
         numpy
