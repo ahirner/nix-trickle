@@ -126,7 +126,7 @@
               registry.nixpkgs.flake = self.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
               settings = {
                 max-jobs = "auto";
-                experimental-features = "nix-command flakes repl-flake";
+                experimental-features = "nix-command flakes";
               };
             };
           };
