@@ -23,7 +23,7 @@
         ...
       }: let
         checks = with pkgs; {
-          inherit micromamba vector;
+          inherit micromamba grafana vector;
           helix = helix.packages.${system}.default;
         };
       in {
