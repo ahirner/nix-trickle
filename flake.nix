@@ -4,7 +4,7 @@
   inputs = {
     # hydra: https://status.nixos.org
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=24.05";
 
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat.url = "github:edolstra/flake-compat";
