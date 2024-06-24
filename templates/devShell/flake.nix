@@ -24,6 +24,7 @@
       }: let
         checks = with pkgs; {
           inherit micromamba grafana vector;
+          wine = wineWow64Packages.staging;
           helix = helix.packages.${system}.default;
         };
       in {
