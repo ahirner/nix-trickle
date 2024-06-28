@@ -30,7 +30,7 @@
       in {
         inherit checks;
         devShells.default = pkgs.mkShell {
-          inputsFrom = builtins.attrValues checks;
+          packages = builtins.attrValues checks;
         };
       };
     };
