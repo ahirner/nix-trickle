@@ -24,12 +24,13 @@
       }: let
         checks = with pkgs; {
           inherit micromamba grafana vector;
+          wine = wineWow64Packages.staging;
           helix = helix.packages.${system}.default;
         };
       in {
         inherit checks;
         devShells.default = pkgs.mkShell {
-          inputsFrom = builtins.attrValues checks;
+          packages = builtins.attrValues checks;
         };
       };
     };
