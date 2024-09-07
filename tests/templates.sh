@@ -14,10 +14,10 @@ clone() {
 
 check() {
   (cd "$1"
-  nix flake update --override-input nix-trickle ../..
-  nix flake metadata
-  nix flake show
-  nix flake check -L --keep-going --show-trace)
+  nix flake metadata --override-input nix-trickle ../..
+  nix flake show --override-input nix-trickle ../..
+  nix flake check --override-input nix-trickle ../.. -L --keep-going --show-trace
+  )
 }
 
 check-pkg-default-overlay() {
