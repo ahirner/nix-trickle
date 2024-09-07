@@ -29,7 +29,6 @@
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
     dream2nix = {
       url = "github:nix-community/dream2nix";
