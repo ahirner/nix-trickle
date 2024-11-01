@@ -7,15 +7,15 @@ final: prev: let
 in {
   sqruff = rustPlatform.buildRustPackage rec {
     pname = "sqruff";
-    version = "0.18.2";
+    version = "0.20.0";
 
     src = fetchFromGitHub {
       owner = "quarylabs";
       repo = pname;
       rev = "v${version}";
-      hash = "sha256-LLRBnyRJCXwCTbollsFtl+w5/Urq36xTcYNzpQF/f+k=";
+      hash = "sha256-lgNRvd7rczuR4sk50sspJsMEDq1TgbIUYNiMs1MIiJk=";
     };
-    cargoHash = "sha256-ps6+yCbhU5LwaG6pzEclHn0EXMuA3wtr8XT7xjVvpSQ=";
+    cargoHash = "sha256-i8RehIMOscf5gbkIrRhI3J05h2U2GOQeLhYsNUkoxBk=";
     # tests/ui.rs refers to ../../target/release/sqruff which doesn't exist in nix
     doCheck = false;
 
