@@ -28,6 +28,7 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 - nixpkgs/[datafusion-cli](https://datafusion.apache.org/user-guide/cli): more recent
 - nixpkgs/[sqruff](https://github.com/quarylabs/sqruff): added
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
+- nixpkgs/[vector](https://vector.dev): fixes for darwin x86
 - nixpkgs: all overlays above
 - default = nixpkgs
 
