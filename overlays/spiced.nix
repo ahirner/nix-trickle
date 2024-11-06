@@ -19,10 +19,16 @@ in {
       hash = "sha256-MAS5EB1qCsRa3Z29wRDI/RdRsATn7hh/rpk8j+t5Zi0=";
     };
     cargoLock = {
-      lockFile = "${src}/Cargo.lock";
+      lockFile = ./spiceai/Cargo.lock;
       allowBuiltinFetchGit = true;
+      #outputHashes = {
+      #  "arrow-json-53.1.0" = "";
+      #};
     };
-    # too much build time work
+    postPatch = ''
+      cp ${./spiceai/Cargo.lock} Cargo.lock
+    '';
+    # too much hassle
     doCheck = false;
 
     meta = {
