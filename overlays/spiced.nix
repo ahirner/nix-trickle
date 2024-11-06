@@ -1,5 +1,5 @@
 final: prev: let
-  inherit (prev) lib fetchFromGitHub;
+  inherit (prev) lib fetchFromGitHub stdenv;
   rustPlatform = prev.makeRustPlatform {
     cargo = prev.rust-bin.stable.latest.default;
     rustc = prev.rust-bin.stable.latest.default;
@@ -8,9 +8,6 @@ in {
   spiced = rustPlatform.buildRustPackage rec {
     pname = "spiced";
     version = "0.20.0-beta";
-
-    buildNoDefaultFeatures = true;
-    buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
 
     src = fetchFromGitHub {
       owner = "spiceai";
@@ -21,13 +18,23 @@ in {
     cargoLock = {
       lockFile = ./spiceai/Cargo.lock;
       allowBuiltinFetchGit = true;
-      #outputHashes = {
-      #  "arrow-json-53.1.0" = "";
-      #};
     };
     postPatch = ''
       cp ${./spiceai/Cargo.lock} Cargo.lock
     '';
+
+    buildNoDefaultFeatures = true;
+    buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
+    nativeBuildInputs = [prev.pkg-config];
+    buildInputs = with prev;
+      lib.optionals stdenv.hostPlatform.isDarwin [
+        darwin.apple_sdk.frameworks.Security
+        apple-sdk_15
+        # aws-lc-sys requires CryptoKit's CommonCrypto, which is available on macOS 10.15+
+        # c.f: https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/co/conduwuit/package.nix
+        (darwinMinVersionHook "10.15")
+      ];
+
     # too much hassle
     doCheck = false;
 
