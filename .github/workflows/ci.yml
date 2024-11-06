@@ -47,8 +47,8 @@ jobs:
     - run: nix-shell --quiet -p nix-info --run "nix-info -m"
     - run: ./templates.sh clone devShell pure-system 
     - run: ./templates.sh check devShell pure-system 
-    - run: ./templates.sh check-pkg-overlayed pure-system google-cloud-sdk
-    - run: ./templates.sh check-pkg-default pure-system google-cloud-sdk
+    - run: ./templates.sh check-pkg-overlayed pure-system sqruff
+    - run: ./templates.sh check-pkg-default pure-system sqruff
 
   lints:
     runs-on: ubuntu-latest
