@@ -2240,8 +2240,7 @@ dependencies = [
 [[package]]
 name = "candle-transformers"
 version = "0.7.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "06b8a130a8ac1d1e20696d89f7a52948902e037ad0eec085fceb77021007cfee"
+source = "git+https://github.com/EricLBuehler/candle.git?rev=20a57c4#20a57c4bcf300e4bc6c1e48f7f3702668ae8cb80"
 dependencies = [
  "byteorder",
  "candle-core 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
