@@ -29,7 +29,8 @@ in {
     env = {OPENSSL_NO_VENDOR = 1;};
     nativeBuildInputs = with prev; [pkg-config cmake installShellFiles rustPlatform.bindgenHook];
     buildInputs = with prev;
-      lib.optionals stdenv.hostPlatform.isDarwin [
+      lib.optionals (! stdenv.hostPlatform.isDarwin) [openssl]
+      ++ lib.optionals stdenv.hostPlatform.isDarwin [
         darwin.apple_sdk.frameworks.Security
         apple-sdk_15
         # aws-lc-sys requires CryptoKit's CommonCrypto, which is available on macOS 10.15+
