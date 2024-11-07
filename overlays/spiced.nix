@@ -25,6 +25,8 @@ in {
 
     buildNoDefaultFeatures = true;
     buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
+
+    env = {OPENSSL_NO_VENDOR = 1;};
     nativeBuildInputs = with prev; [pkg-config cmake installShellFiles rustPlatform.bindgenHook];
     buildInputs = with prev;
       lib.optionals stdenv.hostPlatform.isDarwin [
