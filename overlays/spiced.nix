@@ -25,7 +25,7 @@ in {
 
     buildNoDefaultFeatures = true;
     buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
-    nativeBuildInputs = [prev.pkg-config];
+    nativeBuildInputs = with prev; [pkg-config cmake installShellFiles rustPlatform.bindgenHook];
     buildInputs = with prev;
       lib.optionals stdenv.hostPlatform.isDarwin [
         darwin.apple_sdk.frameworks.Security
