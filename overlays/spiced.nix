@@ -5,7 +5,7 @@ final: prev: let
     rustc = prev.rust-bin.stable.latest.default;
   };
 in {
-  spiced = rustPlatform.buildRustPackage rec {
+  spiced = rustPlatform.buildRustPackage {
     pname = "spiced";
     version = "1.0.0-rc.2";
 
@@ -16,6 +16,7 @@ in {
       rev = "b471e895799971423c108aec0a936b9ed6a3d749";
       hash = "sha256-w0VKolgTO3huta/3CrlixzgUzkSsDvo0xqCT/QVX2QY=";
     };
+    patches = [../patches/spiceai-Cargo.toml.patch];
     cargoLock = {
       lockFile = ./spiceai/Cargo.lock;
       allowBuiltinFetchGit = true;
