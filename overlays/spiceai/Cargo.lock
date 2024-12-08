@@ -2053,34 +2053,6 @@ dependencies = [
 [[package]]
 name = "candle-core"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e61e6a12c4b0660f105c11cbce42a5b33a392e73caaf465261b24210878fbe0e"
-dependencies = [
- "byteorder",
- "candle-kernels 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "candle-metal-kernels 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "cudarc 0.12.1",
- "gemm",
- "half",
- "memmap2",
- "metal 0.27.0",
- "num-traits",
- "num_cpus",
- "rand 0.8.5",
- "rand_distr",
- "rayon",
- "safetensors",
- "thiserror 1.0.69",
- "ug",
- "ug-cuda",
- "ug-metal",
- "yoke",
- "zip 1.1.4",
-]
-
-[[package]]
-name = "candle-core"
-version = "0.8.0"
 source = "git+https://github.com/EricLBuehler/candle.git?rev=8742354#87423548e70b471d7c4a760bc16e3aa9e814f56d"
 dependencies = [
  "byteorder",
@@ -2111,7 +2083,7 @@ name = "candle-cublaslt"
 version = "0.2.2"
 source = "git+https://github.com/huggingface/candle-cublaslt?rev=cf789b7dd6d4abb19b03b9556442f94f0588b4a0#cf789b7dd6d4abb19b03b9556442f94f0588b4a0"
 dependencies = [
- "candle-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "candle-core 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
  "cudarc 0.10.0",
  "half",
 ]
@@ -2140,15 +2112,6 @@ dependencies = [
 [[package]]
 name = "candle-kernels"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a8ea76010d0ab096477f52aa7adfa36ac3ed43c353cef1b11d6b4a62d84f7a9"
-dependencies = [
- "bindgen_cuda 0.1.5",
-]
-
-[[package]]
-name = "candle-kernels"
-version = "0.8.0"
 source = "git+https://github.com/EricLBuehler/candle.git?rev=8742354#87423548e70b471d7c4a760bc16e3aa9e814f56d"
 dependencies = [
  "bindgen_cuda 0.1.5",
@@ -2160,22 +2123,10 @@ version = "0.0.1"
 source = "git+https://github.com/huggingface/candle-layer-norm?rev=94c2add7d94c2d63aebde77f7534614e04dbaea1#94c2add7d94c2d63aebde77f7534614e04dbaea1"
 dependencies = [
  "anyhow",
- "candle-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "candle-core 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
  "half",
  "num_cpus",
  "rayon",
-]
-
-[[package]]
-name = "candle-metal-kernels"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2db22aa60f6927d706fa8df2dabe5c7ca2919ba056c69c0c94aa6bdb5ca31c9"
-dependencies = [
- "metal 0.27.0",
- "once_cell",
- "thiserror 1.0.69",
- "tracing",
 ]
 
 [[package]]
@@ -2187,23 +2138,6 @@ dependencies = [
  "once_cell",
  "thiserror 1.0.69",
  "tracing",
-]
-
-[[package]]
-name = "candle-nn"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2032a3a41999801c5997ee7896ce816c361c49988435dedb7830634293c0798e"
-dependencies = [
- "candle-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "candle-metal-kernels 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "half",
- "metal 0.27.0",
- "num-traits",
- "rayon",
- "safetensors",
- "serde",
- "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -2229,7 +2163,7 @@ source = "git+https://github.com/huggingface/candle-rotary?rev=0a718a0856569a92f
 dependencies = [
  "anyhow",
  "bindgen_cuda 0.1.5",
- "candle-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "candle-core 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
  "half",
 ]
 
@@ -2240,8 +2174,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b88bf4dbf13c3fa0a51624e4a2bf4db1d97596bbefd471424892a0b852013b7c"
 dependencies = [
  "byteorder",
- "candle-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "candle-nn 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "candle-core 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
+ "candle-nn 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
  "fancy-regex",
  "num-traits",
  "rand 0.8.5",
@@ -6145,7 +6079,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc2f4eb4bc735547cfed7c0a4922cbd04a4655978c09b54f1f7b228750664c34"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.5",
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
@@ -8462,7 +8396,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "22505a5c94da8e3b7c2996394d1c933236c4d743e81a410bcca4e6989fc066a4"
 dependencies = [
  "bytes",
- "heck 0.4.1",
+ "heck 0.5.0",
  "itertools 0.12.1",
  "log",
  "multimap",
@@ -10179,7 +10113,7 @@ version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "03c3c6b7927ffe7ecaa769ee0e3994da3b8cafc8f444578982c83ecb161af917"
 dependencies = [
- "heck 0.4.1",
+ "heck 0.5.0",
  "proc-macro2",
  "quote",
  "syn 2.0.90",
@@ -10810,10 +10744,10 @@ version = "1.5.0"
 source = "git+https://github.com/spiceai/text-embeddings-inference.git?rev=b3925b2f97fcd2bfab9551b432ab659c48e5586b#b3925b2f97fcd2bfab9551b432ab659c48e5586b"
 dependencies = [
  "anyhow",
- "candle-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "candle-core 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
  "candle-cublaslt",
  "candle-layer-norm",
- "candle-nn 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "candle-nn 0.8.0 (git+https://github.com/EricLBuehler/candle.git?rev=87423548e70b471d7c4a760bc16e3aa9e814f56d)",
  "candle-rotary",
  "candle-transformers",
  "memmap2",
@@ -11740,7 +11674,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
  "cfg-if",
- "rand 0.7.3",
+ "rand 0.8.5",
  "static_assertions",
 ]
 
@@ -12296,7 +12230,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
