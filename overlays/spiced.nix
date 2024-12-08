@@ -7,13 +7,14 @@ final: prev: let
 in {
   spiced = rustPlatform.buildRustPackage rec {
     pname = "spiced";
-    version = "0.20.0-beta";
+    version = "1.0.0-rc.2";
 
     src = fetchFromGitHub {
       owner = "spiceai";
       repo = "spiceai";
-      rev = "v${version}";
-      hash = "sha256-MAS5EB1qCsRa3Z29wRDI/RdRsATn7hh/rpk8j+t5Zi0=";
+      # ahead of $v{version}:
+      rev = "b471e895799971423c108aec0a936b9ed6a3d749";
+      hash = "sha256-w0VKolgTO3huta/3CrlixzgUzkSsDvo0xqCT/QVX2QY=";
     };
     cargoLock = {
       lockFile = ./spiceai/Cargo.lock;
