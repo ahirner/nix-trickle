@@ -25,7 +25,6 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 ### `overlays` ❄️
 
 - nixpkgs/[datafusion-cli](https://datafusion.apache.org/user-guide/cli): more recent
-- nixpkgs/[fasttrackml](https://github.com/G-Research/fasttrackml): added
 - nixpkgs/[spiced](https://docs.spiceai.org): add slim build of spiceai's Rust dameon
 - nixpkgs/[sqruff](https://github.com/quarylabs/sqruff): added
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
