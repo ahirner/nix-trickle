@@ -6,7 +6,7 @@ final: prev: let
       owner = "gulrak";
       repo = "filesystem";
       rev = "master";
-      hash = "sha256-E6kJrNMHt3avjNwT4C0pTvnFbhyKsXMIP6NEfIl1m5Q=";
+      hash = "sha256-v/7iOoWEkacU3rdaG/3UmsrpZRqb7wY9WrP8bEGTXYU=";
     };
   });
   micrombamba' = pkgs.micromamba.overrideAttrs (
