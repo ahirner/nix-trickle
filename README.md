@@ -39,6 +39,11 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 List of systems CI checks are run on.
 
 
+### `nixpkgs`
+
+Attribute set with all pkgs of nixpkgs and applied overlays per system.
+
+
 ### `packages` ❄️
 
 Packages with overlays for `systems`.
