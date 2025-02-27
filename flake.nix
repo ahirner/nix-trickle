@@ -87,7 +87,12 @@
         ...
       }: {
         inherit systems;
-        pkgs.nixpkgs = pkgs;
+        nixpkgs = inputs.nixpkgs.lib.genAttrs systems (
+          system:
+            import inputs.nixpkgs {
+              inherit system overlays;
+            }
+        );
         flakeModules = {inherit flakeDefaults;};
         # flake schema outputs
         # all overlays for independent consumption
@@ -96,6 +101,7 @@
             lib.composeManyExtensions overlays final prev;
           default = nixpkgs;
         in (overlayAttrs // {inherit nixpkgs default;});
+
         # common modules related to `nix-trickle`
         nixosModules = {
           bin-cache = {
