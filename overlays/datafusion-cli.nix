@@ -1,13 +1,13 @@
 final: prev: {
   datafusion-cli = prev.datafusion-cli.overrideAttrs (
     old: rec {
-      version = "43.0.0";
+      version = "45.0.0";
       src = prev.fetchFromGitHub {
         name = "datafusion-cli-source";
         owner = "apache";
         repo = "arrow-datafusion";
         rev = version;
-        hash = "sha256-/7qiVjvWwcRrCyXbQfcyzT6TcsLf/NyDVpIEJjzJHEc=";
+        hash = "sha256-XIxUp4i68psNtKoFR/uVJHCToz681m2q8qUhtMQKCLo=";
       };
       cargoDeps = prev.rustPlatform.importCargoLock {
         lockFile = "${src}/datafusion-cli/Cargo.lock";
