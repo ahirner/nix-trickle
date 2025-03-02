@@ -86,6 +86,22 @@
         pkgs,
         ...
       }: {
+        images =
+          lib.attrsets.mapAttrs' (
+            name: package: let
+              pkgs = import inputs.nixpkgs {system = "x86_64-linux";};
+            in
+              lib.attrsets.nameValuePair
+              name
+              (pkgs.dockerTools.streamLayeredImage {
+                contents = [pkgs.cacert];
+                inherit name;
+                tag = "latest";
+                config = {Entrypoint = ["${lib.getExe package}"];};
+              })
+          )
+          self.packages."x86_64-linux";
+
         inherit systems;
         nixpkgs = inputs.nixpkgs.lib.genAttrs systems (
           system:
