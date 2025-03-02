@@ -12,11 +12,11 @@ in {
     src = fetchFromGitHub {
       owner = "ahirner";
       repo = "spiceai";
-      rev = "chore/merge_trunk";
-      hash = "sha256-B+CMyLGSmDmKoA9xJRQO2E8BXJbZFrVOZQvPX30NVEM=";
+      rev = "main";
+      hash = "sha256-3Hpw7oV6tC0Xn7CcmMabHpX/DqqOifBR7CjO2C7zZjM=";
     };
     useFetchCargoVendor = true;
-    cargoHash = "sha256-mjdJUdI4Tl3ZAQMyVI2EDUnFizMNJHObpfxTCJQOVJU=";
+    cargoHash = "sha256-ppctMhYWBzZDfaiMCKq/2N04JHZIV/Vfv32zsHQ6psI=";
 
     buildNoDefaultFeatures = true;
     buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
