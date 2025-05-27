@@ -4,7 +4,7 @@
   inputs = {
     # hydra: https://status.nixos.org
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     flake-utils.url = "github:numtide/flake-utils";
     flake-parts = {
