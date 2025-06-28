@@ -72,7 +72,11 @@
               home-manager.darwinModules.home-manager
               hmDefaults
               {nixpkgs.hostPlatform = "x86_64-darwin";}
-              {system.stateVersion = 5;}
+              {
+                system.stateVersion = 6;
+                # https://github.com/nix-darwin/nix-darwin/issues/1477
+                system.primaryUser = "runner";
+              }
               {
                 nixpkgs.flake = {
                   setFlakeRegistry = false;
