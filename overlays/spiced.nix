@@ -7,16 +7,16 @@ final: prev: let
 in {
   spiced = rustPlatform.buildRustPackage {
     pname = "spiced";
-    version = "1.1.0-rc";
+    version = "1.5-rc";
 
     src = fetchFromGitHub {
       owner = "ahirner";
       repo = "spiceai";
-      rev = "main";
-      hash = "sha256-3Hpw7oV6tC0Xn7CcmMabHpX/DqqOifBR7CjO2C7zZjM=";
+      rev = "chore/spiceai_1.5";
+      hash = "sha256-FjhTs7y6wwVblDsm0/NRDlr+Qao7SB+D6+CwJVFbpzo=";
     };
     useFetchCargoVendor = true;
-    cargoHash = "sha256-ppctMhYWBzZDfaiMCKq/2N04JHZIV/Vfv32zsHQ6psI=";
+    cargoHash = "sha256-HEHiDRQK6+m2dhPMWI4WzEmB+OhEyv2YQv/mHgQ1tOk=";
 
     buildNoDefaultFeatures = true;
     buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
