@@ -1,7 +1,11 @@
 final: prev: let
   inherit (prev) lib fetchFromGitHub;
+  rustPlatform = prev.makeRustPlatform {
+    cargo = prev.rust-bin.stable.latest.default;
+    rustc = prev.rust-bin.stable.latest.default;
+  };
 in {
-  sqruff = prev.rustPlatform.buildRustPackage rec {
+  sqruff = rustPlatform.buildRustPackage rec {
     pname = "sqruff";
     version = "0.28.2";
 

@@ -1,7 +1,11 @@
 final: prev: let
   inherit (prev) lib fetchFromGitHub stdenv;
+  rustPlatform = prev.makeRustPlatform {
+    cargo = prev.rust-bin.stable.latest.default;
+    rustc = prev.rust-bin.stable.latest.default;
+  };
 in {
-  spiced = prev.rustPlatform.buildRustPackage {
+  spiced = rustPlatform.buildRustPackage {
     pname = "spiced";
     version = "1.5-rc";
 

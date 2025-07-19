@@ -5,13 +5,19 @@
     # hydra: https://status.nixos.org
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+
+    # buildtools
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {self, ...}: let
     systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
 
     lib = inputs.nixpkgs.lib;
-    overlayAttrs = import ./overlays.nix {inherit lib;};
+    overlayAttrs = (import ./overlays.nix {inherit lib;}) // {rustc = inputs.rust-overlay.overlays.default;};
     overlays = builtins.attrValues overlayAttrs;
 
     nixpkgs = lib.genAttrs systems (
