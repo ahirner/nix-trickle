@@ -7,25 +7,34 @@ final: prev: let
 in {
   sqruff = rustPlatform.buildRustPackage rec {
     pname = "sqruff";
-    version = "0.25.28";
+    version = "0.28.2";
 
     src = fetchFromGitHub {
       owner = "quarylabs";
       repo = pname;
       rev = "v${version}";
-      hash = "sha256-Xea6jXQos5gyF1FeGF7B5YaQszqfsKhGw1k8j0m7J6c=";
+      hash = "sha256-a4B8X4Jv18m3NutdEgO9pIWxVfe9prTjwsyFolZrkCk=";
     };
     useFetchCargoVendor = true;
-    cargoHash = "sha256-agB//UDTsEje9pgig07dUy8/Fr+zx7/MC3AdLjqoKJY=";
+    cargoHash = "sha256-j9yI1e/+kfuseXydSuIWmh9REYTKZfC2rd/n+OagUBs=";
+
+    buildNoDefaultFeatures = true;
+    nativeBuildInputs = [
+      # disabling features doesn't help to un-require pyo3 as in prev 0.25.28
+      # because some build.rs invokes pyo3-build-config :)
+      prev.python3
+    ];
 
     # tests/ui.rs refers to ../../target/release/sqruff which doesn't exist in nix
     doCheck = false;
 
     meta = {
       description = "Fast SQL formatter/linter";
-      homepage = "https://www.quary.dev";
+      homepage = "https://github.com/quarylabs/sqruff";
+      changelog = "https://github.com/quarylabs/sqruff/releases/tag/${version}";
       license = lib.licenses.asl20;
-      maintainers = [];
+      mainProgram = "sqruff";
+      maintainers = with lib.maintainers; [hasnep];
     };
   };
 }
