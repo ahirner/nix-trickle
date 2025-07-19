@@ -32,37 +32,11 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 - nixpkgs: all overlays above
 - default = nixpkgs
 
-
-### `systems`
-
-List of systems CI checks are run on.
-
-
-### `nixpkgs`
-
-Attribute set with all pkgs of nixpkgs and applied overlays per system.
-
-
-### `packages` ❄️
-
-Packages with overlays for `systems`.
-
-
-### `devShells` ❄️
-
-- default: all `packages` in PATH
-
-
-### `legacyPackages`
-
-A system can register `self` + a `default.nix` as `nixpkgs` to obtain equal store
-paths for `flake` and regular `nix` commands.
+### `templates` ❄️
 
 ```
 nix flake init -t github:ahirner/nix-trickle#pure-system
 ```
-
-### `templates` ❄️
 
 - pure-system: Example configuration for pure flake systems based on `nix-trickle`
 - devShell: Example devShell based on `nix-trickle`
@@ -72,3 +46,29 @@ nix flake init -t github:ahirner/nix-trickle#pure-system
 
 - default: pure and modern `nix` system
 - bin-cache: substituter and public key in `nix.settings` for `nix-trickle` builds
+
+
+### `systems`
+
+List of systems CI checks are run on.
+
+
+### `nixpkgs`
+
+Attribute set with all pkgs of nixpkgs and applied overlays per `system`.
+
+
+### `packages` ❄️
+
+Packages with overlays for all `systems`.
+
+
+### `devShells` ❄️
+
+- default: all `packages` in PATH
+
+
+### `lib.eachSystem'`
+
+Generate `${attr}{system}` given a `fn: {pkgs, system} -> attr`;
+
