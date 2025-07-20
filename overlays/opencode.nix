@@ -11,10 +11,10 @@ in {
   opencode = pkgs.opencode.overrideAttrs (finalAttrs: prev: let
     opencode-node-modules-hash = {
       "x86_64-darwin" = "sha256-AN1Ha/les1ByJGfVkLDibfxjPouC0tAZ//EN3vDi1Hc=";
+      "x86_64-linux" = "sha256-XIRV1QrgRHnpJyrgK9ITxH61dve7nWfVoCPs3Tc8nuU";
       # todo: other hashes
       "aarch64-darwin" = "";
       "aarch64-linux" = "";
-      "x86_64-linux" = "";
     };
     version = "0.3.43";
     src = pkgs.fetchFromGitHub {
