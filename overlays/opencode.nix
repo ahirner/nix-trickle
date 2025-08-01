@@ -10,25 +10,27 @@ final: prev: let
 in {
   opencode = pkgs.opencode.overrideAttrs (finalAttrs: prev: let
     opencode-node-modules-hash = {
-      "x86_64-darwin" = "sha256-xu7iiXbg3Wr7A+joilIC2+tk29BXUJydTjohTenyHNU=";
-      "x86_64-linux" = "sha256-mapp+765B/Tgfg38GmPaKDXMwE1Zx/mxlXwxZ4+zfvk=";
+      "x86_64-darwin" = "sha256-lZRV/CqGXgvAtzFZS4w9ry5yqHT4EYuQ4exuDdXCxBY=";
+      "x86_64-linux" = "sha256-qW/5VKxGuIARVOMPflET74mvIMootj4QHBt2X9sH094=";
       # todo: other hashes
       "aarch64-darwin" = "";
       "aarch64-linux" = "";
     };
-    version = "0.3.71";
+    version = "0.3.110";
     src = pkgs.fetchFromGitHub {
       owner = "sst";
       repo = "opencode";
       tag = "v${version}";
-      hash = "sha256-iVIWG53Gd2aATXzijAAIW5qT7YfYZwm62Y6I4dDVWGU=";
+      hash = "sha256-2fvUSbQWBxjXLRfVFwJ6VNO2tx+qGa+IDRCSwFPqw+o=";
     };
   in {
     inherit version src;
     tui = prev.tui.overrideAttrs (prev: {
-      inherit (finalAttrs) version;
-      src = "${finalAttrs.src}/packages/tui";
-      vendorHash = "sha256-0nKjp9CuqnhWfsqgwsfdCdx7pR2kzr+WEP5c990ow3Y=";
+      # root src to fix reachging out to ../sdk/go introduced in https://github.com/sst/opencode/commit/a5b20f9
+      inherit (finalAttrs) version src;
+      sourceRoot = "source/packages/tui";
+
+      vendorHash = "sha256-nBwYVaBau1iTnPY3d5F/5/ENyjMCikpQYNI5whEJwBk=";
     });
     node_modules = prev.node_modules.overrideAttrs (prev: {
       inherit (finalAttrs) version src;
