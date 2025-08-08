@@ -10,18 +10,18 @@ final: prev: let
 in {
   opencode = pkgs.opencode.overrideAttrs (finalAttrs: prev: let
     opencode-node-modules-hash = {
-      "x86_64-darwin" = "sha256-lZRV/CqGXgvAtzFZS4w9ry5yqHT4EYuQ4exuDdXCxBY=";
-      "x86_64-linux" = "sha256-qW/5VKxGuIARVOMPflET74mvIMootj4QHBt2X9sH094=";
+      "x86_64-darwin" = "sha256-4NaHXeWf57dGVV+KP3mBSIUkbIApT19BuADT0E4X+rg=";
+      "x86_64-linux" = "sha256-7Hc3FJcg2dA8AvGQlS082fO1ehGBMPXWPF8N+sAHh2I=";
       # todo: other hashes
       "aarch64-darwin" = "";
       "aarch64-linux" = "";
     };
-    version = "0.3.110";
+    version = "0.4.1";
     src = pkgs.fetchFromGitHub {
       owner = "sst";
       repo = "opencode";
       tag = "v${version}";
-      hash = "sha256-2fvUSbQWBxjXLRfVFwJ6VNO2tx+qGa+IDRCSwFPqw+o=";
+      hash = "sha256-LEFmfsqhCuGcRK7CEPZb6EZfjOHAyYpUHptXu04fjpQ=";
     };
   in {
     inherit version src;
@@ -30,7 +30,7 @@ in {
       inherit (finalAttrs) version src;
       sourceRoot = "source/packages/tui";
 
-      vendorHash = "sha256-nBwYVaBau1iTnPY3d5F/5/ENyjMCikpQYNI5whEJwBk=";
+      vendorHash = "sha256-jGaTgKyAvBMt8Js5JrPFUayhVt3QhgyclFoNatoHac4=";
     });
     node_modules = prev.node_modules.overrideAttrs (prev: {
       inherit (finalAttrs) version src;
