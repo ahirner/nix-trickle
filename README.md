@@ -26,7 +26,6 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 
 - nixpkgs/[spiced](https://docs.spiceai.org): add slim build of spiceai's Rust dameon
 - nixpkgs/[sqruff](https://github.com/quarylabs/sqruff): newer
-- nixpkgs/[opencode](https://opencode.ai): newer
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs/[vector](https://vector.dev): fixes for darwin x86
 - nixpgks/[micromamba](https://github.com/mamba-org/micromamba-releases): fixes for darwin
