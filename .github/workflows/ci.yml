@@ -57,5 +57,5 @@ jobs:
     - uses: cachix/install-nix-action@v30
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - run: nix fmt
+    - run: nix fmt .
     - run: git diff --exit-code
