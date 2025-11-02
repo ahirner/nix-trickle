@@ -24,6 +24,7 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 
 ### `overlays` ❄️
 
+- nixpkgs/[turso_cli](https://turso.tech): add turosdb bin
 - nixpkgs/[spiced](https://docs.spiceai.org): add slim build of spiceai's Rust dameon
 - nixpkgs/[sqruff](https://github.com/quarylabs/sqruff): newer
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
