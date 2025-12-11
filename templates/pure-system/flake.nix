@@ -1,7 +1,7 @@
 {
   inputs.nix-trickle.url = "github:ahirner/nix-trickle";
   inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
-  inputs.darwin.url = "github:lnl7/nix-darwin";
+  inputs.darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
   inputs.home-manager = {
     url = "github:nix-community/home-manager";
     inputs.nixpkgs.follows = "nix-trickle/nixpkgs";
