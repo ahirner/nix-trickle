@@ -54,6 +54,104 @@ final: prev: let
     dependencies = with python3.pkgs; [ flask ];
   };
 
+  flask-sqlalchemy = python3.pkgs.buildPythonPackage rec {
+    pname = "Flask-SQLAlchemy";
+    version = "3.0.5";
+    src = prev.fetchPypi {
+      pname = "flask_sqlalchemy";
+      inherit version;
+      hash = "sha256-xXZeWMoUVAG1IQbA9GF4VpJDxdolVWviwjHsxghnxbE=";
+    };
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools wheel flit-core ];
+    doCheck = false;
+    dependencies = with python3.pkgs; [
+      flask
+      sqlalchemy_1_4
+    ];
+  };
+
+  marshmallow-sqlalchemy = python3.pkgs.buildPythonPackage rec {
+    pname = "marshmallow-sqlalchemy";
+    version = "0.29.0";
+    src = prev.fetchPypi {
+      pname = "marshmallow-sqlalchemy";
+      inherit version;
+      hash = "sha256-NSOndDkO8MHA98cIp1GYCcU5bPYIcg8U9Vw290/1u+w=";
+    };
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools wheel ];
+    doCheck = false;
+    dependencies = with python3.pkgs; [
+      marshmallow
+      sqlalchemy_1_4
+    ];
+  };
+
+  hashids = python3.pkgs.buildPythonPackage rec {
+    pname = "hashids";
+    version = "1.3.1";
+    src = prev.fetchPypi {
+      pname = "hashids";
+      inherit version;
+      hash = "sha256-bD3HdeZe/CziwVemWst3bWNMuBRZj0BkaavvAK4/Y1w=";
+    };
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools wheel flit-core ];
+    doCheck = false;
+  };
+
+  python-geohash = python3.pkgs.buildPythonPackage rec {
+    pname = "python-geohash";
+    version = "0.8.5";
+    src = prev.fetchPypi {
+      pname = "python-geohash";
+      inherit version;
+      hash = "sha256-BaIfz07aGl7dvSkYkK3iP8Xdqmu5jy7iPS04TtFPCG0=";
+    };
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools wheel ];
+    doCheck = false;
+  };
+
+  shillelagh = python3.pkgs.buildPythonPackage rec {
+    pname = "shillelagh";
+    version = "1.3.1"; # Using a version that satisfies superset's requirement >=1.4.3 is problematic if not easily available, let's try latest on pypi
+    # Superset wants shillelagh[gsheetsapi]>=1.4.3, <2.0
+    # Let's target 1.4.3
+    src = prev.fetchPypi {
+      pname = "shillelagh";
+      version = "1.3.0";
+      hash = "sha256-4cD+xthzYCJ7XhoRNZOBG6NrkPMAv12aAEDnmTey76c=";
+    };
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools wheel setuptools-scm ];
+    doCheck = false;
+    dependencies = with python3.pkgs; [
+        # minimal deps for now
+        apsw
+        requests
+        requests-cache
+        sqlalchemy_1_4
+        python-dateutil
+        greenlet
+    ];
+  };
+
+  wtforms-json = python3.pkgs.buildPythonPackage rec {
+    pname = "wtforms-json";
+    version = "0.3.5";
+    src = prev.fetchPypi {
+      pname = "WTForms-JSON";
+      inherit version;
+      hash = "sha256-eCcoUmo5Y+nNhZSIlBhb/1UjPz0GgVUXVGXOzsCdIjQ=";
+    };
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools wheel ];
+    doCheck = false;
+    dependencies = with python3.pkgs; [ wtforms six ];
+  };
+
   flask-appbuilder = python3.pkgs.buildPythonPackage rec {
     pname = "flask-appbuilder";
     version = "5.0.2";
@@ -90,13 +188,15 @@ in {
     pyproject = true;
     build-system = with python3.pkgs; [setuptools wheel];
 
-    dependencies = [ flask-appbuilder flask-login sqlalchemy-utils python3.pkgs.sqlalchemy_1_4 ] ++ (with python3.pkgs; [
+    dependencies = [ flask-appbuilder flask-login hashids python-geohash shillelagh sqlalchemy-utils python3.pkgs.sqlalchemy_1_4 wtforms-json ] ++ (with python3.pkgs; [
       backoff
       celery
       click
+      click-option-group
       colorama
       flask-cors
       croniter
+      cron-descriptor
       cryptography
       deprecation
       flask
@@ -117,19 +217,19 @@ in {
       markdown
       marshmallow
       msgpack
+      nh3
       numpy
-      packaging
       pandas
       bottleneck
       parsedatetime
       paramiko
+      pgsanity
       pillow
-      # polyline
+      polyline
       pydantic
       pyparsing
       python-dateutil
       python-dotenv
-      # python-geohash
       pyarrow
       pyyaml
       pyjwt
@@ -143,9 +243,9 @@ in {
       typing-extensions
       watchdog
       wtforms
-      # wtforms-json
       xlsxwriter
     ]);
+
 
     meta = {
       description = "Data Visualization and Exploration Platform";
