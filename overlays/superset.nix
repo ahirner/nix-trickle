@@ -4,7 +4,14 @@ final: prev: let
 
   pname = "superset";
   version = "6.0.0rc4";
-  src = prev.fetchFromGitHub {
+  src = prev.fetchPypi {
+    pname = "apache_superset";
+    inherit version;
+    hash = "sha256-aBsien9L9YV0KS8B89uUUxK1NmB02yA6ralDSu3WMg8=";
+  };
+
+  # Fetch tests from GitHub since they are missing in PyPI package
+  srcTests = prev.fetchFromGitHub {
     owner = "apache";
     repo = pname;
     rev = "${version}";
@@ -186,9 +193,8 @@ final: prev: let
       dependencies = [
         alembic
         flask-sqlalchemy
-      ] ++ (with python3.pkgs; [
-        flask
-      ]);
+        python3.pkgs.flask
+      ];
     };
 
     flask-appbuilder = python3.pkgs.buildPythonPackage rec {
@@ -223,7 +229,7 @@ final: prev: let
   };
 in {
   superset = python3.pkgs.buildPythonApplication {
-    inherit src pname version;
+    inherit src pname version srcTests;
 
     postPatch = ''
       # Relax dependencies
@@ -247,6 +253,79 @@ in {
 
     pyproject = true;
     build-system = with python3.pkgs; [setuptools wheel];
+
+    nativeCheckInputs = with python3.pkgs; [
+      pytest
+      pytest-mock
+      freezegun
+      prev.curl
+    ];
+
+    doCheck = true;
+    checkPhase = ''
+      export HOME=$(mktemp -d)
+      export SUPERSET_HOME=$HOME
+
+      cp -r $srcTests/tests .
+
+      # Run specific unit tests that don't require external services
+      pytest tests/unit_tests/utils/date_parser_tests.py
+      pytest tests/unit_tests/utils/json_tests.py
+    '';
+
+    # Using postInstall to run the initialization check after the package is installed
+    # This ensures the binary is available and works correctly
+    postInstall = ''
+      set -e
+      export SUPERSET_SECRET_KEY="testing_secret_key_12345"
+      export SUPERSET_HOME=$(mktemp -d)
+      export PATH=$out/bin:$PATH
+
+      echo "Running superset version..."
+      superset version
+
+      echo "Running db upgrade..."
+      superset db upgrade
+
+      echo "Creating admin user..."
+      superset fab create-admin \
+          --username admin \
+          --firstname Superset \
+          --lastname Admin \
+          --email admin@superset.com \
+          --password admin
+
+      echo "Initializing roles..."
+      superset init
+
+      echo "Starting server for integration check..."
+      superset run -p 8088 --with-threads > superset.log 2>&1 &
+      SERVER_PID=$!
+
+      echo "Waiting for server to start..."
+      for i in {1..30}; do
+        if curl -s -o /dev/null http://localhost:8088/health; then
+          echo "Server is up!"
+          break
+        fi
+        if ! kill -0 $SERVER_PID 2>/dev/null; then
+          echo "Server died unexpectedly!"
+          cat superset.log
+          exit 1
+        fi
+        sleep 2
+      done
+
+      if ! curl -s -o /dev/null http://localhost:8088/health; then
+        echo "Server failed to start in time"
+        cat superset.log
+        kill $SERVER_PID || true
+        exit 1
+      fi
+
+      echo "Integration check passed: /health endpoint reachable"
+      kill $SERVER_PID || true
+    '';
 
     dependencies =
       (builtins.attrValues customDeps)
@@ -323,7 +402,7 @@ in {
       mainProgram = "superset";
     };
 
+    # saves ca. 10min build time:
     dontStrip = true;
-    dontCheckRuntimeDeps = true;
   };
 }
