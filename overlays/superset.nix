@@ -11,211 +11,215 @@ final: prev: let
     hash = "sha256-lHHbSBSPT8UUAYmlpDHuwdhyy8u4/emydoPa9G8uXZ8=";
   };
 
-  sqlalchemy-utils = python3.pkgs.buildPythonPackage rec {
-    pname = "SQLAlchemy-Utils";
-    version = "0.38.3";
-    src = prev.fetchPypi {
+  customDeps = rec {
+    # Custom overrides
+    sqlalchemy-utils = python3.pkgs.buildPythonPackage rec {
       pname = "SQLAlchemy-Utils";
-      inherit version;
-      hash = "sha256-n5r7pgekBFXPcDrfqYRlhL8mFooMWmCnAGO3DWUFH00=";
+      version = "0.38.3";
+      src = prev.fetchPypi {
+        pname = "SQLAlchemy-Utils";
+        inherit version;
+        hash = "sha256-n5r7pgekBFXPcDrfqYRlhL8mFooMWmCnAGO3DWUFH00=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = [python3.pkgs.sqlalchemy_1_4];
     };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = [python3.pkgs.sqlalchemy_1_4];
-  };
 
-  prison = python3.pkgs.buildPythonPackage rec {
-    pname = "prison";
-    version = "0.2.1";
-    src = prev.fetchPypi {
+    prison = python3.pkgs.buildPythonPackage rec {
       pname = "prison";
-      inherit version;
-      hash = "sha256-5s1yQESvyxqKaTQMrS8eMVGlg5/TqAJ/0TV1ceeXxZk=";
+      version = "0.2.1";
+      src = prev.fetchPypi {
+        pname = "prison";
+        inherit version;
+        hash = "sha256-5s1yQESvyxqKaTQMrS8eMVGlg5/TqAJ/0TV1ceeXxZk=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = with python3.pkgs; [six];
     };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python3.pkgs; [six];
-  };
 
-  flask-login = python3.pkgs.buildPythonPackage rec {
-    pname = "Flask-Login";
-    version = "0.6.3";
-    src = prev.fetchPypi {
+    flask-login = python3.pkgs.buildPythonPackage rec {
       pname = "Flask-Login";
-      inherit version;
-      hash = "sha256-XiPRSmB+8SgGxplZC4nQ8ODWe67sWZ11lHv5wUczAzM=";
+      version = "0.6.3";
+      src = prev.fetchPypi {
+        pname = "Flask-Login";
+        inherit version;
+        hash = "sha256-XiPRSmB+8SgGxplZC4nQ8ODWe67sWZ11lHv5wUczAzM=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = with python3.pkgs; [flask];
     };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python3.pkgs; [flask];
-  };
 
-  flask-sqlalchemy = python3.pkgs.buildPythonPackage rec {
-    pname = "Flask-SQLAlchemy";
-    version = "3.0.5";
-    src = prev.fetchPypi {
-      pname = "flask_sqlalchemy";
-      inherit version;
-      hash = "sha256-xXZeWMoUVAG1IQbA9GF4VpJDxdolVWviwjHsxghnxbE=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel flit-core];
-    doCheck = false;
-    dependencies = with python3.pkgs; [
-      flask
-      sqlalchemy_1_4
-    ];
-  };
-
-  marshmallow-sqlalchemy = python3.pkgs.buildPythonPackage rec {
-    pname = "marshmallow-sqlalchemy";
-    version = "0.29.0";
-    src = prev.fetchPypi {
-      pname = "marshmallow-sqlalchemy";
-      inherit version;
-      hash = "sha256-NSOndDkO8MHA98cIp1GYCcU5bPYIcg8U9Vw290/1u+w=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python3.pkgs; [
-      marshmallow
-      sqlalchemy_1_4
-    ];
-  };
-
-  hashids = python3.pkgs.buildPythonPackage rec {
-    pname = "hashids";
-    version = "1.3.1";
-    src = prev.fetchPypi {
-      pname = "hashids";
-      inherit version;
-      hash = "sha256-bD3HdeZe/CziwVemWst3bWNMuBRZj0BkaavvAK4/Y1w=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel flit-core];
-    doCheck = false;
-  };
-
-  python-geohash = python3.pkgs.buildPythonPackage rec {
-    pname = "python-geohash";
-    version = "0.8.5";
-    src = prev.fetchPypi {
-      pname = "python-geohash";
-      inherit version;
-      hash = "sha256-BaIfz07aGl7dvSkYkK3iP8Xdqmu5jy7iPS04TtFPCG0=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-  };
-
-  shillelagh = python3.pkgs.buildPythonPackage rec {
-    pname = "shillelagh";
-    version = "1.4.3";
-    src = prev.fetchPypi {
-      pname = "shillelagh";
-      inherit version;
-      hash = "sha256-14t8gES7EdT7kmOSpJWQfDTOxx1uQ41dEC4b/YQsMfc=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel setuptools-scm];
-    doCheck = false;
-    dependencies = with python3.pkgs; [
-      apsw
-      requests
-      requests-cache
-      sqlalchemy_1_4
-      python-dateutil
-      greenlet
-      google-auth
-    ];
-  };
-
-  wtforms-json = python3.pkgs.buildPythonPackage rec {
-    pname = "wtforms-json";
-    version = "0.3.5";
-    src = prev.fetchPypi {
-      pname = "WTForms-JSON";
-      inherit version;
-      hash = "sha256-eCcoUmo5Y+nNhZSIlBhb/1UjPz0GgVUXVGXOzsCdIjQ=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python3.pkgs; [wtforms six];
-  };
-
-  alembic = python3.pkgs.buildPythonPackage rec {
-    pname = "alembic";
-    version = "1.13.3";
-    src = prev.fetchPypi {
-      pname = "alembic";
-      inherit version;
-      hash = "sha256-IDUDEXQVVh4gOqFFQXQGQ6YR9kFRfwIJ/K5j6foJ8aI=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python3.pkgs; [
-      mako
-      python-dateutil
-      sqlalchemy_1_4
-      typing-extensions
-    ];
-  };
-
-  flask-migrate = python3.pkgs.buildPythonPackage rec {
-    pname = "Flask-Migrate";
-    version = "4.0.7";
-    src = prev.fetchPypi {
-      pname = "Flask-Migrate";
-      inherit version;
-      hash = "sha256-3/fdJRE8IQsGmvKA6nE7iD84QMHjRVJ0dF1zVXeMhiI=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python3.pkgs; [
-      alembic
-      flask
-      flask-sqlalchemy
-    ];
-  };
-
-  flask-appbuilder = python3.pkgs.buildPythonPackage rec {
-    pname = "flask-appbuilder";
-    version = "5.0.2";
-    src = prev.fetchPypi {
-      pname = "flask_appbuilder";
-      inherit version;
-      hash = "sha256-9Xe5gqGuQLwhMjjO25PDnGfPIZmqHgBuCH6hs1B9VFA=";
-    };
-    pyproject = true;
-    build-system = with python3.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies =
-      [flask-login prison sqlalchemy-utils python3.pkgs.sqlalchemy_1_4]
-      ++ (with python3.pkgs; [
-        apispec
-        colorama
-        click
-        email-validator
+    flask-sqlalchemy = python3.pkgs.buildPythonPackage rec {
+      pname = "Flask-SQLAlchemy";
+      version = "3.0.5";
+      src = prev.fetchPypi {
+        pname = "flask_sqlalchemy";
+        inherit version;
+        hash = "sha256-xXZeWMoUVAG1IQbA9GF4VpJDxdolVWviwjHsxghnxbE=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel flit-core];
+      doCheck = false;
+      dependencies = with python3.pkgs; [
         flask
-        flask-babel
-        flask-limiter
-        flask-sqlalchemy
-        flask-wtf
-        flask-jwt-extended
-        jsonschema
+        sqlalchemy_1_4
+      ];
+    };
+
+    marshmallow-sqlalchemy = python3.pkgs.buildPythonPackage rec {
+      pname = "marshmallow-sqlalchemy";
+      version = "0.29.0";
+      src = prev.fetchPypi {
+        pname = "marshmallow-sqlalchemy";
+        inherit version;
+        hash = "sha256-NSOndDkO8MHA98cIp1GYCcU5bPYIcg8U9Vw290/1u+w=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = with python3.pkgs; [
         marshmallow
-        marshmallow-sqlalchemy
+        sqlalchemy_1_4
+      ];
+    };
+
+    hashids = python3.pkgs.buildPythonPackage rec {
+      pname = "hashids";
+      version = "1.3.1";
+      src = prev.fetchPypi {
+        pname = "hashids";
+        inherit version;
+        hash = "sha256-bD3HdeZe/CziwVemWst3bWNMuBRZj0BkaavvAK4/Y1w=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel flit-core];
+      doCheck = false;
+    };
+
+    python-geohash = python3.pkgs.buildPythonPackage rec {
+      pname = "python-geohash";
+      version = "0.8.5";
+      src = prev.fetchPypi {
+        pname = "python-geohash";
+        inherit version;
+        hash = "sha256-BaIfz07aGl7dvSkYkK3iP8Xdqmu5jy7iPS04TtFPCG0=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = with python3.pkgs; [setuptools];
+    };
+
+    shillelagh = python3.pkgs.buildPythonPackage rec {
+      pname = "shillelagh";
+      version = "1.4.3";
+      src = prev.fetchPypi {
+        pname = "shillelagh";
+        inherit version;
+        hash = "sha256-14t8gES7EdT7kmOSpJWQfDTOxx1uQ41dEC4b/YQsMfc=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel setuptools-scm];
+      doCheck = false;
+      dependencies = with python3.pkgs; [
+        apsw
+        requests
+        requests-cache
+        sqlalchemy_1_4
         python-dateutil
-        pyjwt
+        greenlet
+        google-auth
+        google-api-python-client
+      ];
+    };
+
+    wtforms-json = python3.pkgs.buildPythonPackage rec {
+      pname = "wtforms-json";
+      version = "0.3.5";
+      src = prev.fetchPypi {
+        pname = "WTForms-JSON";
+        inherit version;
+        hash = "sha256-eCcoUmo5Y+nNhZSIlBhb/1UjPz0GgVUXVGXOzsCdIjQ=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = with python3.pkgs; [wtforms six];
+    };
+
+    alembic = python3.pkgs.buildPythonPackage rec {
+      pname = "alembic";
+      version = "1.17.2";
+      src = prev.fetchPypi {
+        pname = "alembic";
+        inherit version;
+        hash = "sha256-u+l1FwXF4PFId/AtRsU9EIheN349kO2oEKAW+bqhno4=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = with python3.pkgs; [
+        mako
+        python-dateutil
+        sqlalchemy_1_4
+        typing-extensions
+      ];
+    };
+
+    flask-migrate = python3.pkgs.buildPythonPackage rec {
+      pname = "Flask-Migrate";
+      version = "4.1.0";
+      src = prev.fetchPypi {
+        pname = "flask_migrate";
+        inherit version;
+        hash = "sha256-GjNrBussOs4AX18t7YZB1TTBh5jWQGH2/xH3nhQ0Em0=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies = [
+        alembic
+        flask-sqlalchemy
+      ] ++ (with python3.pkgs; [
+        flask
       ]);
+    };
+
+    flask-appbuilder = python3.pkgs.buildPythonPackage rec {
+      pname = "flask-appbuilder";
+      version = "5.0.2";
+      src = prev.fetchPypi {
+        pname = "flask_appbuilder";
+        inherit version;
+        hash = "sha256-9Xe5gqGuQLwhMjjO25PDnGfPIZmqHgBuCH6hs1B9VFA=";
+      };
+      pyproject = true;
+      build-system = with python3.pkgs; [setuptools wheel];
+      doCheck = false;
+      dependencies =
+        [flask-login prison sqlalchemy-utils python3.pkgs.sqlalchemy_1_4 flask-sqlalchemy marshmallow-sqlalchemy]
+        ++ (with python3.pkgs; [
+          apispec
+          colorama
+          click
+          email-validator
+          flask
+          flask-babel
+          flask-limiter
+          flask-wtf
+          flask-jwt-extended
+          jsonschema
+          marshmallow
+          python-dateutil
+          pyjwt
+        ]);
+    };
   };
 in {
   superset = python3.pkgs.buildPythonApplication {
@@ -245,19 +249,11 @@ in {
     build-system = with python3.pkgs; [setuptools wheel];
 
     dependencies =
-      [
-        flask-appbuilder
-        flask-login
-        flask-migrate
-        hashids
-        python-geohash
-        python3.pkgs.sqlalchemy_1_4
-        shillelagh
-        sqlalchemy-utils
-        wtforms-json
-      ]
+      (builtins.attrValues customDeps)
       ++ (
         with python3.pkgs; [
+          python3.pkgs.sqlalchemy_1_4
+
           backoff
           bottleneck
           celery
@@ -276,6 +272,8 @@ in {
           flask-talisman
           flask-wtf
           geopy
+          google-auth
+          google-api-python-client
           greenlet
           gunicorn
           holidays
@@ -315,6 +313,8 @@ in {
         ]
       );
 
+    passthru.deps = customDeps;
+
     meta = {
       description = "Data Visualization and Exploration Platform";
       homepage = "https://superset.apache.org";
@@ -323,7 +323,7 @@ in {
       mainProgram = "superset";
     };
 
-    # saves ca. 10min build time:
     dontStrip = true;
+    dontCheckRuntimeDeps = true;
   };
 }
