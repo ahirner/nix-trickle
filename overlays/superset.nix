@@ -310,5 +310,8 @@ in {
       license = lib.licenses.asl20;
       mainProgram = "superset";
     };
+
+    # saves ca. 10min build time:
+    dontStrip = true;
   };
 }
