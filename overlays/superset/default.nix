@@ -187,6 +187,8 @@ in
         watchdog
         wtforms
         xlsxwriter
+        # Database Drivers
+        psycopg2
       ]);
 
     # saves ca. 10min build time:
