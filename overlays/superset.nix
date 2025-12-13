@@ -113,27 +113,25 @@ final: prev: let
     doCheck = false;
   };
 
-  shillelagh = python3.pkgs.buildPythonPackage {
+  shillelagh = python3.pkgs.buildPythonPackage rec {
     pname = "shillelagh";
-    version = "1.3.1"; # Using a version that satisfies superset's requirement >=1.4.3 is problematic if not easily available, let's try latest on pypi
-    # Superset wants shillelagh[gsheetsapi]>=1.4.3, <2.0
-    # Let's target 1.4.3
+    version = "1.4.3";
     src = prev.fetchPypi {
       pname = "shillelagh";
-      version = "1.3.0";
-      hash = "sha256-4cD+xthzYCJ7XhoRNZOBG6NrkPMAv12aAEDnmTey76c=";
+      inherit version;
+      hash = "sha256-14t8gES7EdT7kmOSpJWQfDTOxx1uQ41dEC4b/YQsMfc=";
     };
     pyproject = true;
     build-system = with python3.pkgs; [setuptools wheel setuptools-scm];
     doCheck = false;
     dependencies = with python3.pkgs; [
-      # minimal deps for now
       apsw
       requests
       requests-cache
       sqlalchemy_1_4
       python-dateutil
       greenlet
+      google-auth
     ];
   };
 
@@ -236,7 +234,6 @@ in {
       sed -i 's/"Pillow>=[^"]*"/"Pillow"/g' pyproject.toml
       sed -i 's/"pyarrow>=[^"]*"/"pyarrow"/g' pyproject.toml
       sed -i 's/"redis>=[^"]*"/"redis"/g' pyproject.toml
-      sed -i 's/"shillelagh\[gsheetsapi\]>=[^"]*"/"shillelagh[gsheetsapi]"/g' pyproject.toml
       sed -i 's/"xlsxwriter>=[^"]*"/"xlsxwriter"/g' pyproject.toml
 
       # Fix for numpy 2.0 (AttributeError: module 'numpy' has no attribute 'product')
