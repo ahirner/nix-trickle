@@ -71,7 +71,7 @@
             lib.attrsets.nameValuePair
             name
             (pkgs.dockerTools.streamLayeredImage {
-              contents = [pkgs.cacert];
+              contents = [pkgs.cacert pkgs.busybox];
               inherit name;
               tag = "latest";
               config = {Entrypoint = ["${lib.getExe package}"];};
