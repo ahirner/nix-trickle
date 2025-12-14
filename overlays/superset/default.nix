@@ -1,6 +1,6 @@
 {
   lib,
-  buildPythonApplication,
+  buildPythonPackage,
   fetchPypi,
   fetchFromGitHub,
   python,
@@ -27,7 +27,7 @@
     hash = "sha256-lHHbSBSPT8UUAYmlpDHuwdhyy8u4/emydoPa9G8uXZ8=";
   };
 in
-  buildPythonApplication {
+  buildPythonPackage {
     inherit pname version src;
 
     postPatch = ''
