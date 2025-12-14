@@ -3,6 +3,7 @@ final: prev: let
   supersetEnv = prev.python3.withPackages (ps: [
     supersetBase
     ps.granian
+    prev.busybox
   ]);
 in {
   superset = supersetBase.overrideAttrs (old: {
