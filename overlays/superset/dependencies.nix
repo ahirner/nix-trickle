@@ -209,4 +209,30 @@
         pyjwt
       ]);
   };
+
+  flightsql-dbapi = python.pkgs.buildPythonPackage rec {
+    pname = "flightsql-dbapi";
+    version = "0.2.2";
+    src = fetchPypi {
+      pname = "flightsql_dbapi";
+      inherit version;
+      sha256 = "b6de4d81fa31e7357507c3d493be31c4e68672dd1b4a2a4554463ac4450e5851";
+    };
+    pyproject = true;
+    build-system = with python.pkgs; [hatchling];
+    postPatch = ''
+            substituteInPlace pyproject.toml --replace-fail "hatchling<=1.18.0" "hatchling"
+            cat >> pyproject.toml <<EOF
+
+      [tool.hatch.build.targets.wheel]
+      packages = ["flightsql"]
+      EOF
+    '';
+    #doCheck = false;
+    dependencies = with python.pkgs; [
+      protobuf
+      sqlalchemy_1_4
+      pyarrow
+    ];
+  };
 }
