@@ -9,10 +9,13 @@ in {
     passthru =
       (old.passthru or {})
       // {
-        granian = prev.writeShellScriptBin "superset-granian" ''
-          export PATH=${supersetEnv}/bin:$PATH
-          exec ${supersetEnv}/bin/python -m granian --factory --interface wsgi "superset.app:create_app" "$@"
-        '';
+        granian =
+          (prev.writeShellScriptBin "superset-granian" ''
+            export PATH=${supersetEnv}/bin:$PATH
+            exec ${supersetEnv}/bin/python -m granian --factory --interface wsgi "superset.app:create_app" "$@"
+          '').overrideAttrs (old: {
+            version = supersetBase.version;
+          });
       };
   });
 }

@@ -10,7 +10,7 @@ jobs:
   docker-push:
     strategy:
       matrix:
-        image: [spiced]
+        image: [spiced superset-granian]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
