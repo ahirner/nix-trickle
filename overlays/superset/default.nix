@@ -43,6 +43,7 @@ in
       sed -i 's/"Pillow>=[^"]*"/"Pillow"/g' pyproject.toml
       sed -i 's/"pyarrow>=[^"]*"/"pyarrow"/g' pyproject.toml
       sed -i 's/"redis>=[^"]*"/"redis"/g' pyproject.toml
+      sed -i 's/"sqlalchemy-utils>=[^"]*"/"sqlalchemy-utils"/g' pyproject.toml
       sed -i 's/"xlsxwriter>=[^"]*"/"xlsxwriter"/g' pyproject.toml
 
       # Fix for numpy 2.0 (AttributeError: module 'numpy' has no attribute 'product')

@@ -5,11 +5,11 @@
   # Custom overrides
   sqlalchemy-utils = python.pkgs.buildPythonPackage rec {
     pname = "SQLAlchemy-Utils";
-    version = "0.38.3";
+    version = "0.42.1";
     src = fetchPypi {
-      pname = "SQLAlchemy-Utils";
+      pname = "sqlalchemy_utils";
       inherit version;
-      hash = "sha256-n5r7pgekBFXPcDrfqYRlhL8mFooMWmCnAGO3DWUFH00=";
+      hash = "sha256-iB+c2eUETcj4J7zLBCXOLlVJDORPwLuEjFXMjuRMwC4=";
     };
     pyproject = true;
     build-system = with python.pkgs; [setuptools wheel];
@@ -54,7 +54,7 @@
       hash = "sha256-xXZeWMoUVAG1IQbA9GF4VpJDxdolVWviwjHsxghnxbE=";
     };
     pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel flit-core];
+    build-system = with python.pkgs; [flit-core];
     doCheck = false;
     dependencies = with python.pkgs; [
       flask
@@ -64,14 +64,14 @@
 
   marshmallow-sqlalchemy = python.pkgs.buildPythonPackage rec {
     pname = "marshmallow-sqlalchemy";
-    version = "0.29.0";
+    version = "1.4.2";
     src = fetchPypi {
-      pname = "marshmallow-sqlalchemy";
+      pname = "marshmallow_sqlalchemy";
       inherit version;
-      hash = "sha256-NSOndDkO8MHA98cIp1GYCcU5bPYIcg8U9Vw290/1u+w=";
+      hash = "sha256-ZBAwS/mOwm6jXz+dPO6C5R/Qk8Q0YSrdMqC9zbVmj3w=";
     };
     pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
+    build-system = with python.pkgs; [flit-core];
     doCheck = false;
     dependencies = with python.pkgs; [
       marshmallow
@@ -88,7 +88,7 @@
       hash = "sha256-bD3HdeZe/CziwVemWst3bWNMuBRZj0BkaavvAK4/Y1w=";
     };
     pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel flit-core];
+    build-system = with python.pkgs; [flit-core];
     doCheck = false;
   };
 
