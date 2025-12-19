@@ -11,12 +11,12 @@
   };
   pname = "superset";
   versionBase = "6.0.0";
-  rc = "rc4";
+  rc = "";
   version = "${versionBase}${rc}";
   src = fetchPypi {
     inherit version;
     pname = "apache_superset";
-    hash = "sha256-aBsien9L9YV0KS8B89uUUxK1NmB02yA6ralDSu3WMg8=";
+    hash = "sha256-K+2pzFYdyildS6CZVK32lFuYKwM9nHwup3lj+7bDNdo=";
   };
 
   # Fetch tests from GitHub since they are missing in PyPI package
@@ -32,9 +32,9 @@ in
 
     postPatch = ''
       # Relax dependencies
+      sed -i 's/"flask-cors>=[^"]*"/"flask-cors"/g' pyproject.toml
       sed -i 's/"cryptography>=[^"]*"/"cryptography"/g' pyproject.toml
       sed -i 's/"flask>=[^"]*"/"flask"/g' pyproject.toml
-      sed -i 's/"flask-cors>=[^"]*"/"flask-cors"/g' pyproject.toml
       sed -i 's/"flask-migrate>=[^"]*"/"flask-migrate"/g' pyproject.toml
       sed -i 's/"greenlet>=[^"]*"/"greenlet"/g' pyproject.toml
       sed -i 's/"msgpack>=[^"]*"/"msgpack"/g' pyproject.toml
