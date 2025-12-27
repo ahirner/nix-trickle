@@ -29,7 +29,6 @@ nix flake init -t github:ahirner/nix-trickle#devShell
 - nixpkgs/[sqruff](https://github.com/quarylabs/sqruff): newer
 - nixpkgs/[pspg](https://github.com/okbob/pspg): updates querystream on file changes (--querystream -f query.sql)
 - nixpkgs/[vector](https://vector.dev): fixes for darwin x86
-- nixpgks/[micromamba](https://github.com/mamba-org/micromamba-releases): fixes for darwin
 - nixpkgs: all overlays above
 - default = nixpkgs
 
