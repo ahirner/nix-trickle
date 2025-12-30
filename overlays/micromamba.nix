@@ -1,26 +1,14 @@
-final: prev: let
-  pkgs = prev;
-  # https://github.com/gulrak/filesystem/issues/182
-  ghc_filesystem' = pkgs.ghc_filesystem.overrideAttrs (old: {
-    src = pkgs.fetchFromGitHub {
-      owner = "gulrak";
-      repo = "filesystem";
-      rev = "master";
-      hash = "sha256-v/7iOoWEkacU3rdaG/3UmsrpZRqb7wY9WrP8bEGTXYU=";
-    };
-  });
-  micrombamba' = pkgs.micromamba.overrideAttrs (
+final: prev: {
+  micromamba = prev.micromamba.overrideAttrs (
     old: {
-      buildInputs =
-        (builtins.filter (x: x != prev.ghc_filesystem) old.buildInputs)
-        ++ [
-          ghc_filesystem'
-        ];
+      # doesn't matter :shrug: https://github.com/gulrak/filesystem/issues/182
+      buildInputs = builtins.filter (x: x != prev.ghc_filesystem) old.buildInputs;
+      src = prev.fetchFromGitHub {
+        owner = "mamba-org";
+        repo = "mamba";
+        rev = "1.x";
+        hash = "sha256-JdJ3ymDoiU/+r3UYFhyqG/TvDz9gBgKSdnrZS1369l8=";
+      };
     }
   );
-in {
-  micromamba =
-    if !pkgs.stdenv.isDarwin
-    then pkgs.micromamba
-    else micrombamba';
 }

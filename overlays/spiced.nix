@@ -1,9 +1,5 @@
 final: prev: let
-  inherit (prev) lib fetchFromGitHub stdenv;
-  rustPlatform = prev.makeRustPlatform {
-    cargo = prev.rust-bin.stable.latest.default;
-    rustc = prev.rust-bin.stable.latest.default;
-  };
+  inherit (prev) lib fetchFromGitHub stdenv rustPlatform;
 in {
   spiced = rustPlatform.buildRustPackage {
     pname = "spiced";
@@ -26,8 +22,7 @@ in {
     buildInputs = with prev;
       lib.optionals (! stdenv.hostPlatform.isDarwin) [openssl]
       ++ lib.optionals stdenv.hostPlatform.isDarwin [
-        darwin.apple_sdk.frameworks.Security
-        apple-sdk_15
+        apple-sdk
         # aws-lc-sys requires CryptoKit's CommonCrypto, which is available on macOS 10.15+
         # c.f: https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/co/conduwuit/package.nix
         (darwinMinVersionHook "10.15")

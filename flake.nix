@@ -4,7 +4,7 @@
   inputs = {
     # hydra: https://status.nixos.org
     # tests: https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     # buildtools
     rust-overlay = {
@@ -71,7 +71,7 @@
             lib.attrsets.nameValuePair
             name
             (pkgs.dockerTools.streamLayeredImage {
-              contents = [pkgs.cacert];
+              contents = [pkgs.cacert pkgs.busybox];
               inherit name;
               tag = "latest";
               config = {Entrypoint = ["${lib.getExe package}"];};
