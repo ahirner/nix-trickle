@@ -14,6 +14,14 @@ jobs:
         os: [ubuntu-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     steps:
+    - uses: endersonmenezes/free-disk-space@v3
+      if: matrix.os == 'ubuntu-latest'
+      with:
+        rm_cmd: "rmz"
+        remove_android: true
+        remove_dotnet: true
+        remove_haskell: true
+        remove_tool_cache: true
     - uses: actions/checkout@v5
     - uses: cachix/install-nix-action@v31
       with:
