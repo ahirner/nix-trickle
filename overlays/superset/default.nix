@@ -46,9 +46,11 @@ in
       sed -i 's/"sqlalchemy-utils>=[^"]*"/"sqlalchemy-utils"/g' pyproject.toml
       sed -i 's/"xlsxwriter>=[^"]*"/"xlsxwriter"/g' pyproject.toml
 
-      # Fix for numpy 2.0 (AttributeError: module 'numpy' has no attribute 'product')
+      # Fix for numpy 2.0 (AttributeError: module 'numpy' has no attribute 'product', np.NaN removed in favor of nan)
       substituteInPlace superset/utils/pandas_postprocessing/utils.py \
         --replace-fail "np.product" "np.prod"
+      substituteInPlace superset/common/query_context_processor.py \
+        --replace-fail "np.NaN" "np.nan"
     '';
 
     pyproject = true;
