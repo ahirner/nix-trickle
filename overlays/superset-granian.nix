@@ -10,6 +10,7 @@ final: prev: let
   '';
 in {
   superset-granian = prev.symlinkJoin {
+    inherit (superset) version;
     name = "superset-granian-${superset.version}";
     paths = [script supersetEnv];
     meta.mainProgram = "superset-granian";
