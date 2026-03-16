@@ -17,7 +17,10 @@
     }: let
       checks = with pkgs; {
         inherit micromamba grafana vector;
-        wine = if stdenv.hostPlatform.system == "aarch64-darwin" then pkgsx86_64Darwin.wineWow64Packages.staging else wineWow64Packages.staging;
+        wine =
+          if stdenv.hostPlatform.system == "aarch64-darwin"
+          then pkgsx86_64Darwin.wineWow64Packages.staging
+          else wineWow64Packages.staging;
         helix = helix.packages.${system}.default;
       };
     in {
