@@ -14,7 +14,7 @@
   };
 
   outputs = inputs @ {self, ...}: let
-    systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+    systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
 
     lib = inputs.nixpkgs.lib;
     overlayAttrs = (import ./overlays.nix {inherit lib;}) // {rustc = inputs.rust-overlay.overlays.default;};
