@@ -3,14 +3,17 @@ final: prev: let
   src = fetchFromGitHub {
     owner = "ahirner";
     repo = "spiceai";
-    rev = "feature/spice_1.10.3-rc";
-    hash = "sha256-oSSugt9pa0rs8e4wecDHiaCVTGqznP45KwGHZ0SDT4E=";
+    rev = "feature/spice-2.0.0-unstable";
+    hash = "sha256-o6rDcZwFuFTsoiYqZ/X+hjDYKhLl8qx9uO+sy9aIJgU=";
   };
 
   cleanCargoDeps = rustPlatform.fetchCargoVendor {
     inherit src;
-    name = "spiced-1.10-rc-vendor";
-    hash = "sha256-PvDuW1KBvvsC1wf3NfxEOXP3qEQGANZvNRK0gbazpYA=";
+    name = "spiced-2.0.0-unstable-vendor";
+    hash = "sha256-0MfGRd4QdUcM+u97nF5qtVEbVcaVVrUWPpSuQd59LQM=";
+    postBuild = ''
+      rm -f "$out"/git/*/candle-book/Cargo.toml
+    '';
   };
 
   patchedCargoDeps =
@@ -28,7 +31,7 @@ in {
   spiced = rustPlatform.buildRustPackage {
     inherit src;
     pname = "spiced";
-    version = "1.10-rc";
+    version = "2.0.0-unstable";
 
     cargoDeps = patchedCargoDeps;
 
