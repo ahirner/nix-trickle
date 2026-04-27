@@ -1,5 +1,9 @@
 final: prev: let
-  inherit (prev) lib fetchFromGitHub stdenv rustPlatform runCommand;
+  inherit (prev) lib fetchFromGitHub stdenv runCommand;
+  rustPlatform = prev.makeRustPlatform {
+    cargo = prev.rust-bin.stable.latest.default;
+    rustc = prev.rust-bin.stable.latest.default;
+  };
   src = fetchFromGitHub {
     owner = "ahirner";
     repo = "spiceai";
