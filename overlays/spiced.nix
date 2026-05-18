@@ -40,7 +40,7 @@ in {
     cargoDeps = patchedCargoDeps;
 
     buildNoDefaultFeatures = true;
-    buildFeatures = ["flightsql" "postgres" "sqlite" "release"];
+    buildFeatures = ["flightsql" "postgres" "sqlite" "vortex" "release"];
 
     env = {OPENSSL_NO_VENDOR = 1;};
     nativeBuildInputs = with prev; [pkg-config cmake protobuf installShellFiles rustPlatform.bindgenHook];
