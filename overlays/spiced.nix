@@ -7,14 +7,14 @@ final: prev: let
   src = fetchFromGitHub {
     owner = "ahirner";
     repo = "spiceai";
-    rev = "feature/spice-2.0.0-unstable";
-    hash = "sha256-o6rDcZwFuFTsoiYqZ/X+hjDYKhLl8qx9uO+sy9aIJgU=";
+    rev = "80de1a85348779f36c43edc93eee1e0f27e18df7";
+    hash = "sha256-jFhyWw8NNJ3o5s8w1vqr2Qzl9OlowukohYAdpQyTmKE=";
   };
 
   cleanCargoDeps = rustPlatform.fetchCargoVendor {
     inherit src;
     name = "spiced-2.0.0-unstable-vendor";
-    hash = "sha256-0MfGRd4QdUcM+u97nF5qtVEbVcaVVrUWPpSuQd59LQM=";
+    hash = "sha256-f20dBnG5znWAsJQqIEPrKAfY5rkkxM3Ixt4MZUZcivM=";
     postBuild = ''
       rm -f "$out"/git/*/candle-book/Cargo.toml
     '';
