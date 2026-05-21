@@ -10,13 +10,13 @@
     inherit fetchPypi python;
   };
   pname = "superset";
-  versionBase = "6.0.0";
+  versionBase = "6.1.0";
   rc = "";
   version = "${versionBase}${rc}";
   src = fetchPypi {
     inherit version;
     pname = "apache_superset";
-    hash = "sha256-K+2pzFYdyildS6CZVK32lFuYKwM9nHwup3lj+7bDNdo=";
+    hash = "sha256-VpduV3OGT5BuMKaJ3sJkHlVChui+hg7MHj1P9f9rLjI=";
   };
 
   # Fetch tests from GitHub since they are missing in PyPI package
@@ -24,7 +24,7 @@
     owner = "apache";
     repo = pname;
     rev = version;
-    hash = "sha256-lHHbSBSPT8UUAYmlpDHuwdhyy8u4/emydoPa9G8uXZ8=";
+    hash = "sha256-BT6tOIHR/OYFaWRG6pJbbtLbo+3qyMTSNkF+1fvGwvM=";
   };
 in
   buildPythonPackage {
@@ -32,24 +32,18 @@ in
 
     postPatch = ''
       # Relax dependencies
-      sed -i 's/"flask-cors>=[^"]*"/"flask-cors"/g' pyproject.toml
-      sed -i 's/"cryptography>=[^"]*"/"cryptography"/g' pyproject.toml
-      sed -i 's/"flask>=[^"]*"/"flask"/g' pyproject.toml
       sed -i 's/"flask-migrate>=[^"]*"/"flask-migrate"/g' pyproject.toml
       sed -i 's/"greenlet>=[^"]*"/"greenlet"/g' pyproject.toml
       sed -i 's/"msgpack>=[^"]*"/"msgpack"/g' pyproject.toml
       sed -i 's/"numpy>[^"]*"/"numpy"/g' pyproject.toml
       sed -i 's/"pandas\[excel\]>=[^"]*"/"pandas[excel]"/g' pyproject.toml
-      sed -i 's/"Pillow>=[^"]*"/"Pillow"/g' pyproject.toml
       sed -i 's/"pyarrow>=[^"]*"/"pyarrow"/g' pyproject.toml
-      sed -i 's/"redis>=[^"]*"/"redis"/g' pyproject.toml
-      sed -i 's/"sqlalchemy-utils>=[^"]*"/"sqlalchemy-utils"/g' pyproject.toml
       sed -i 's/"xlsxwriter>=[^"]*"/"xlsxwriter"/g' pyproject.toml
 
       # Fix for numpy 2.0 (AttributeError: module 'numpy' has no attribute 'product', np.NaN removed in favor of nan)
       substituteInPlace superset/utils/pandas_postprocessing/utils.py \
         --replace-fail "np.product" "np.prod"
-      substituteInPlace superset/common/query_context_processor.py \
+      substituteInPlace superset/models/helpers.py \
         --replace-fail "np.NaN" "np.nan"
     '';
 
@@ -147,7 +141,6 @@ in
         flask
         flask-caching
         flask-compress
-        flask-cors
         flask-session
         flask-talisman
         flask-wtf
@@ -179,11 +172,9 @@ in
         python-dateutil
         python-dotenv
         pyyaml
-        redis
         selenium
         simplejson
         slack-sdk
-        sqlglot
         sshtunnel
         tabulate
         typing-extensions
