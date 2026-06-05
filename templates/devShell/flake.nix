@@ -15,14 +15,17 @@
       pkgs,
       system,
     }: let
-      checks = with pkgs; {
-        inherit micromamba grafana vector;
-        wine =
-          if stdenv.hostPlatform.system == "aarch64-darwin"
-          then pkgsx86_64Darwin.wineWow64Packages.staging
-          else wineWow64Packages.staging;
-        helix = helix.packages.${system}.default;
-      };
+      checks = with pkgs;
+        {
+          inherit micromamba grafana;
+          helix = helix.packages.${system}.default;
+        }
+        // lib.optionalAttrs (stdenv.hostPlatform.system == "x86_64-linux") {
+          wine = wineWow64Packages.staging;
+        }
+        // lib.optionalAttrs (stdenv.hostPlatform.system == "aarch64-darwin") {
+          wine = pkgs.pkgsx86_64Darwin.wineWow64Packages.staging;
+        };
     in {
       inherit checks;
       devShells.default = pkgs.mkShell {
