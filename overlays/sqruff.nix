@@ -15,7 +15,6 @@ in {
       rev = "v${version}";
       hash = "sha256-a4B8X4Jv18m3NutdEgO9pIWxVfe9prTjwsyFolZrkCk=";
     };
-    useFetchCargoVendor = true;
     cargoHash = "sha256-j9yI1e/+kfuseXydSuIWmh9REYTKZfC2rd/n+OagUBs=";
 
     buildNoDefaultFeatures = true;
