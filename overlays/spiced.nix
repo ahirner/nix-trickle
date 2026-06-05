@@ -26,10 +26,11 @@ final: prev: let
     } ''
       mkdir -p $out
       find $cleanCargoDeps -maxdepth 1 -mindepth 1 -exec ln -s {} $out/ \;
-      rm $out/vortex-0.1.0
-      cp -r $cleanCargoDeps/vortex-0.1.0 $out/
-      chmod -R +w $out/vortex-0.1.0
-      sed -i 's/^#!\[doc = include_str!/\/\/ &/' $out/vortex-0.1.0/src/lib.rs
+
+      rm $out/source-git-32
+      cp -r $cleanCargoDeps/source-git-32 $out/
+      chmod -R +w $out/source-git-32
+      sed -i 's/^#!\[doc = include_str!/\/\/ &/' $out/source-git-32/vortex-0.1.0/src/lib.rs
     '';
 in {
   spiced = rustPlatform.buildRustPackage {
