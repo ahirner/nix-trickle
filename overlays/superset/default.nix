@@ -33,11 +33,14 @@ in
     postPatch = ''
       # Relax dependencies
       sed -i 's/"cryptography[<>=][^"]*"/"cryptography"/g' pyproject.toml
+      sed -i 's/"flask-cors[<>=][^"]*"/"flask-cors"/g' pyproject.toml
       sed -i 's/"flask-migrate>=[^"]*"/"flask-migrate"/g' pyproject.toml
       sed -i 's/"greenlet>=[^"]*"/"greenlet"/g' pyproject.toml
       sed -i 's/"msgpack>=[^"]*"/"msgpack"/g' pyproject.toml
       sed -i 's/"nh3[<>=][^"]*"/"nh3"/g' pyproject.toml
       sed -i 's/"numpy>[^"]*"/"numpy"/g' pyproject.toml
+      sed -i 's/"redis[<>=][^"]*"/"redis"/g' pyproject.toml
+      sed -i 's/"sqlglot>=[^"]*"/"sqlglot"/g' pyproject.toml
       sed -i 's/"pandas\[excel\]>=[^"]*"/"pandas[excel]"/g' pyproject.toml
       sed -i 's/"pyarrow>=[^"]*"/"pyarrow"/g' pyproject.toml
       sed -i 's/"xlsxwriter>=[^"]*"/"xlsxwriter"/g' pyproject.toml
@@ -173,6 +176,7 @@ in
         python-dateutil
         python-dotenv
         pyyaml
+        rich
         selenium
         simplejson
         slack-sdk

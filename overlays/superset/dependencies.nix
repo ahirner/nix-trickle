@@ -13,6 +13,9 @@
     };
     pyproject = true;
     build-system = with python.pkgs; [setuptools wheel];
+    postPatch = ''
+      sed -i 's/"sqlglot>=[^"]*"/"sqlglot"/g' pyproject.toml
+    '';
     doCheck = false;
     dependencies = with python.pkgs; [
       flask-appbuilder
@@ -24,17 +27,7 @@
     ];
   };
 
-  sqlglot = python.pkgs.buildPythonPackage rec {
-    pname = "sqlglot";
-    version = "28.10.0";
-    src = fetchPypi {
-      inherit pname version;
-      hash = "sha256-89R1kWSthUF2mAs6R+sMfvaZEY36gL7rk+AQiFY3shE=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools setuptools-scm];
-    doCheck = false;
-  };
+  sqlglot = python.pkgs.sqlglot;
 
   marshmallow = python.pkgs.buildPythonPackage rec {
     pname = "marshmallow";
@@ -74,98 +67,19 @@
     doCheck = false;
   };
 
-  redis = python.pkgs.buildPythonPackage rec {
-    pname = "redis";
-    version = "5.3.1";
-    src = fetchPypi {
-      inherit pname version;
-      hash = "sha256-yklXelMepkA5taNts9bNGgx6YMNBJNRpJKRblW6M8Uw=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python.pkgs; [pyjwt];
+  redis = python.pkgs.redis;
+
+  flask-cors = python.pkgs.flask-cors;
+
+  sqlalchemy-utils = python.pkgs.sqlalchemy-utils.override {
+    sqlalchemy = python.pkgs.sqlalchemy_1_4;
   };
 
-  # nixpkgs has 6.0.1, but its generated dist-info reports 0.0.1.
-  flask-cors = python.pkgs.buildPythonPackage rec {
-    pname = "flask-cors";
-    version = "6.0.1";
-    src = fetchPypi {
-      pname = "flask_cors";
-      inherit version;
-      hash = "sha256-2BvLMfB7CYW+f0hAYkfpJDrO0im3dHIZFgoFWe3WeNs=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python.pkgs; [flask werkzeug];
-  };
+  prison = python.pkgs.prison;
 
-  sqlalchemy-utils = python.pkgs.buildPythonPackage rec {
-    pname = "SQLAlchemy-Utils";
-    version = "0.42.1";
-    src = fetchPypi {
-      pname = "sqlalchemy_utils";
-      inherit version;
-      hash = "sha256-iB+c2eUETcj4J7zLBCXOLlVJDORPwLuEjFXMjuRMwC4=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = [python.pkgs.sqlalchemy_1_4];
-  };
+  flask-limiter = python.pkgs.flask-limiter;
 
-  prison = python.pkgs.buildPythonPackage rec {
-    pname = "prison";
-    version = "0.2.1";
-    src = fetchPypi {
-      pname = "prison";
-      inherit version;
-      hash = "sha256-5s1yQESvyxqKaTQMrS8eMVGlg5/TqAJ/0TV1ceeXxZk=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python.pkgs; [six];
-  };
-
-  flask-limiter = python.pkgs.buildPythonPackage rec {
-    pname = "Flask-Limiter";
-    version = "3.12";
-    src = fetchPypi {
-      pname = "flask_limiter";
-      inherit version;
-      hash = "sha256-+ePj0MSs0NH/v6cp4XGY3RBC9NI8EwrhYARPyTDiEwA=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    postPatch = ''
-      substituteInPlace requirements/main.txt \
-        --replace-fail "rich>=12,<14" "rich>=12"
-    '';
-    doCheck = false;
-    dependencies = with python.pkgs; [
-      flask
-      limits
-      ordered-set
-      rich
-    ];
-  };
-
-  flask-login = python.pkgs.buildPythonPackage rec {
-    pname = "Flask-Login";
-    version = "0.6.3";
-    src = fetchPypi {
-      pname = "Flask-Login";
-      inherit version;
-      hash = "sha256-XiPRSmB+8SgGxplZC4nQ8ODWe67sWZ11lHv5wUczAzM=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python.pkgs; [flask];
-  };
+  flask-login = python.pkgs.flask-login;
 
   flask-sqlalchemy = python.pkgs.buildPythonPackage rec {
     pname = "Flask-SQLAlchemy";
@@ -184,21 +98,9 @@
     ];
   };
 
-  marshmallow-sqlalchemy = python.pkgs.buildPythonPackage rec {
-    pname = "marshmallow-sqlalchemy";
-    version = "1.4.2";
-    src = fetchPypi {
-      pname = "marshmallow_sqlalchemy";
-      inherit version;
-      hash = "sha256-ZBAwS/mOwm6jXz+dPO6C5R/Qk8Q0YSrdMqC9zbVmj3w=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [flit-core];
-    doCheck = false;
-    dependencies = with python.pkgs; [
-      marshmallow
-      sqlalchemy_1_4
-    ];
+  marshmallow-sqlalchemy = python.pkgs.marshmallow-sqlalchemy.override {
+    inherit marshmallow;
+    sqlalchemy = python.pkgs.sqlalchemy_1_4;
   };
 
   hashids = python.pkgs.buildPythonPackage rec {
@@ -251,41 +153,12 @@
     dependencies = with python.pkgs; [wtforms six];
   };
 
-  alembic = python.pkgs.buildPythonPackage rec {
-    pname = "alembic";
-    version = "1.17.2";
-    src = fetchPypi {
-      pname = "alembic";
-      inherit version;
-      hash = "sha256-u+l1FwXF4PFId/AtRsU9EIheN349kO2oEKAW+bqhno4=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = with python.pkgs; [
-      mako
-      python-dateutil
-      sqlalchemy_1_4
-      typing-extensions
-    ];
+  alembic = python.pkgs.alembic.override {
+    sqlalchemy = python.pkgs.sqlalchemy_1_4;
   };
 
-  flask-migrate = python.pkgs.buildPythonPackage rec {
-    pname = "Flask-Migrate";
-    version = "4.1.0";
-    src = fetchPypi {
-      pname = "flask_migrate";
-      inherit version;
-      hash = "sha256-GjNrBussOs4AX18t7YZB1TTBh5jWQGH2/xH3nhQ0Em0=";
-    };
-    pyproject = true;
-    build-system = with python.pkgs; [setuptools wheel];
-    doCheck = false;
-    dependencies = [
-      alembic
-      flask-sqlalchemy
-      python.pkgs.flask
-    ];
+  flask-migrate = python.pkgs.flask-migrate.override {
+    inherit alembic flask-sqlalchemy;
   };
 
   flask-appbuilder = python.pkgs.buildPythonPackage rec {
@@ -298,6 +171,12 @@
     };
     pyproject = true;
     build-system = with python.pkgs; [setuptools wheel];
+    postPatch = ''
+      substituteInPlace setup.py \
+        --replace-fail "Flask-Limiter>3,<4" "Flask-Limiter" \
+        --replace-fail "Flask-Login>=0.3, <0.7" "Flask-Login" \
+        --replace-fail "prison>=0.2.1, <1.0.0" "prison"
+    '';
     doCheck = false;
     dependencies =
       [flask-limiter flask-login prison sqlalchemy-utils python.pkgs.sqlalchemy_1_4 flask-sqlalchemy marshmallow marshmallow-sqlalchemy]
