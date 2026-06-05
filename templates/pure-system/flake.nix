@@ -63,7 +63,7 @@
             bin-cache
             home-manager.darwinModules.home-manager
             hmDefaults
-            {nixpkgs.hostPlatform = "x86_64-darwin";}
+            {nixpkgs.hostPlatform = "aarch64-darwin";}
             {
               system.stateVersion = 6;
               # https://github.com/nix-darwin/nix-darwin/issues/1477
@@ -82,7 +82,7 @@
       # checks for integration tests, can be removed for casual use
       checks = {
         # breaks or breaks potentially due to: https://github.com/NixOS/nix/issues/4265
-        x86_64-darwin.purely-darwin = self.darwinConfigurations.purely-darwin.system;
+        aarch64-darwin.purely-darwin = self.darwinConfigurations.purely-darwin.system;
         x86_64-linux.purely = self.nixosConfigurations.purely.config.system.build.toplevel;
         # todo: test nix within configured system
         # todo: test default nix
