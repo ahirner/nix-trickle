@@ -36,6 +36,19 @@
     doCheck = false;
   };
 
+  marshmallow = python.pkgs.buildPythonPackage rec {
+    pname = "marshmallow";
+    version = "3.26.1";
+    src = fetchPypi {
+      inherit pname version;
+      hash = "sha256-5tiv+2y2HTnSZAIJbcCu4S1aJtSQoSHxGNLoHcBxncY=";
+    };
+    pyproject = true;
+    build-system = with python.pkgs; [flit-core];
+    doCheck = false;
+    dependencies = with python.pkgs; [packaging];
+  };
+
   marshmallow-union = python.pkgs.buildPythonPackage rec {
     pname = "marshmallow-union";
     version = "0.1.15.post1";
@@ -115,6 +128,29 @@
     build-system = with python.pkgs; [setuptools wheel];
     doCheck = false;
     dependencies = with python.pkgs; [six];
+  };
+
+  flask-limiter = python.pkgs.buildPythonPackage rec {
+    pname = "Flask-Limiter";
+    version = "3.12";
+    src = fetchPypi {
+      pname = "flask_limiter";
+      inherit version;
+      hash = "sha256-+ePj0MSs0NH/v6cp4XGY3RBC9NI8EwrhYARPyTDiEwA=";
+    };
+    pyproject = true;
+    build-system = with python.pkgs; [setuptools wheel];
+    postPatch = ''
+      substituteInPlace requirements/main.txt \
+        --replace-fail "rich>=12,<14" "rich>=12"
+    '';
+    doCheck = false;
+    dependencies = with python.pkgs; [
+      flask
+      limits
+      ordered-set
+      rich
+    ];
   };
 
   flask-login = python.pkgs.buildPythonPackage rec {
@@ -264,7 +300,7 @@
     build-system = with python.pkgs; [setuptools wheel];
     doCheck = false;
     dependencies =
-      [flask-login prison sqlalchemy-utils python.pkgs.sqlalchemy_1_4 flask-sqlalchemy marshmallow-sqlalchemy]
+      [flask-limiter flask-login prison sqlalchemy-utils python.pkgs.sqlalchemy_1_4 flask-sqlalchemy marshmallow marshmallow-sqlalchemy]
       ++ (with python.pkgs; [
         apispec
         colorama
@@ -272,11 +308,9 @@
         email-validator
         flask
         flask-babel
-        flask-limiter
         flask-wtf
         flask-jwt-extended
         jsonschema
-        marshmallow
         python-dateutil
         pyjwt
       ]);
