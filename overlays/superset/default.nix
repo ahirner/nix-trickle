@@ -135,6 +135,7 @@ in
 
         backoff
         bottleneck
+        cachetools
         celery
         click
         click-option-group
