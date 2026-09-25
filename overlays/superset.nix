@@ -1,3 +1,10 @@
-final: prev: {
-  superset = prev.python3.pkgs.callPackage ./superset/default.nix {};
+final: prev: let
+  python = prev.python312.override {
+    self = python;
+    packageOverrides = import ./superset/dependencies.nix {
+      inherit (prev) lib fetchPypi postgresql;
+    };
+  };
+in {
+  superset = python.pkgs.callPackage ./superset/default.nix {};
 }
