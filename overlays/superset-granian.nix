@@ -1,6 +1,6 @@
 final: prev: let
   superset = final.superset;
-  supersetEnv = prev.python3.withPackages (ps: [
+  supersetEnv = superset.python.withPackages (ps: [
     superset
     ps.granian
   ]);
