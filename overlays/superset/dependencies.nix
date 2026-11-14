@@ -32,6 +32,18 @@
     disabledTests = (old.disabledTests or []) ++ ["test_for_mssql_dialect"];
   });
 
+  flask-caching = pyPrev.flask-caching.overridePythonAttrs (old: {
+    # This tests a cache hit, while cachelib rounds expiry to whole seconds.
+    postPatch =
+      old.postPatch
+      + "\n"
+      + ''
+        substituteInPlace tests/test_view.py \
+          --replace-fail $'@cache.cached(2)\n    async def cached_async_view():' \
+            $'@cache.cached(60)\n    async def cached_async_view():'
+      '';
+  });
+
   pycurl = pyPrev.pycurl.overridePythonAttrs (old: {
     # The local HTTP server can time out under concurrent CI builds.
     disabledTests = (old.disabledTests or []) ++ ["test_connect_only_send_recv_byteslike"];
