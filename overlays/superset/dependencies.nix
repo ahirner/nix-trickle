@@ -2,7 +2,6 @@
   lib,
   postgresql,
   fetchPypi,
-  redisTestHook,
 }: pyFinal: pyPrev: {
   "apache-superset-core" = pyFinal.buildPythonPackage rec {
     pname = "apache-superset-core";
@@ -62,7 +61,6 @@
 
   slack-sdk = pyPrev.slack-sdk.overridePythonAttrs (old: {
     patches = (old.patches or []) ++ [./slack-sdk-webhook-request-body.patch];
-    disabledTests = lib.remove "test_send_dict" (old.disabledTests or []);
   });
 
   twisted = pyPrev.twisted.overridePythonAttrs (old: {
@@ -73,18 +71,6 @@
           echo 'AbortConnectionTests_SelectReactorTests.test_fullWriteBuffer.skip = "macOS socket notification timeout"' >> src/twisted/internet/test/test_tcp.py
         '');
   });
-
-  valkey = pyPrev.valkey.override {
-    redisTestHook = redisTestHook.overrideAttrs (old: {
-      buildCommand =
-        old.buildCommand
-        + ''
-          substituteInPlace "$out/nix-support/setup-hook" \
-            --replace-fail '> /dev/null 2>&1 &' '> "$NIX_BUILD_TOP/run/redis.log" 2>&1 &' \
-            --replace-fail '    sleep 1' '    if ! kill -0 "$REDIS_PID"; then cat "$NIX_BUILD_TOP/run/redis.log"; return 1; fi; sleep 1'
-        '';
-    });
-  };
 
   django = pyPrev.django.overridePythonAttrs (old: {
     postPatch =
