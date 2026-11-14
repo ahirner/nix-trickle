@@ -40,6 +40,7 @@
   twisted = pyPrev.twisted.overridePythonAttrs (old: {
     postPatch =
       old.postPatch
+      + "\n"
       + lib.optionalString pyFinal.stdenv.hostPlatform.isDarwin ''
         echo 'AbortConnectionTests_SelectReactorTests.test_fullWriteBuffer.skip = "macOS socket notification timeout"' >> src/twisted/internet/test/test_tcp.py
       '';
