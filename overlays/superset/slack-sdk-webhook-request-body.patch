@@ -7,3 +7,12 @@ diff --git a/tests/slack_sdk/webhook/mock_web_api_server.py b/tests/slack_sdk/we
 +
 +            if self.path == "/ratelimited":
                  self.send_response(429)
+diff --git a/tests/webhook/mock_web_api_handler.py b/tests/webhook/mock_web_api_handler.py
+--- a/tests/webhook/mock_web_api_handler.py
++++ b/tests/webhook/mock_web_api_handler.py
+@@ -39,2 +39,4 @@ class MockHandler(SimpleHTTPRequestHandler):
+-            if self.path == "/timeout":
++            self.rfile.read(int(self.headers.get("Content-Length", "0")))
++
++            if self.path == "/timeout":
+                 time.sleep(2)

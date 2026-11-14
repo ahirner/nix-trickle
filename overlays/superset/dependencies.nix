@@ -62,6 +62,7 @@
 
   slack-sdk = pyPrev.slack-sdk.overridePythonAttrs (old: {
     patches = (old.patches or []) ++ [./slack-sdk-webhook-request-body.patch];
+    disabledTests = lib.remove "test_send_dict" (old.disabledTests or []);
   });
 
   twisted = pyPrev.twisted.overridePythonAttrs (old: {
