@@ -60,6 +60,10 @@
     disabledTests = (old.disabledTests or []) ++ ["test_connect_only_send_recv_byteslike"];
   });
 
+  slack-sdk = pyPrev.slack-sdk.overridePythonAttrs (old: {
+    patches = (old.patches or []) ++ [./slack-sdk-webhook-request-body.patch];
+  });
+
   twisted = pyPrev.twisted.overridePythonAttrs (old: {
     postPatch =
       old.postPatch

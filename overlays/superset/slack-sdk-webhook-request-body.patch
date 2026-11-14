@@ -1,0 +1,9 @@
+diff --git a/tests/slack_sdk/webhook/mock_web_api_server.py b/tests/slack_sdk/webhook/mock_web_api_server.py
+--- a/tests/slack_sdk/webhook/mock_web_api_server.py
++++ b/tests/slack_sdk/webhook/mock_web_api_server.py
+@@ -46,2 +46,4 @@ class MockHandler(SimpleHTTPRequestHandler):
+-            if self.path == "/ratelimited":
++            self.rfile.read(int(self.headers.get("Content-Length", "0")))
++
++            if self.path == "/ratelimited":
+                 self.send_response(429)
