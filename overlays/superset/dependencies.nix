@@ -45,6 +45,16 @@
       '';
   });
 
+  httpcore2 = pyPrev.httpcore2.overridePythonAttrs (old: {
+    # Cancellation must reach the simulated stream's blocking I/O.
+    postPatch =
+      ''
+        substituteInPlace tests/httpcore2/test_cancellations.py \
+          --replace-fail 'anyio.move_on_after(0.01)' 'anyio.move_on_after(0.5)'
+      ''
+      + old.postPatch;
+  });
+
   pycurl = pyPrev.pycurl.overridePythonAttrs (old: {
     # The local HTTP server can time out under concurrent CI builds.
     disabledTests = (old.disabledTests or []) ++ ["test_connect_only_send_recv_byteslike"];
