@@ -58,6 +58,9 @@ in
       pytest --confcutdir=tests/unit_tests \
         tests/unit_tests/utils/date_parser_tests.py \
         tests/unit_tests/utils/json_tests.py
+
+      python -m flask --app superset.app:create_app db upgrade
+      python -m flask --app superset.app:create_app init
       runHook postCheck
     '';
 

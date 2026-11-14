@@ -32,6 +32,19 @@
     disabledTests = (old.disabledTests or []) ++ ["test_for_mssql_dialect"];
   });
 
+  pycurl = pyPrev.pycurl.overridePythonAttrs (old: {
+    # The local HTTP server can time out under concurrent CI builds.
+    disabledTests = (old.disabledTests or []) ++ ["test_connect_only_send_recv_byteslike"];
+  });
+
+  twisted = pyPrev.twisted.overridePythonAttrs (old: {
+    postPatch =
+      old.postPatch
+      + lib.optionalString pyFinal.stdenv.hostPlatform.isDarwin ''
+        echo 'AbortConnectionTests_SelectReactorTests.test_fullWriteBuffer.skip = "macOS socket notification timeout"' >> src/twisted/internet/test/test_tcp.py
+      '';
+  });
+
   django = pyPrev.django.overridePythonAttrs (old: {
     postPatch =
       old.postPatch
