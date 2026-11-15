@@ -1,64 +1,75 @@
 final: prev: let
-  inherit (prev) lib fetchFromGitHub stdenv runCommand;
-  rustPlatform = prev.makeRustPlatform {
-    cargo = prev.rust-bin.stable.latest.default;
-    rustc = prev.rust-bin.stable.latest.default;
+  inherit (prev) lib fetchFromGitHub stdenv;
+  inherit (prev.rustPackages_1_98) rustPlatform cargo rustc;
+  isAarch64Linux = stdenv.hostPlatform.isLinux && stdenv.hostPlatform.isAarch64;
+  pdfium = prev.callPackage ./spiced/pdfium.nix {};
+  nativeBuildInputs = with prev;
+    [pkg-config cmake protobuf installShellFiles rustPlatform.bindgenHook]
+    ++ lib.optionals isAarch64Linux [clang lld];
+  buildInputs = with prev;
+    [openssl.dev]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [apple-sdk];
+  # ld64 inserts ARM64 branch islands in __text, not ctor's __text_startup.
+  linkerSetup = lib.optionalString stdenv.hostPlatform.isDarwin ''
+    export NIX_LDFLAGS="''${NIX_LDFLAGS-} -rename_section __TEXT __text_startup __TEXT __text"
+  '';
+  env = {
+    OPENSSL_NO_VENDOR = 1;
+    PDFIUM_LIB_PATH = "${pdfium}/lib";
+    PDFIUM_INCLUDE_PATH = "${pdfium}/include";
   };
-  src = fetchFromGitHub {
-    owner = "ahirner";
-    repo = "spiceai";
-    rev = "80de1a85348779f36c43edc93eee1e0f27e18df7";
-    hash = "sha256-jFhyWw8NNJ3o5s8w1vqr2Qzl9OlowukohYAdpQyTmKE=";
-  };
-
-  cleanCargoDeps = rustPlatform.fetchCargoVendor {
-    inherit src;
-    name = "spiced-2.0.0-unstable-vendor";
-    hash = "sha256-f20dBnG5znWAsJQqIEPrKAfY5rkkxM3Ixt4MZUZcivM=";
-    postBuild = ''
-      rm -f "$out"/git/*/candle-book/Cargo.toml
-    '';
-  };
-
-  patchedCargoDeps =
-    runCommand "spiced-vendor-patched" {
-      inherit cleanCargoDeps;
-    } ''
-      mkdir -p $out
-      find $cleanCargoDeps -maxdepth 1 -mindepth 1 -exec ln -s {} $out/ \;
-
-      rm $out/source-git-32
-      cp -r $cleanCargoDeps/source-git-32 $out/
-      chmod -R +w $out/source-git-32
-      sed -i 's/^#!\[doc = include_str!/\/\/ &/' $out/source-git-32/vortex-0.1.0/src/lib.rs
-    '';
 in {
-  spiced = rustPlatform.buildRustPackage {
-    inherit src;
+  spiced = rustPlatform.buildRustPackage rec {
     pname = "spiced";
-    version = "2.0.0-unstable";
+    version = "2.4.2";
 
-    cargoDeps = patchedCargoDeps;
+    src = fetchFromGitHub {
+      owner = "spiceai";
+      repo = "spiceai";
+      tag = "v${version}";
+      hash = "sha256-hCL7atdTU1M45A2kiaimpSOV8FTL/9iQDTdiSe29r00=";
+    };
+    cargoDeps =
+      (rustPlatform.fetchCargoVendor {
+        inherit pname version src;
+        hash = "sha256-t/hw3yJ6ZOS93Y0C7FpbuW5w+SeU2bVkLguxQJIegXM=";
+      }).overrideAttrs (old: {
+        # Git vendoring omits Vortex's workspace README.
+        buildCommand =
+          old.buildCommand
+          + ''
+            for vortex_library in "$out"/source-git-*/vortex-[0-9]*/src/lib.rs; do
+              chmod u+w "$vortex_library" "$(dirname "$vortex_library")"
+              sed -i '/^#!\[doc = include_str!/d' "$vortex_library"
+            done
+          '';
+      });
 
+    inherit nativeBuildInputs buildInputs env;
+    preBuild = linkerSetup;
+    cargoBuildFlags = ["--package=spiced"];
     buildNoDefaultFeatures = true;
     buildFeatures = ["flightsql" "postgres" "sqlite" "vortex" "release"];
 
-    env = {OPENSSL_NO_VENDOR = 1;};
-    nativeBuildInputs = with prev; [pkg-config cmake protobuf installShellFiles rustPlatform.bindgenHook];
-    buildInputs = with prev;
-      [openssl.dev]
-      ++ lib.optionals stdenv.hostPlatform.isDarwin [apple-sdk];
-
-    # too much hassle
     doCheck = false;
+    nativeInstallCheckInputs = [prev.versionCheckHook];
+    doInstallCheck = stdenv.buildPlatform.canExecute stdenv.hostPlatform;
+    versionCheckProgramArg = "--version";
+
+    passthru.patchedCargoDeps = cargoDeps;
+    passthru.pdfium = pdfium;
+    passthru.devShell = prev.mkShell {
+      packages = [cargo rustc] ++ nativeBuildInputs;
+      inherit buildInputs env;
+      shellHook = linkerSetup;
+    };
 
     meta = {
       description = "CDN for databases";
       homepage = "https://docs.spiceai.org";
       license = lib.licenses.asl20;
+      mainProgram = "spiced";
       maintainers = [];
     };
-
-    passthru.patchedCargoDeps = patchedCargoDeps;
   };
 }

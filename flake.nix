@@ -44,6 +44,7 @@
       }: {
         packages = builtins.mapAttrs (name: _: pkgs.${name}) overlayAttrs;
         formatter = pkgs.alejandra;
+        devShells.spiced = pkgs.spiced.devShell;
         devShells.default = let
           nativeBuildInputs = builtins.attrValues self.packages.${system};
         in

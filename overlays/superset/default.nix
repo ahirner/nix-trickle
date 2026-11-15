@@ -33,6 +33,7 @@ in
       "greenlet"
       "msgpack"
       "nh3"
+      "pillow"
       "redis"
       "pyarrow"
       "xlsxwriter"
@@ -57,7 +58,11 @@ in
 
       pytest --confcutdir=tests/unit_tests \
         tests/unit_tests/utils/date_parser_tests.py \
-        tests/unit_tests/utils/json_tests.py
+        tests/unit_tests/utils/json_tests.py \
+        tests/unit_tests/utils/test_screenshot_utils.py
+
+      "$out/bin/superset" db upgrade
+      "$out/bin/superset" init
       runHook postCheck
     '';
 
