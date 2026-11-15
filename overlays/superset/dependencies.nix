@@ -27,6 +27,16 @@
 
   sqlalchemy = pyPrev.sqlalchemy_1_4;
 
+  billiard = pyPrev.billiard.overridePythonAttrs (old: {
+    postPatch =
+      (old.postPatch or "")
+      + ''
+        substituteInPlace t/unit/test_spawn.py \
+          --replace-fail '            child_proc.terminate()' \
+            $'            try:\n                child_proc.terminate()\n            except psutil.NoSuchProcess:\n                pass'
+      '';
+  });
+
   celery = pyPrev.celery.overridePythonAttrs (old: {
     # SQLAlchemy 1.4 wraps dialect-specific types in Variant.
     disabledTests = (old.disabledTests or []) ++ ["test_for_mssql_dialect"];
