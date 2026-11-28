@@ -1,0 +1,30 @@
+diff --git a/tests/conftest.py b/tests/conftest.py
+--- a/tests/conftest.py
++++ b/tests/conftest.py
+@@ -1,7 +1,9 @@
+ import socket
+ import pytest
+ import time
++from socketserver import ThreadingMixIn
+ from typing import Generator
++from wsgiref.simple_server import WSGIServer
+
+ from . import appmanager, localhost, util
+
+@@ -42,11 +44,16 @@
+     yield from make_app()
+
+
++class ThreadedWSGIServer(ThreadingMixIn, WSGIServer):
++    daemon_threads = True
++
++
+ def make_app() -> Generator[str, None, None]:
+     port = _get_free_port()
+     setup, teardown = appmanager.setup(
+         (
+             "app",
+             port,
++            {"server_class": ThreadedWSGIServer},
+         )
+     )
